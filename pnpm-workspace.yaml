@@ -1,6 +1,7 @@
 packages:
   - docs
   - sdk/typescript
+  - apps/codex-gui
 
 ignoredBuiltDependencies:
   - esbuild
