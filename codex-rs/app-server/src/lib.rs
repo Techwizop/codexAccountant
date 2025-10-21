@@ -29,6 +29,9 @@ mod fuzzy_file_search;
 mod message_processor;
 mod outgoing_message;
 
+#[cfg(feature = "ledger")]
+mod accounting_handlers;
+
 /// Size of the bounded channels used to communicate between tasks. The value
 /// is a balance between throughput and memory usage – 128 messages should be
 /// plenty for an interactive CLI.

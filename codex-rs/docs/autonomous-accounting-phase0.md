@@ -1,0 +1,241 @@
+# Autonomous Accounting - Phase 0 Foundations
+
+This document captures the foundational decisions and assumptions prepared during Phase 0 of the autonomous accounting roadmap. It aligns with `specs/autonomous-accounting-spec.md`, `specs/tasks.md`, and open stakeholder items in `specs/stakeholder-review-checklist.md`.
+
+> Command log helper: run `./scripts/append-command-log.sh "<command summary>"` to append synced entries to this document and the Phase roadmap.
+
+## 0.1 Compliance and Legal Baseline
+- **Confirmed baselines:** Start with US GAAP controls and record retention, require immutable audit trails, and plan SOC2-aligned logging. IFRS and regional variants remain in scope; treat them as configuration-driven profiles, not separate builds.
+- **Retention guardrails:** Mirror CPA guidance with a seven-year minimum retention for financial statements, supporting documents, and audit trails; allow tenant-level overrides where regulation demands longer storage.
+- **Approval thresholds:** Default autonomous postings to require human review above USD 5000 or whenever AI confidence drops below a configurable floor. Always escalate payroll, owner distributions, and tax filings for review regardless of amount.
+- **Safest assumptions (flagged):** Introduce a `compliance.default_framework` config stub (no runtime change yet) to select GAAP versus IFRS once stakeholders decide. Plan to extend policies for GDPR and data residency controls before onboarding EU clients.
+- **Outstanding decisions:** Confirm jurisdictions for the first pilot, mandated certifications (SOC2 Type II, ISO 27001, others), and cross-border data residency rules. Track these items in the stakeholder log for follow-up.
+
+## 0.2 Hosting, Tenancy, and Security Baseline
+- **Hosting model:** Multi-tenant SaaS with per-firm logical isolation plus an optional dedicated environment (VPC-isolated) for regulated clients. Deploy on managed cloud (AWS baseline) with region pinning to satisfy residency mandates.
+- **Access controls:** Role-based permissions mapped to CPA hierarchy (Partner, Senior, Staff, Auditor). Require MFA for elevated roles; add SSO via SAML or OIDC as the roadmap progresses.
+- **Implementation note (2025-10-16):** `codex-tenancy` now persists firm and user records with those roles, enforcing tenant isolation in the in-memory service and CLI snapshot flows.
+- **Implementation note (2025-10-17):** Tenancy CLI automatically seeds a starter ledger chart and installs default policy rules whenever a company is created, storing metadata in `~/.codex/accounting/bootstrap.json` for follow-on automation flows.
+- **Implementation note (2025-10-18):** Bootstrap snapshots now carry a version header; CLI `policy show/set` and `approvals queue` commands surface policy/approval state for local testing.
+- **Encryption posture:** Enforce TLS 1.3 for data in transit, use envelope-encrypted object storage for documents, and manage regional KMS keys per tenant. Keep ledger and policy databases encrypted at rest with automated key rotation.
+- **Audit logging:** Centralized append-only log service with tamper detection, streamed to a secure archive for the full retention window.
+- **Assumptions:** Preserve existing sandbox behavior for agent-initiated processes and avoid touching `CODEX_SANDBOX_*` handling. Defer regional failover until the Phase 5 hardening track.
+
+## 0.3 Target Tech Stack
+- **Frontend:** React and TypeScript single-page app with a design system aligned to the Codex CLI look and feel. Continue the Ratatui-based TUI for CLI users and expose a shared GraphQL and REST layer via `codex-accounting-api`.
+- **Services:** Rust microservices for the ledger (`codex-ledger`), document intake (`codex-docs` placeholder), policy and approvals (`codex-policy`), notifications, and chat agent orchestration leveraging existing Codex core crates.
+- **Data stores:** PostgreSQL for ledger, policy, and authentication data; S3-compatible object storage for documents; managed Redis for queues and caching; and an analytics warehouse (BigQuery or Snowflake) fed through change data capture.
+- **AI and ML layer:** Codex agent harness with task-specific prompts, pluggable LLM endpoints, retrieval across document embeddings, and optional fine-tuned models stored under firm-specific namespaces.
+- **Integrations:** REST and webhook gateway for external systems. Banking feed adapters remain a Phase 3 deliverable, but define the interfaces now.
+
+## 0.4 Environments and CICD
+- **Environment tiers:** Local development, shared integration, staging (mirrors production services with anonymized data), pilot (limited client firms), and production. Each stage enforces infrastructure-as-code parity.
+- **Deployment pipeline:** Git-based workflow with mandatory code review, automated lint and test gates, image builds, and progressive delivery. Use blue/green deployments for stateless services and guarded migrations for stateful components.
+- **Observability:** Centralized tracing through OpenTelemetry, metrics dashboards, and structured logs per environment. Align alert policies with on-call rotations before the pilot kickoff.
+- **Release cadence:** Bi-weekly release train during the MVP phase, promoting to pilot after staging soak tests. Maintain an emergency hotfix lane with an approval workflow.
+- **Execution note (2025-10-18):** Local iteration runs `just fmt` after Rust edits; targeted `just fix -p` and crate-specific tests are executed before handing off changes.
+- **Execution note (2025-10-19):** Phase 3/4/5 reviews were read-only (directory listings and `sed` inspections across `codex-bank-ingest`, `codex-reconcile`, `codex-ledger`, `codex-accounting-api`, `tui/src`, `cli/src`, `app-server-protocol`, `codex-policy`, and `codex-approvals`); parser specs, reconciliation contracts, telemetry requirements, and UX artifacts remain absent, so no builds or tests were run pending clarified requirements.
+- **Execution note (2025-10-19 update):** Implemented Phase 3 ingestion/reconciliation ledger plumbing with `just fmt`; `just fix -p` + `cargo test -p` for `codex-bank-ingest`, `codex-reconcile`, `codex-ledger`, `codex-app-server-protocol`, and `codex-accounting-api`.
+- **Execution note (2025-10-20):** Delivered the Phase 4/5/6 reconciliation dashboard, telemetry aggregator, and go-live checklist with `just fmt`; `just fix -p codex-accounting-api`; `cargo test -p codex-accounting-api`; `just fix -p codex-tui`; `cargo test -p codex-tui`; `just fix -p codex-cli`; `cargo test -p codex-cli`.
+- **Execution note (2025-10-21):** Added CLI integration coverage for ledger reconciliation, period-lock history, tenancy streaming, and go-live readiness plus approvals telemetry unit tests. Commands executed: `just fmt`; `just fix -p codex-cli`; `cargo test -p codex-cli`; `just fix -p codex-accounting-api`; `cargo test -p codex-accounting-api`.
+- **Execution note (2025-10-22):** Extended the ledger CLI with `--format json` outputs, hardened reconciliation error paths, surfaced lock history through the app-server protocol, and refreshed go-live monitoring copy. Commands executed: `just fmt`; `just fix -p codex-cli`; `just fix -p codex-accounting-api`; `just fix -p codex-app-server-protocol`; `cargo test -p codex-cli`; `cargo test -p codex-accounting-api`; `cargo test -p codex-app-server-protocol`.
+- **Execution note (2025-10-23):** Finalized the reconciliation dashboard and CLI coverage with deterministic snapshots and error-path tests. Commands executed: `just fmt`; `just fix -p codex-tui`; `cargo test -p codex-tui` (new snapshot pending); `just fmt`; `just fix -p codex-tui`; `cargo test -p codex-tui` (awaiting snapshot accept); `cargo insta accept -p codex-tui` (tool missing); `cargo install cargo-insta`; `cargo insta accept`; `cargo test -p codex-tui`; `just fix -p codex-cli`; `cargo test -p codex-cli`. Snapshot sanitization replaces volatile timestamps so regression runs stay stable.
+
+- **Execution note (2025-10-23 update):** Extended the reconciliation overlay with wrapped detail rows, surfaced telemetry file locations across CLI/TUI/tenancy streaming, and added persistence/corrupt-file coverage. CLI JSON exports now expose duplication metadata and write-off references for automation consumers. Commands executed: `just fmt`; `just fix -p codex-cli`; `cargo test -p codex-cli` (timed out at 180s, reran with higher limit); `cargo test -p codex-cli` (failed on warning assertion); `just fmt`; `just fix -p codex-cli` (initial attempt timed out); `just fix -p codex-cli` (rerun with extended timeout); `cargo test -p codex-cli`; `tmpdir=$(mktemp -d) && mkdir -p "$tmpdir/accounting" && printf '{not-json' > "$tmpdir/accounting/telemetry.json" && CODEX_HOME="$tmpdir" RUST_LOG=warn cargo run -p codex-cli -- ledger reconciliation summary`; `just fmt`; `just fix -p codex-accounting-api`; `just fix -p codex-cli`; `cargo test -p codex-accounting-api`; `cargo test -p codex-cli`; `just fmt`; `just fix -p codex-accounting-api`; `just fix -p codex-cli`; `cargo test -p codex-accounting-api`; `cargo test -p codex-cli`. Telemetry/go-live progress: corrupt telemetry files now emit a visible warning and recover automatically, and the go-live checklist highlights export verification, monitoring TODOs (metrics + pager), and the telemetry reset path before each dry run.
+
+
+- Ran `python - <<'PY' ...` (initial attempt to extract Phase 4–6 text; command failed: python not found)
+- Ran `python3 - <<'PY' ...` to extract Phase 4–6 text from the roadmap
+- Ran `sed -n '1,160p' codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `sed -n '320,640p' codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `sed -n '160,320p' codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `python3 - <<'PY' ...` to extract the 2025-10-23 entry from phase0 notes
+- Ran `sed -n '1,200p' codex-rs/docs/autonomous-accounting-phase0.md`
+- Ran `sed -n '1,200p' codex-rs/tui/src/reconciliation_preview.rs`
+- Ran `sed -n '200,400p' codex-rs/tui/src/reconciliation_preview.rs`
+- Ran `sed -n '1,200p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '200,400p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '400,800p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '800,1200p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '520,720p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '1,200p' codex-rs/cli/src/tenancy_cmd.rs`
+- Ran `sed -n '200,400p' codex-rs/cli/src/tenancy_cmd.rs`
+- Ran `sed -n '1,200p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `sed -n '200,400p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `sed -n '1,200p' codex-rs/codex-accounting-api/src/telemetry.rs`
+- Ran `sed -n '200,400p' codex-rs/codex-accounting-api/src/telemetry.rs`
+- Ran `sed -n '1,200p' codex-rs/codex-accounting-api/src/demo.rs`
+- Ran `sed -n '1,160p' codex-rs/README.md`
+- Ran `sed -n '1,160p' CHANGELOG.md`
+- Ran `sed -n '200,400p' codex-rs/codex-accounting-api/src/demo.rs`
+- Ran `sed -n '400,800p' codex-rs/codex-accounting-api/src/demo.rs`
+- Ran `sed -n '200,400p' codex-rs/codex-accounting-api/src/demo.rs` (repeat to inspect section)
+- Ran `sed -n '1,200p' codex-rs/tui/src/wrapping.rs`
+- Ran `rg "word_wrap_lines" -n tui/src` (failed: path missing)
+- Ran `rg "word_wrap_lines" -n codex-rs/tui/src`
+- Ran `sed -n '480,560p' codex-rs/tui/src/app.rs`
+- Ran `rg "new_static_with_lines" -n codex-rs/tui/src`
+- Ran `sed -n '1,200p' codex-rs/tui/src/pager_overlay.rs`
+- Ran `rg "struct StaticOverlay" -n codex-rs/tui/src/pager_overlay.rs`
+- Ran `sed -n '480,640p' codex-rs/tui/src/pager_overlay.rs`
+- Ran `rg "CachedRenderable" -n codex-rs/tui/src`
+- Ran `sed -n '320,420p' codex-rs/tui/src/pager_overlay.rs`
+- Ran `ls codex-rs/tui/src/render`
+- Ran `sed -n '1,200p' codex-rs/tui/src/render/renderable.rs`
+- Ran `rg "CachedRenderable" -n codex-rs/tui/src/render`
+- Ran `sed -n '200,400p' codex-rs/tui/src/render/renderable.rs`
+- Ran `rg "prefix_lines" -n codex-rs/tui/src`
+- Ran `sed -n '1,200p' codex-rs/tui/src/render/line_utils.rs`
+- Ran `sed -n '120,200p' codex-rs/tui/src/history_cell.rs`
+- Ran `rg "struct ApprovalTask" -n codex-rs`
+- Ran `sed -n '120,240p' codex-rs/codex-approvals/src/lib.rs`
+- Ran `rg "struct ApprovalRequest" -n codex-rs/codex-approvals/src`
+- Ran `sed -n '40,120p' codex-rs/codex-approvals/src/lib.rs`
+- Ran `rg "struct MatchCandidate" -n codex-rs -g*.rs`
+- Ran `sed -n '1,200p' codex-rs/codex-reconcile/src/lib.rs`
+- Ran `rg "struct ApprovalsQueueView" -n codex-rs/codex-accounting-api/src`
+- Ran `sed -n '1,200p' codex-rs/codex-accounting-api/src/controls.rs`
+- Ran `rg "struct DuplicateMetadata" -n codex-rs/codex-bank-ingest/src/lib.rs`
+- Ran `sed -n '52,72p' codex-rs/codex-bank-ingest/src/lib.rs`
+- Ran `ls docs`
+- Ran `ls docs/accounting`
+- Ran `sed -n '1,200p' docs/accounting/architecture.md`
+- Ran `rg "Phase 4 Progress" -n codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `sed -n '212,240p' codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `rg "Phase 6 Progress" -n codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `sed -n '260,288p' codex-rs/docs/autonomous-accounting-roadmap.md`
+- Ran `python3 - <<'PY' ...` to add telemetry hints in set-lock text test
+- Ran `python3 - <<'PY' ...` to assert telemetry path in set-lock JSON test
+- Ran `python3 - <<'PY' ...` (attempted to add summary assertion; hit SyntaxError)
+- Ran `python3 - <<'PY' ...` to inspect the summary test block
+- Ran `python3 - <<'PY' ...` to rewrite the reconciliation summary JSON test with new fields
+- Ran `python3 - <<'PY' ...` to add telemetry path assertion to the go-live test
+- Ran `python3 - <<'PY' ...` to insert the telemetry persistence regression test
+- Ran `sed -n '273,320p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `sed -n '340,420p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `sed -n '420,480p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `tail -n 80 codex-rs/cli/tests/ledger_reconciliation.rs` to inspect braces
+- Ran `python3 - <<'PY' ...` to remove an extra closing brace before the new test
+- Ran `sed -n '300,380p' codex-rs/tui/src/reconciliation_preview.rs`
+- Ran `python3 - <<'PY' ...` (first attempt to drop the stale `status_bar_line` signature; syntax error)
+- Ran `python3 - <<'PY' ...` to drop the stale `status_bar_line` signature
+- Ran `python3 - <<'PY' ...` to inject the reconciliation JSON example into README.md
+- Ran `python3 - <<'PY' ...` to add the telemetry persistence section to docs/accounting/architecture.md
+- Ran `python3 - <<'PY' ...` (attempted to append Phase 4 bullet; marker not found)
+- Ran `python3 - <<'PY' ...` to append the Phase 4 progress bullet update
+- Ran `python3 - <<'PY' ...` to append the Phase 5 progress bullet update
+- Ran `python3 - <<'PY' ...` (attempted Phase 6 progress update; marker not found)
+- Ran `python3 - <<'PY' ...` to append the Phase 6 progress bullet update
+- Ran `python3 - <<'PY' ...` to extend the 2025-10-23 execution note in phase0
+- Ran `just fmt` (failed: syntax errors in modified files)
+- Ran `just fmt` (failed: lingering extra brace in tests)
+- Ran `just fmt` (succeeded after fixes)
+- Ran `just fix -p codex-accounting-api` (timed out at default limit)
+- Ran `just fix -p codex-accounting-api` (second attempt, timed out)
+- Ran `just fix -p codex-accounting-api` with extended timeout (succeeded)
+- Ran `cargo test -p codex-accounting-api` (timed out once)
+- Ran `cargo test -p codex-accounting-api` with extended timeout (succeeded)
+- Ran `just fix -p codex-cli` (timed out)
+- Ran `just fix -p codex-cli` (second timeout)
+- Ran `just fix -p codex-cli` with extended timeout (succeeded)
+- Ran `cargo test -p codex-cli`
+- Ran `just fix -p codex-tui`
+- Ran `cargo test -p codex-tui` (failed: reconciliation snapshot changed)
+- Ran `cargo insta pending-snapshots -p codex-tui` (failed: unsupported flag)
+- Ran `cargo insta pending-snapshots` inside `codex-rs/tui`
+- Ran `cargo insta accept` inside `codex-rs/tui`
+- Ran `cargo test -p codex-tui` again (tests passed)
+- Ran `just fmt`
+- Ran `just fix -p codex-tui` (timed out after 120s)
+- Ran `just fix -p codex-tui` (completed after retry)
+- Ran `cargo test -p codex-tui` (timed out after 10s)
+- Ran `cargo test -p codex-tui` (timed out after 240s)
+- Ran `cargo test -p codex-tui` (failed: snapshot differences pending acceptance)
+- Ran `cargo insta accept -p codex-tui` (failed: unexpected argument)
+- Ran `cargo insta accept --manifest-path tui/Cargo.toml`
+- Ran `cargo test -p codex-tui` (tests passed after accepting snapshot)
+- Ran `ls` (repo root)
+- Ran `rg "2025-10-23" docs/autonomous-accounting-roadmap.md`
+- Ran `ls` (codex-rs)
+- Ran `rg "2025-10-23" docs/autonomous-accounting-roadmap.md`
+- Ran `rg "2025-10-23" docs/autonomous-accounting-phase0.md`
+- Ran `rg "stream" cli/src/tenancy_cmd.rs`
+- Ran `sed -n '1,200p' cli/src/tenancy_cmd.rs`
+- Ran `sed -n '400,800p' cli/src/tenancy_cmd.rs`
+- Ran `rg -n "stream_reconciliation_metrics" -n cli/src/tenancy_cmd.rs`
+- Ran `sed -n '240,360p' cli/src/tenancy_cmd.rs`
+- Ran `rg "Reconciliation" cli -g"*.rs"`
+- Ran `sed -n '200,400p' cli/src/ledger_cmd.rs`
+- Ran `rg -n "ReconciliationSummaryOutput" cli/src/ledger_cmd.rs`
+- Ran `sed -n '800,920p' cli/src/ledger_cmd.rs`
+- Ran `rg "DemoReconciliation" -g"*.rs" -n`
+- Ran `sed -n '80,180p' codex-accounting-api/src/demo.rs`
+- Ran `sed -n '248,360p' codex-accounting-api/src/demo.rs`
+- Ran `sed -n '1,200p' cli/tests/ledger_reconciliation.rs`
+- Ran `rg -n "tenancy" cli/tests`
+- Ran `sed -n '480,600p' cli/tests/ledger_reconciliation.rs`
+- Ran `rg "ReconciliationTelemetryOutput" -g"*.rs"`
+- Ran `rg "ApprovalsBacklogOutput" -g"*.rs"`
+- Ran `rg -n "struct DemoIngestSnapshot" codex-accounting-api/src/demo.rs`
+- Ran `sed -n '60,90p' codex-accounting-api/src/demo.rs`
+- Ran `rg "struct ApprovalsQueueView" $(fd "ApprovalsQueueView" -x echo)` (fd missing)
+- Ran `rg -n "struct ApprovalsQueueView" codex-accounting-api/src`
+- Ran `sed -n '83,140p' codex-accounting-api/src/controls.rs`
+- Ran `sed -n '1,120p' cli/src/main.rs`
+- Ran `test -f cli/src/lib.rs && sed -n '1,160p' cli/src/lib.rs`
+- Ran `ls cli/src`
+- Ran `mv cli/src/reconciliation_output.rs codex-rs/cli/src/reconciliation_output.rs`
+- Ran `sed -n '1,40p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `rg "TelemetryCounters" codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '1,200p' codex-rs/docs/accounting/cli.md` (path missing)
+- Ran `ls codex-rs/docs`
+- Ran `ls codex-rs/docs/accounting`
+- Ran `ls docs`
+- Ran `ls docs/accounting`
+- Ran `find codex-rs -maxdepth 3 -name 'cli.md'`
+- Ran `rg "stream-reconciliation" docs/accounting/cli.md`
+- Ran `sed -n '175,240p' docs/accounting/cli.md`
+- Ran `rg -n "Accounting quickstart" codex-rs/README.md`
+- Ran `rg -n "quickstart" codex-rs/README.md`
+- Ran `sed -n '1,200p' codex-rs/README.md`
+- Ran `just fmt`
+- Ran `just fix -p codex-cli`
+- Ran `just fix -p codex-cli` (rerun with extended timeout)
+- Ran `cargo test -p codex-cli`
+- Ran `git status -sb`
+- Ran `sed -n '480,540p' codex-rs/cli/tests/ledger_reconciliation.rs`
+- Ran `cargo test -p codex-cli ledger_reconciliation_summary_handles_corrupt_telemetry_file -- --nocapture`
+- Ran `tmpdir=$(mktemp -d) && mkdir -p "$tmpdir/accounting" && printf '{not-json}' > "$tmpdir/accounting/telemetry.json" && CODEX_HOME="$tmpdir" cargo run -p codex-cli --quiet -- ledger reconciliation summary >/tmp/ledger_summary_stdout.txt 2>/tmp/ledger_summary_stderr.txt && echo "stdout:" && cat /tmp/ledger_summary_stdout.txt && echo "stderr:" && cat /tmp/ledger_summary_stderr.txt && rm -rf "$tmpdir"`
+- Ran `tmpdir=$(mktemp -d) && mkdir -p "$tmpdir/accounting" && printf '{not-json}' > "$tmpdir/accounting/telemetry.json" && CODEX_HOME="$tmpdir" RUST_LOG=warn cargo run -p codex-cli --quiet -- ledger reconciliation summary >/tmp/ledger_summary_stdout2.txt 2>/tmp/ledger_summary_stderr2.txt && echo "stderr:" && cat /tmp/ledger_summary_stderr2.txt && rm -rf "$tmpdir"`
+- Ran `sed -n '1,200p' codex-accounting-api/src/telemetry.rs`
+- Ran `rg "tracing_subscriber" codex-rs -g"*.rs"`
+- Ran `rg "warn!" codex-rs/cli/src -n`
+- Ran `rg -n "LedgerReconciliationSubcommand" -n codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '197,320p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `rg -n "run_reconciliation_summary" codex-rs/cli/src/ledger_cmd.rs`
+- Ran `sed -n '504,640p' codex-rs/cli/src/ledger_cmd.rs`
+- Ran `just fmt`
+- Ran `just fix -p codex-cli`
+- Ran `cargo test -p codex-cli`
+- Ran `sed -n '1,80p' codex-rs/cli/src/main.rs`
+- Ran `sed -n '80,160p' codex-rs/cli/src/main.rs`
+- Ran `rg "tracing_subscriber" codex-rs/cli/src/main.rs`
+- Ran `rg "Once" codex-rs/cli/src/main.rs`
+- Ran `sed -n '400,520p' codex-rs/cli/src/main.rs`
+- Ran `rg -n "init_logging" codex-rs/cli/src/main.rs`
+- Ran `sed -n '300,340p' codex-rs/cli/src/main.rs`
+- Ran `rg "tokio::main" -n codex-rs/cli/src/main.rs`
+- Ran `just fmt`
+- Ran `just fix -p codex-cli`
+- Ran `cargo test -p codex-cli`
+## 0.5 Golden Dataset Strategy
+- **Dataset makeup:** Curate anonymized ledgers, invoices, receipts, and bank statements for at least three archetypal clients (retail, professional services, nonprofit). Include recurring transactions, multi-currency samples, and edge cases flagged in the product spec.
+- **Anonymization:** Strip PII and replace it with deterministic tokens; keep the mapping in an encrypted vault for troubleshooting under strict controls.
+- **Storage and access:** Store datasets in a segregated object storage bucket with read-only IAM roles. Gate access through an approval workflow and audit every read.
+- **Validation usage:** Use the dataset for regression tests across ingestion, extraction, posting accuracy, and reconciliation. Wire the suite into CI to guard automation metrics and track accuracy deltas from release to release.
+- **Open tasks:** Secure stakeholder approval on source firms, finalize data sharing agreements, and define a refresh cadence (at least quarterly).
+
+## Next Steps
+- Schedule the stakeholder review to resolve open compliance and residency decisions.
+- Draft architecture RFCs for ledger, policy, and document services using the baselines above.
+- Begin environment bootstrap scripts (Terraform or equivalent) aligned with the hosting and security assumptions.

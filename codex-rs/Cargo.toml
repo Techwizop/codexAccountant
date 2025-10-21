@@ -7,6 +7,17 @@ members = [
     "apply-patch",
     "arg0",
     "codex-backend-openapi-models",
+    "codex-accounting-api",
+    "codex-doc-store",
+    "codex-doc-ingest",
+    "codex-ocr",
+    "codex-audit-log",
+    "codex-ledger",
+    "codex-bank-ingest",
+    "codex-policy",
+    "codex-approvals",
+    "codex-reconcile",
+    "codex-tenancy",
     "cloud-tasks",
     "cloud-tasks-client",
     "cli",
@@ -52,6 +63,11 @@ codex-app-server = { path = "app-server" }
 codex-app-server-protocol = { path = "app-server-protocol" }
 codex-apply-patch = { path = "apply-patch" }
 codex-arg0 = { path = "arg0" }
+codex-accounting-api = { path = "codex-accounting-api" }
+codex-doc-store = { path = "codex-doc-store" }
+codex-doc-ingest = { path = "codex-doc-ingest" }
+codex-ocr = { path = "codex-ocr" }
+codex-audit-log = { path = "codex-audit-log" }
 codex-chatgpt = { path = "chatgpt" }
 codex-common = { path = "common" }
 codex-core = { path = "core" }
@@ -60,6 +76,12 @@ codex-file-search = { path = "file-search" }
 codex-git-tooling = { path = "git-tooling" }
 codex-linux-sandbox = { path = "linux-sandbox" }
 codex-login = { path = "login" }
+codex-ledger = { path = "codex-ledger" }
+codex-policy = { path = "codex-policy" }
+codex-approvals = { path = "codex-approvals" }
+codex-bank-ingest = { path = "codex-bank-ingest" }
+codex-tenancy = { path = "codex-tenancy" }
+codex-reconcile = { path = "codex-reconcile" }
 codex-mcp-client = { path = "mcp-client" }
 codex-mcp-server = { path = "mcp-server" }
 codex-ollama = { path = "ollama" }

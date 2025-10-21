@@ -21,11 +21,31 @@ use codex_tui::AppExitInfo;
 use codex_tui::Cli as TuiCli;
 use owo_colors::OwoColorize;
 use std::path::PathBuf;
+use std::sync::Once;
 use supports_color::Stream;
+use tracing_subscriber::EnvFilter;
+use tracing_subscriber::fmt;
 
+mod ledger_cmd;
 mod mcp_cmd;
+mod reconciliation_output;
+mod tenancy_cmd;
 
+static LOGGING_INIT: Once = Once::new();
+
+fn init_logging() {
+    LOGGING_INIT.call_once(|| {
+        let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+        let _ = fmt()
+            .with_env_filter(filter)
+            .with_writer(std::io::stderr)
+            .try_init();
+    });
+}
+
+use crate::ledger_cmd::LedgerCli;
 use crate::mcp_cmd::McpCli;
+use crate::tenancy_cmd::TenancyCli;
 use codex_core::config::Config;
 use codex_core::config::ConfigOverrides;
 
@@ -95,6 +115,13 @@ enum Subcommand {
     /// Internal: generate TypeScript protocol bindings.
     #[clap(hide = true)]
     GenerateTs(GenerateTsCommand),
+
+    /// Prototype Codex Accounting workflows.
+    Ledger(LedgerCli),
+
+    /// Manage accounting firm tenants and companies.
+    Tenancy(TenancyCli),
+
     /// [EXPERIMENTAL] Browse tasks from Codex Cloud and apply changes locally.
     #[clap(name = "cloud", alias = "cloud-tasks")]
     Cloud(CloudTasksCli),
@@ -302,6 +329,7 @@ fn main() -> anyhow::Result<()> {
 }
 
 async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()> {
+    init_logging();
     let MultitoolCli {
         config_overrides: mut root_config_overrides,
         feature_toggles,
@@ -396,6 +424,20 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
         }
         Some(Subcommand::Completion(completion_cli)) => {
             print_completion(completion_cli);
+        }
+        Some(Subcommand::Ledger(mut ledger_cli)) => {
+            prepend_config_flags(
+                &mut ledger_cli.config_overrides,
+                root_config_overrides.clone(),
+            );
+            ledger_cmd::run(ledger_cli).await?;
+        }
+        Some(Subcommand::Tenancy(mut tenancy_cli)) => {
+            prepend_config_flags(
+                &mut tenancy_cli.config_overrides,
+                root_config_overrides.clone(),
+            );
+            tenancy_cmd::run(tenancy_cli).await?;
         }
         Some(Subcommand::Cloud(mut cloud_cli)) => {
             prepend_config_flags(

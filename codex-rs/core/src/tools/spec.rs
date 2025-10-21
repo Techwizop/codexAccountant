@@ -850,6 +850,52 @@ pub(crate) fn build_specs(
         }
     }
 
+    #[cfg(feature = "ledger")]
+    {
+        use crate::tools::accounting::*;
+        use codex_accounting_api::LedgerFacade;
+        use codex_ledger::InMemoryLedgerService;
+
+        // Create ledger facade (TODO: replace with proper facade from app context)
+        let service = Arc::new(InMemoryLedgerService::new());
+        let ledger_facade = Arc::new(LedgerFacade::new(service));
+
+        // Register all 7 accounting tools
+        builder.register_handler(
+            "create_company",
+            Arc::new(CreateCompanyTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "list_companies",
+            Arc::new(ListCompaniesTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "upsert_account",
+            Arc::new(UpsertAccountTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "list_accounts",
+            Arc::new(ListAccountsTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "post_journal_entry",
+            Arc::new(PostJournalEntryTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "list_entries",
+            Arc::new(ListEntriesTool::new(ledger_facade.clone())),
+        );
+        builder.register_handler(
+            "get_company_context",
+            Arc::new(GetCompanyContextTool::new(ledger_facade)),
+        );
+
+        // Add tool specs
+        for spec in create_accounting_tool_specs() {
+            builder.push_spec(spec);
+        }
+    }
+
     builder
 }
 

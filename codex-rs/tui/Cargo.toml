@@ -16,6 +16,8 @@ path = "src/lib.rs"
 vt100-tests = []
 # Gate verbose debug logging inside the TUI implementation.
 debug-logs = []
+# Enable extended reconciliation snapshots with additional duplicate sets.
+reconciliation-dup-snapshots = []
 
 [lints]
 workspace = true
@@ -33,12 +35,16 @@ codex-common = { workspace = true, features = [
     "elapsed",
     "sandbox_summary",
 ] }
+codex-accounting-api = { workspace = true }
 codex-core = { workspace = true }
 codex-file-search = { workspace = true }
 codex-git-tooling = { workspace = true }
+codex-ledger = { workspace = true }
+codex-approvals = { workspace = true }
 codex-login = { workspace = true }
 codex-ollama = { workspace = true }
 codex-protocol = { workspace = true }
+codex-reconcile = { workspace = true }
 codex-app-server-protocol = { workspace = true }
 color-eyre = { workspace = true }
 crossterm = { workspace = true, features = ["bracketed-paste", "event-stream"] }

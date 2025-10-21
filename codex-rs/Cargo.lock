@@ -489,6 +489,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "021e862c184ae977658b36c4500f7feac3221ca5da43e3f25bd04ab6c79a29b5"
 dependencies = [
  "axum-core",
+ "axum-macros",
  "bytes",
  "futures-util",
  "http",
@@ -504,6 +505,8 @@ dependencies = [
  "pin-project-lite",
  "rustversion",
  "serde",
+ "serde_json",
+ "serde_path_to_error",
  "sync_wrapper",
  "tokio",
  "tower",
@@ -528,6 +531,17 @@ dependencies = [
  "sync_wrapper",
  "tower-layer",
  "tower-service",
+]
+
+[[package]]
+name = "axum-macros"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "604fde5e028fea851ce1d8570bbdc034bec850d157f7569d10f347d06808c05c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.104",
 ]
 
 [[package]]
@@ -818,6 +832,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
 
 [[package]]
+name = "codex-accounting-api"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "codex-app-server-protocol",
+ "codex-approvals",
+ "codex-bank-ingest",
+ "codex-ledger",
+ "codex-policy",
+ "codex-reconcile",
+ "codex-tenancy",
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "codex-ansi-escape"
 version = "0.0.0"
 dependencies = [
@@ -834,11 +870,13 @@ dependencies = [
  "app_test_support",
  "assert_cmd",
  "base64",
+ "codex-accounting-api",
  "codex-app-server-protocol",
  "codex-arg0",
  "codex-common",
  "codex-core",
  "codex-file-search",
+ "codex-ledger",
  "codex-login",
  "codex-protocol",
  "codex-utils-json-to-toml",
@@ -887,6 +925,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "codex-approvals"
+version = "0.0.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "pretty_assertions",
+ "serde",
+ "thiserror 2.0.16",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "codex-arg0"
 version = "0.0.0"
 dependencies = [
@@ -897,6 +948,22 @@ dependencies = [
  "dotenvy",
  "tempfile",
  "tokio",
+]
+
+[[package]]
+name = "codex-audit-log"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "sha2",
+ "thiserror 2.0.16",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -917,6 +984,19 @@ version = "0.0.0"
 dependencies = [
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "codex-bank-ingest"
+version = "0.0.0"
+dependencies = [
+ "chrono",
+ "csv",
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "sha2",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
@@ -941,32 +1021,42 @@ dependencies = [
  "anyhow",
  "assert_cmd",
  "assert_matches",
+ "chrono",
  "clap",
  "clap_complete",
+ "codex-accounting-api",
  "codex-app-server",
  "codex-app-server-protocol",
+ "codex-approvals",
  "codex-arg0",
  "codex-chatgpt",
  "codex-cloud-tasks",
  "codex-common",
  "codex-core",
  "codex-exec",
+ "codex-ledger",
  "codex-login",
  "codex-mcp-server",
+ "codex-policy",
  "codex-process-hardening",
  "codex-protocol",
  "codex-protocol-ts",
  "codex-responses-api-proxy",
  "codex-rmcp-client",
+ "codex-tenancy",
  "codex-tui",
  "ctor 0.5.0",
+ "dirs",
  "owo-colors",
  "predicates",
  "pretty_assertions",
+ "serde",
  "serde_json",
  "supports-color",
  "tempfile",
  "tokio",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
@@ -1035,11 +1125,15 @@ dependencies = [
  "base64",
  "bytes",
  "chrono",
+ "codex-accounting-api",
  "codex-app-server-protocol",
  "codex-apply-patch",
+ "codex-approvals",
  "codex-file-search",
+ "codex-ledger",
  "codex-mcp-client",
  "codex-otel",
+ "codex-policy",
  "codex-protocol",
  "codex-rmcp-client",
  "codex-utils-string",
@@ -1089,6 +1183,38 @@ dependencies = [
  "which",
  "wildmatch",
  "wiremock",
+]
+
+[[package]]
+name = "codex-doc-ingest"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "axum",
+ "chrono",
+ "mime_guess",
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.16",
+ "tokio",
+ "tracing",
+ "uuid",
+]
+
+[[package]]
+name = "codex-doc-store"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "chrono",
+ "pretty_assertions",
+ "serde",
+ "thiserror 2.0.16",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -1178,6 +1304,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "codex-ledger"
+version = "0.0.0"
+dependencies = [
+ "async-trait",
+ "thiserror 2.0.16",
+ "tokio",
+]
+
+[[package]]
 name = "codex-linux-sandbox"
 version = "0.0.0"
 dependencies = [
@@ -1255,6 +1390,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "codex-ocr"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "pretty_assertions",
+ "serde",
+ "thiserror 2.0.16",
+ "tokio",
+]
+
+[[package]]
 name = "codex-ollama"
 version = "0.0.0"
 dependencies = [
@@ -1289,6 +1436,19 @@ dependencies = [
  "tokio",
  "tonic",
  "tracing",
+]
+
+[[package]]
+name = "codex-policy"
+version = "0.0.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "pretty_assertions",
+ "serde",
+ "thiserror 2.0.16",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]
@@ -1328,6 +1488,17 @@ dependencies = [
  "clap",
  "codex-app-server-protocol",
  "ts-rs",
+]
+
+[[package]]
+name = "codex-reconcile"
+version = "0.0.0"
+dependencies = [
+ "chrono",
+ "pretty_assertions",
+ "serde",
+ "thiserror 2.0.16",
+ "uuid",
 ]
 
 [[package]]
@@ -1373,6 +1544,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "codex-tenancy"
+version = "0.0.0"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "pretty_assertions",
+ "thiserror 2.0.16",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "codex-tui"
 version = "0.0.0"
 dependencies = [
@@ -1383,16 +1566,20 @@ dependencies = [
  "base64",
  "chrono",
  "clap",
+ "codex-accounting-api",
  "codex-ansi-escape",
  "codex-app-server-protocol",
+ "codex-approvals",
  "codex-arg0",
  "codex-common",
  "codex-core",
  "codex-file-search",
  "codex-git-tooling",
+ "codex-ledger",
  "codex-login",
  "codex-ollama",
  "codex-protocol",
+ "codex-reconcile",
  "color-eyre",
  "crossterm",
  "diffy",
@@ -1676,6 +1863,27 @@ checksum = "1bfb12502f3fc46cca1bb51ac28df9d618d813cdc3d2f25b9fe775a34af26bb3"
 dependencies = [
  "generic-array",
  "typenum",
+]
+
+[[package]]
+name = "csv"
+version = "1.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "acdc4883a9c96732e4733212c01447ebd805833b7275a73ca3ee080fd77afdaf"
+dependencies = [
+ "csv-core",
+ "itoa",
+ "ryu",
+ "serde",
+]
+
+[[package]]
+name = "csv-core"
+version = "0.1.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d02f3b0da4c6504f86e9cd789d8dbafab48c2321be74e9987593de5a894d93d"
+dependencies = [
+ "memchr",
 ]
 
 [[package]]

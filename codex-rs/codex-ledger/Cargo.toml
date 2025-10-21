@@ -1,0 +1,20 @@
+[package]
+name = "codex-ledger"
+version = { workspace = true }
+edition = "2024"
+license = "Apache-2.0"
+
+[lib]
+name = "codex_ledger"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["sync"] }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

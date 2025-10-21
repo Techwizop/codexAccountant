@@ -1,0 +1,1249 @@
+commit 16deec271289d8c1ae4d5b49fcac0177e272460a
+Author: Code Snapshot <snapshot@code.local>
+Date:   Wed Oct 15 02:01:40 2025 +0200
+
+    auto turn change snapshot
+
+diff --git a/.code/agents/058ebcff-03de-4d30-9e68-0bb19b0943a0/result.txt b/.code/agents/058ebcff-03de-4d30-9e68-0bb19b0943a0/result.txt
+new file mode 100644
+index 00000000..87771023
+--- /dev/null
++++ b/.code/agents/058ebcff-03de-4d30-9e68-0bb19b0943a0/result.txt
+@@ -0,0 +1,53 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (5.50GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   132	 45548	code
++    0	   219	  8452	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    31	  8632	   crashpad-handler
++    0	    98	 28380	   gpu-process
++    0	   142	 31192	shared-process
++    0	    95	 49412	file-watcher [1]
++    0	   698	 49936	extension-host [1]
++    0	    40	  5672	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     8	 60680	       C:\windows\system32\conhost.exe 0x4
++    0	    12	 21108	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     8	 55768	       C:\windows\system32\conhost.exe 0x4
++    0	   131	 27264	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++    0	    97	 45724	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=49936
++    0	    95	 52652	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     8	 63096	       C:\windows\system32\conhost.exe 0x4
++    0	    87	 60844	     electron-nodejs (eslintServer.js )
++    0	    49	 64160	   utility-network-service
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 1331 files
++|      File types: rs(454) txt(377) snap(107) md(57) toml(44) ts(19) json(18)
++|                  yml(12) py(7) png(3)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/.code/agents/1c040bd9-ba43-4678-ac3b-212402af6a7c/result.txt b/.code/agents/1c040bd9-ba43-4678-ac3b-212402af6a7c/result.txt
+new file mode 100644
+index 00000000..1e4d6372
+--- /dev/null
++++ b/.code/agents/1c040bd9-ba43-4678-ac3b-212402af6a7c/result.txt
+@@ -0,0 +1,53 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (5.59GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   132	 45548	code
++    0	   218	  8452	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    31	  8632	   crashpad-handler
++    0	    98	 28380	   gpu-process
++    0	   142	 31192	shared-process
++    0	    95	 49412	file-watcher [1]
++    0	   697	 49936	extension-host [1]
++    0	    40	  5672	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     8	 60680	       C:\windows\system32\conhost.exe 0x4
++    0	    12	 21108	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     8	 55768	       C:\windows\system32\conhost.exe 0x4
++    0	   131	 27264	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++    0	    97	 45724	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=49936
++    0	    95	 52652	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     8	 63096	       C:\windows\system32\conhost.exe 0x4
++    0	    87	 60844	     electron-nodejs (eslintServer.js )
++    0	    49	 64160	   utility-network-service
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 1331 files
++|      File types: rs(454) txt(377) snap(107) md(57) toml(44) ts(19) json(18)
++|                  yml(12) py(7) png(3)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/.code/agents/33b3460a-f48a-4d6a-8acb-d219b4dabe3b/error.txt b/.code/agents/33b3460a-f48a-4d6a-8acb-d219b4dabe3b/error.txt
+new file mode 100644
+index 00000000..352ba763
+--- /dev/null
++++ b/.code/agents/33b3460a-f48a-4d6a-8acb-d219b4dabe3b/error.txt
+@@ -0,0 +1 @@
++git apply exited with status exit status: 128 while applying cloud diff
+\ No newline at end of file
+diff --git a/.code/agents/7e6c9df0-3173-4aa7-b87f-79a67bd110ad/result.txt b/.code/agents/7e6c9df0-3173-4aa7-b87f-79a67bd110ad/result.txt
+new file mode 100644
+index 00000000..607d5ee6
+--- /dev/null
++++ b/.code/agents/7e6c9df0-3173-4aa7-b87f-79a67bd110ad/result.txt
+@@ -0,0 +1,53 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (5.75GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   135	 45548	code
++    0	   218	  8452	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    31	  8632	   crashpad-handler
++    0	    98	 28380	   gpu-process
++    0	   142	 31192	shared-process
++    0	    95	 49412	file-watcher [1]
++    0	   698	 49936	extension-host [1]
++    0	    40	  5672	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     8	 60680	       C:\windows\system32\conhost.exe 0x4
++    0	    12	 21108	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     8	 55768	       C:\windows\system32\conhost.exe 0x4
++    0	   131	 27264	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++    0	    97	 45724	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=49936
++    0	    95	 52652	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     8	 63096	       C:\windows\system32\conhost.exe 0x4
++    0	    87	 60844	     electron-nodejs (eslintServer.js )
++    0	    49	 64160	   utility-network-service
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 1329 files
++|      File types: rs(454) txt(376) snap(107) md(57) toml(44) ts(19) json(18)
++|                  yml(12) py(7) png(3)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
+index fb2d83fe..2a9b3284 100644
+--- a/codex-rs/Cargo.toml
++++ b/codex-rs/Cargo.toml
+@@ -1,253 +1,254 @@
+-[workspace]
+-members = [
+-    "backend-client",
+-    "ansi-escape",
+-    "app-server",
+-    "app-server-protocol",
+-    "apply-patch",
+-    "arg0",
+-    "codex-backend-openapi-models",
+-    "cloud-tasks",
+-    "cloud-tasks-client",
+-    "cli",
+-    "common",
+-    "core",
+-    "exec",
+-    "execpolicy",
+-    "file-search",
+-    "git-tooling",
+-    "linux-sandbox",
+-    "login",
+-    "mcp-client",
+-    "mcp-server",
+-    "mcp-types",
+-    "ollama",
+-    "process-hardening",
+-    "protocol",
+-    "protocol-ts",
+-    "rmcp-client",
+-    "responses-api-proxy",
+-    "otel",
+-    "tui",
+-    "git-apply",
+-    "utils/json-to-toml",
+-    "utils/readiness",
+-    "utils/string",
+-]
+-resolver = "2"
+-
+-[workspace.package]
+-version = "0.0.0"
+-# Track the edition for all workspace crates in one place. Individual
+-# crates can still override this value, but keeping it here means new
+-# crates created with `cargo new -w ...` automatically inherit the 2024
+-# edition.
+-edition = "2024"
+-
+-[workspace.dependencies]
+-# Internal
+-app_test_support = { path = "app-server/tests/common" }
+-codex-ansi-escape = { path = "ansi-escape" }
+-codex-app-server = { path = "app-server" }
+-codex-app-server-protocol = { path = "app-server-protocol" }
+-codex-apply-patch = { path = "apply-patch" }
+-codex-arg0 = { path = "arg0" }
+-codex-chatgpt = { path = "chatgpt" }
+-codex-common = { path = "common" }
+-codex-core = { path = "core" }
+-codex-exec = { path = "exec" }
+-codex-file-search = { path = "file-search" }
+-codex-git-tooling = { path = "git-tooling" }
+-codex-linux-sandbox = { path = "linux-sandbox" }
+-codex-login = { path = "login" }
+-codex-mcp-client = { path = "mcp-client" }
+-codex-mcp-server = { path = "mcp-server" }
+-codex-ollama = { path = "ollama" }
+-codex-otel = { path = "otel" }
+-codex-process-hardening = { path = "process-hardening" }
+-codex-protocol = { path = "protocol" }
+-codex-protocol-ts = { path = "protocol-ts" }
+-codex-responses-api-proxy = { path = "responses-api-proxy" }
+-codex-rmcp-client = { path = "rmcp-client" }
+-codex-tui = { path = "tui" }
+-codex-utils-json-to-toml = { path = "utils/json-to-toml" }
+-codex-utils-readiness = { path = "utils/readiness" }
+-codex-utils-string = { path = "utils/string" }
+-core_test_support = { path = "core/tests/common" }
+-mcp-types = { path = "mcp-types" }
+-mcp_test_support = { path = "mcp-server/tests/common" }
+-
+-# External
+-allocative = "0.3.3"
+-ansi-to-tui = "7.0.0"
+-anyhow = "1"
+-arboard = "3"
+-askama = "0.12"
+-assert_matches = "1.5.0"
+-assert_cmd = "2"
+-async-channel = "2.3.1"
+-async-stream = "0.3.6"
+-async-trait = "0.1.89"
+-axum = { version = "0.8", default-features = false }
+-base64 = "0.22.1"
+-bytes = "1.10.1"
+-chrono = "0.4.42"
+-clap = "4"
+-clap_complete = "4"
+-color-eyre = "0.6.3"
+-crossterm = "0.28.1"
+-ctor = "0.5.0"
+-derive_more = "2"
+-diffy = "0.4.2"
+-dirs = "6"
+-dotenvy = "0.15.7"
+-dunce = "1.0.4"
+-env-flags = "0.1.1"
+-env_logger = "0.11.5"
+-escargot = "0.5"
+-eventsource-stream = "0.2.3"
+-futures = { version = "0.3", default-features = false }
+-icu_decimal = "2.0.0"
+-icu_locale_core = "2.0.0"
+-ignore = "0.4.23"
+-image = { version = "^0.25.8", default-features = false }
+-indexmap = "2.6.0"
+-insta = "1.43.2"
+-itertools = "0.14.0"
+-keyring = "3.6"
+-landlock = "0.4.1"
+-lazy_static = "1"
+-libc = "0.2.175"
+-log = "0.4"
+-maplit = "1.0.2"
+-mime_guess = "2.0.5"
+-multimap = "0.10.0"
+-nucleo-matcher = "0.3.1"
+-openssl-sys = "*"
+-opentelemetry = "0.30.0"
+-opentelemetry-appender-tracing = "0.30.0"
+-opentelemetry-otlp = "0.30.0"
+-opentelemetry-semantic-conventions = "0.30.0"
+-opentelemetry_sdk = "0.30.0"
+-os_info = "3.12.0"
+-owo-colors = "4.2.0"
+-paste = "1.0.15"
+-path-absolutize = "3.1.1"
+-path-clean = "1.0.1"
+-pathdiff = "0.2"
+-portable-pty = "0.9.0"
+-predicates = "3"
+-pretty_assertions = "1.4.1"
+-pulldown-cmark = "0.10"
+-rand = "0.9"
+-ratatui = "0.29.0"
+-regex-lite = "0.1.7"
+-reqwest = "0.12"
+-rmcp = { version = "0.8.0", default-features = false }
+-schemars = "0.8.22"
+-seccompiler = "0.5.0"
+-serde = "1"
+-serde_json = "1"
+-serde_with = "3.14"
+-serial_test = "3.2.0"
+-sha1 = "0.10.6"
+-sha2 = "0.10"
+-shlex = "1.3.0"
+-similar = "2.7.0"
+-starlark = "0.13.0"
+-strum = "0.27.2"
+-strum_macros = "0.27.2"
+-supports-color = "3.0.2"
+-sys-locale = "0.3.2"
+-tempfile = "3.23.0"
+-textwrap = "0.16.2"
+-thiserror = "2.0.16"
+-time = "0.3"
+-tiny_http = "0.12"
+-tokio = "1"
+-tokio-stream = "0.1.17"
+-tokio-test = "0.4"
+-tokio-util = "0.7.16"
+-toml = "0.9.5"
+-toml_edit = "0.23.4"
+-tonic = "0.13.1"
+-tracing = "0.1.41"
+-tracing-appender = "0.2.3"
+-tracing-subscriber = "0.3.20"
+-tracing-test = "0.2.5"
+-tree-sitter = "0.25.10"
+-tree-sitter-bash = "0.25"
+-tree-sitter-highlight = "0.25.10"
+-ts-rs = "11"
+-unicode-segmentation = "1.12.0"
+-unicode-width = "0.2"
+-url = "2"
+-urlencoding = "2.1"
+-uuid = "1"
+-vt100 = "0.16.2"
+-walkdir = "2.5.0"
+-webbrowser = "1.0"
+-which = "6"
+-wildmatch = "2.5.0"
+-wiremock = "0.6"
+-zeroize = "1.8.1"
+-
+-[workspace.lints]
+-rust = {}
+-
+-[workspace.lints.clippy]
+-expect_used = "deny"
+-identity_op = "deny"
+-manual_clamp = "deny"
+-manual_filter = "deny"
+-manual_find = "deny"
+-manual_flatten = "deny"
+-manual_map = "deny"
+-manual_memcpy = "deny"
+-manual_non_exhaustive = "deny"
+-manual_ok_or = "deny"
+-manual_range_contains = "deny"
+-manual_retain = "deny"
+-manual_strip = "deny"
+-manual_try_fold = "deny"
+-manual_unwrap_or = "deny"
+-needless_borrow = "deny"
+-needless_borrowed_reference = "deny"
+-needless_collect = "deny"
+-needless_late_init = "deny"
+-needless_option_as_deref = "deny"
+-needless_question_mark = "deny"
+-needless_update = "deny"
+-redundant_clone = "deny"
+-redundant_closure = "deny"
+-redundant_closure_for_method_calls = "deny"
+-redundant_static_lifetimes = "deny"
+-trivially_copy_pass_by_ref = "deny"
+-uninlined_format_args = "deny"
+-unnecessary_filter_map = "deny"
+-unnecessary_lazy_evaluations = "deny"
+-unnecessary_sort_by = "deny"
+-unnecessary_to_owned = "deny"
+-unwrap_used = "deny"
+-
+-# cargo-shear cannot see the platform-specific openssl-sys usage, so we
+-# silence the false positive here instead of deleting a real dependency.
+-[workspace.metadata.cargo-shear]
+-ignored = ["openssl-sys", "codex-utils-readiness"]
+-
+-[profile.release]
+-lto = "fat"
+-# Because we bundle some of these executables with the TypeScript CLI, we
+-# remove everything to make the binary as small as possible.
+-strip = "symbols"
+-
+-# See https://github.com/openai/codex/issues/1411 for details.
+-codegen-units = 1
+-
+-[patch.crates-io]
+-# Uncomment to debug local changes.
+-# ratatui = { path = "../../ratatui" }
+-ratatui = { git = "https://github.com/nornagon/ratatui", branch = "nornagon-v0.29.0-patch" }
+-
+-# Uncomment to debug local changes.
+-# rmcp = { path = "../../rust-sdk/crates/rmcp" }
++[workspace]
++members = [
++    "backend-client",
++    "ansi-escape",
++    "app-server",
++    "app-server-protocol",
++    "apply-patch",
++    "arg0",
++    "codex-backend-openapi-models",
++    "codex-ledger",
++    "cloud-tasks",
++    "cloud-tasks-client",
++    "cli",
++    "common",
++    "core",
++    "exec",
++    "execpolicy",
++    "file-search",
++    "git-tooling",
++    "linux-sandbox",
++    "login",
++    "mcp-client",
++    "mcp-server",
++    "mcp-types",
++    "ollama",
++    "process-hardening",
++    "protocol",
++    "protocol-ts",
++    "rmcp-client",
++    "responses-api-proxy",
++    "otel",
++    "tui",
++    "git-apply",
++    "utils/json-to-toml",
++    "utils/readiness",
++    "utils/string",
++]
++resolver = "2"
++
++[workspace.package]
++version = "0.0.0"
++# Track the edition for all workspace crates in one place. Individual
++# crates can still override this value, but keeping it here means new
++# crates created with `cargo new -w ...` automatically inherit the 2024
++# edition.
++edition = "2024"
++
++[workspace.dependencies]
++# Internal
++app_test_support = { path = "app-server/tests/common" }
++codex-ansi-escape = { path = "ansi-escape" }
++codex-app-server = { path = "app-server" }
++codex-app-server-protocol = { path = "app-server-protocol" }
++codex-apply-patch = { path = "apply-patch" }
++codex-arg0 = { path = "arg0" }
++codex-chatgpt = { path = "chatgpt" }
++codex-common = { path = "common" }
++codex-core = { path = "core" }
++codex-exec = { path = "exec" }
++codex-file-search = { path = "file-search" }
++codex-git-tooling = { path = "git-tooling" }
++codex-linux-sandbox = { path = "linux-sandbox" }
++codex-login = { path = "login" }
++codex-mcp-client = { path = "mcp-client" }
++codex-mcp-server = { path = "mcp-server" }
++codex-ollama = { path = "ollama" }
++codex-otel = { path = "otel" }
++codex-process-hardening = { path = "process-hardening" }
++codex-protocol = { path = "protocol" }
++codex-protocol-ts = { path = "protocol-ts" }
++codex-responses-api-proxy = { path = "responses-api-proxy" }
++codex-rmcp-client = { path = "rmcp-client" }
++codex-tui = { path = "tui" }
++codex-utils-json-to-toml = { path = "utils/json-to-toml" }
++codex-utils-readiness = { path = "utils/readiness" }
++codex-utils-string = { path = "utils/string" }
++core_test_support = { path = "core/tests/common" }
++mcp-types = { path = "mcp-types" }
++mcp_test_support = { path = "mcp-server/tests/common" }
++
++# External
++allocative = "0.3.3"
++ansi-to-tui = "7.0.0"
++anyhow = "1"
++arboard = "3"
++askama = "0.12"
++assert_matches = "1.5.0"
++assert_cmd = "2"
++async-channel = "2.3.1"
++async-stream = "0.3.6"
++async-trait = "0.1.89"
++axum = { version = "0.8", default-features = false }
++base64 = "0.22.1"
++bytes = "1.10.1"
++chrono = "0.4.42"
++clap = "4"
++clap_complete = "4"
++color-eyre = "0.6.3"
++crossterm = "0.28.1"
++ctor = "0.5.0"
++derive_more = "2"
++diffy = "0.4.2"
++dirs = "6"
++dotenvy = "0.15.7"
++dunce = "1.0.4"
++env-flags = "0.1.1"
++env_logger = "0.11.5"
++escargot = "0.5"
++eventsource-stream = "0.2.3"
++futures = { version = "0.3", default-features = false }
++icu_decimal = "2.0.0"
++icu_locale_core = "2.0.0"
++ignore = "0.4.23"
++image = { version = "^0.25.8", default-features = false }
++indexmap = "2.6.0"
++insta = "1.43.2"
++itertools = "0.14.0"
++keyring = "3.6"
++landlock = "0.4.1"
++lazy_static = "1"
++libc = "0.2.175"
++log = "0.4"
++maplit = "1.0.2"
++mime_guess = "2.0.5"
++multimap = "0.10.0"
++nucleo-matcher = "0.3.1"
++openssl-sys = "*"
++opentelemetry = "0.30.0"
++opentelemetry-appender-tracing = "0.30.0"
++opentelemetry-otlp = "0.30.0"
++opentelemetry-semantic-conventions = "0.30.0"
++opentelemetry_sdk = "0.30.0"
++os_info = "3.12.0"
++owo-colors = "4.2.0"
++paste = "1.0.15"
++path-absolutize = "3.1.1"
++path-clean = "1.0.1"
++pathdiff = "0.2"
++portable-pty = "0.9.0"
++predicates = "3"
++pretty_assertions = "1.4.1"
++pulldown-cmark = "0.10"
++rand = "0.9"
++ratatui = "0.29.0"
++regex-lite = "0.1.7"
++reqwest = "0.12"
++rmcp = { version = "0.8.0", default-features = false }
++schemars = "0.8.22"
++seccompiler = "0.5.0"
++serde = "1"
++serde_json = "1"
++serde_with = "3.14"
++serial_test = "3.2.0"
++sha1 = "0.10.6"
++sha2 = "0.10"
++shlex = "1.3.0"
++similar = "2.7.0"
++starlark = "0.13.0"
++strum = "0.27.2"
++strum_macros = "0.27.2"
++supports-color = "3.0.2"
++sys-locale = "0.3.2"
++tempfile = "3.23.0"
++textwrap = "0.16.2"
++thiserror = "2.0.16"
++time = "0.3"
++tiny_http = "0.12"
++tokio = "1"
++tokio-stream = "0.1.17"
++tokio-test = "0.4"
++tokio-util = "0.7.16"
++toml = "0.9.5"
++toml_edit = "0.23.4"
++tonic = "0.13.1"
++tracing = "0.1.41"
++tracing-appender = "0.2.3"
++tracing-subscriber = "0.3.20"
++tracing-test = "0.2.5"
++tree-sitter = "0.25.10"
++tree-sitter-bash = "0.25"
++tree-sitter-highlight = "0.25.10"
++ts-rs = "11"
++unicode-segmentation = "1.12.0"
++unicode-width = "0.2"
++url = "2"
++urlencoding = "2.1"
++uuid = "1"
++vt100 = "0.16.2"
++walkdir = "2.5.0"
++webbrowser = "1.0"
++which = "6"
++wildmatch = "2.5.0"
++wiremock = "0.6"
++zeroize = "1.8.1"
++
++[workspace.lints]
++rust = {}
++
++[workspace.lints.clippy]
++expect_used = "deny"
++identity_op = "deny"
++manual_clamp = "deny"
++manual_filter = "deny"
++manual_find = "deny"
++manual_flatten = "deny"
++manual_map = "deny"
++manual_memcpy = "deny"
++manual_non_exhaustive = "deny"
++manual_ok_or = "deny"
++manual_range_contains = "deny"
++manual_retain = "deny"
++manual_strip = "deny"
++manual_try_fold = "deny"
++manual_unwrap_or = "deny"
++needless_borrow = "deny"
++needless_borrowed_reference = "deny"
++needless_collect = "deny"
++needless_late_init = "deny"
++needless_option_as_deref = "deny"
++needless_question_mark = "deny"
++needless_update = "deny"
++redundant_clone = "deny"
++redundant_closure = "deny"
++redundant_closure_for_method_calls = "deny"
++redundant_static_lifetimes = "deny"
++trivially_copy_pass_by_ref = "deny"
++uninlined_format_args = "deny"
++unnecessary_filter_map = "deny"
++unnecessary_lazy_evaluations = "deny"
++unnecessary_sort_by = "deny"
++unnecessary_to_owned = "deny"
++unwrap_used = "deny"
++
++# cargo-shear cannot see the platform-specific openssl-sys usage, so we
++# silence the false positive here instead of deleting a real dependency.
++[workspace.metadata.cargo-shear]
++ignored = ["openssl-sys", "codex-utils-readiness"]
++
++[profile.release]
++lto = "fat"
++# Because we bundle some of these executables with the TypeScript CLI, we
++# remove everything to make the binary as small as possible.
++strip = "symbols"
++
++# See https://github.com/openai/codex/issues/1411 for details.
++codegen-units = 1
++
++[patch.crates-io]
++# Uncomment to debug local changes.
++# ratatui = { path = "../../ratatui" }
++ratatui = { git = "https://github.com/nornagon/ratatui", branch = "nornagon-v0.29.0-patch" }
++
++# Uncomment to debug local changes.
++# rmcp = { path = "../../rust-sdk/crates/rmcp" }
+diff --git a/codex-rs/codex-ledger/Cargo.toml b/codex-rs/codex-ledger/Cargo.toml
+new file mode 100644
+index 00000000..fc0a755c
+--- /dev/null
++++ b/codex-rs/codex-ledger/Cargo.toml
+@@ -0,0 +1,15 @@
++[package]
++name = "codex-ledger"
++version = { workspace = true }
++edition = "2024"
++license = "Apache-2.0"
++
++[lib]
++name = "codex_ledger"
++path = "src/lib.rs"
++
++[lints]
++workspace = true
++
++[dependencies]
++thiserror = { workspace = true }
+diff --git a/codex-rs/codex-ledger/README.md b/codex-rs/codex-ledger/README.md
+new file mode 100644
+index 00000000..a4f13154
+--- /dev/null
++++ b/codex-rs/codex-ledger/README.md
+@@ -0,0 +1,15 @@
++# codex-ledger
++
++Foundational accounting domain models and service contracts for the Codex multi-company ledger.
++
++This crate defines:
++
++- Core data structures such as `Company`, `Account`, `Journal`, and `JournalEntry` aligned with the
++  design in `docs/accounting/architecture.md`.
++- Enumerations and helper types for currencies, tax configuration, and tenant/RBAC context.
++- The `LedgerService` trait describing the high-level operations (company creation, account
++  management, posting, period control, FX revaluation, and audit queries) that downstream
++  implementations will satisfy.
++
++The crate currently contains type definitions, invariants, and unit tests only. Persistence,
++integration, and protocol wiring will be added in future milestones.
+diff --git a/codex-rs/codex-ledger/src/lib.rs b/codex-rs/codex-ledger/src/lib.rs
+new file mode 100644
+index 00000000..57b5e424
+--- /dev/null
++++ b/codex-rs/codex-ledger/src/lib.rs
+@@ -0,0 +1,498 @@
++#![deny(clippy::print_stdout, clippy::print_stderr)]
++
++use std::time::SystemTime;
++
++pub type CompanyId = String;
++pub type AccountId = String;
++pub type JournalId = String;
++pub type JournalEntryId = String;
++pub type JournalLineId = String;
++
++pub type LedgerResult<T> = Result<T, LedgerError>;
++
++#[derive(Debug, thiserror::Error)]
++pub enum LedgerError {
++    #[error("resource not found: {0}")]
++    NotFound(String),
++    #[error("operation rejected: {0}")]
++    Rejected(String),
++    #[error("validation error: {0}")]
++    Validation(String),
++    #[error("internal error: {0}")]
++    Internal(String),
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct Company {
++    pub id: CompanyId,
++    pub name: String,
++    pub base_currency: Currency,
++    pub fiscal_calendar: FiscalCalendar,
++    pub metadata: Option<String>,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct FiscalCalendar {
++    pub periods_per_year: u8,
++    pub opening_month: u8,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct Account {
++    pub id: AccountId,
++    pub company_id: CompanyId,
++    pub code: String,
++    pub name: String,
++    pub account_type: AccountType,
++    pub parent_account_id: Option<AccountId>,
++    pub currency_mode: CurrencyMode,
++    pub tax_code: Option<TaxCode>,
++    pub is_summary: bool,
++    pub is_active: bool,
++}
++
++impl Account {
++    pub fn allows_posting(&self) -> bool {
++        self.is_active && !self.is_summary
++    }
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum AccountType {
++    Asset,
++    Liability,
++    Equity,
++    Revenue,
++    Expense,
++    OffBalance,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum CurrencyMode {
++    FunctionalOnly,
++    Transactional,
++    MultiCurrency,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct Journal {
++    pub id: JournalId,
++    pub company_id: CompanyId,
++    pub ledger_type: LedgerType,
++    pub period_state: PeriodState,
++}
++
++impl Journal {
++    pub fn can_post(&self, allow_soft_close_override: bool) -> bool {
++        match self.period_state {
++            PeriodState::Open => true,
++            PeriodState::SoftClosed => allow_soft_close_override,
++            PeriodState::Closed => false,
++        }
++    }
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum LedgerType {
++    General,
++    AccountsPayable,
++    AccountsReceivable,
++    Cash,
++    SubLedger,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum PeriodState {
++    Open,
++    SoftClosed,
++    Closed,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct JournalEntry {
++    pub id: JournalEntryId,
++    pub journal_id: JournalId,
++    pub status: EntryStatus,
++    pub lines: Vec<JournalLine>,
++    pub origin: EntryOrigin,
++    pub memo: Option<String>,
++}
++
++impl JournalEntry {
++    pub fn is_balanced(&self) -> bool {
++        let (debits, credits) = self.lines.iter().fold((0_i64, 0_i64), |(d, c), line| {
++            match line.side {
++                PostingSide::Debit => (d + line.functional_amount_minor, c),
++                PostingSide::Credit => (d, c + line.functional_amount_minor),
++            }
++        });
++        debits == credits
++    }
++
++    pub fn validate(&self) -> LedgerResult<()> {
++        if !self.is_balanced() {
++            return Err(LedgerError::Validation("Journal entry must balance".into()));
++        }
++        if self.lines.iter().any(|line| !line.has_currency_provenance()) {
++            return Err(LedgerError::Validation(
++                "Currency amounts must include provenance".into(),
++            ));
++        }
++        Ok(())
++    }
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum EntryStatus {
++    Draft,
++    Proposed,
++    Posted,
++    Reversed,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum EntryOrigin {
++    Manual,
++    Ingestion,
++    AiSuggested,
++    Adjustment,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct JournalLine {
++    pub id: JournalLineId,
++    pub account_id: AccountId,
++    pub side: PostingSide,
++    /// Amount expressed in the transactional currency (minor units).
++    pub amount_minor: i64,
++    pub currency: Currency,
++    /// Amount converted into the company functional currency (minor units).
++    pub functional_amount_minor: i64,
++    pub functional_currency: Currency,
++    pub exchange_rate: Option<CurrencyRate>,
++    pub tax_code: Option<TaxCode>,
++    pub memo: Option<String>,
++}
++
++impl JournalLine {
++    pub fn has_currency_provenance(&self) -> bool {
++        if self.currency == self.functional_currency {
++            return self.exchange_rate.is_none() && self.amount_minor == self.functional_amount_minor;
++        }
++
++        match &self.exchange_rate {
++            Some(rate) => {
++                if rate.base != self.currency || rate.quote != self.functional_currency {
++                    return false;
++                }
++                let expected = (self.amount_minor as f64) * rate.rate;
++                let rounded = expected.round() as i64;
++                (rounded - self.functional_amount_minor).abs() <= 1 && rate.source.is_some()
++            }
++            None => false,
++        }
++    }
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum PostingSide {
++    Debit,
++    Credit,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct Currency {
++    pub code: String,
++    pub precision: u8,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct CurrencyRate {
++    pub base: Currency,
++    pub quote: Currency,
++    pub rate: f64,
++    pub source: Option<String>,
++    pub observed_at: SystemTime,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct TaxCode {
++    pub code: String,
++    pub description: String,
++    pub rate_percent: f32,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct TenantContext {
++    pub tenant_id: CompanyId,
++    pub user_id: String,
++    pub roles: Vec<Role>,
++    pub locale: Option<String>,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum Role {
++    Admin,
++    Accountant,
++    Reviewer,
++    Auditor,
++    ServiceAccount,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct AuditEvent {
++    pub id: String,
++    pub entity_id: String,
++    pub actor: String,
++    pub occurred_at: SystemTime,
++    pub description: String,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct PeriodRef {
++    pub fiscal_year: i32,
++    pub period: u8,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum PeriodAction {
++    SoftClose,
++    Close,
++    ReopenSoft,
++    ReopenFull,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct CreateCompanyRequest {
++    pub name: String,
++    pub base_currency: Currency,
++    pub fiscal_calendar: FiscalCalendar,
++    pub tenant: TenantContext,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct UpsertAccountRequest {
++    pub account: Account,
++    pub tenant: TenantContext,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct PostEntryRequest {
++    pub entry: JournalEntry,
++    pub tenant: TenantContext,
++    pub mode: PostingMode,
++}
++
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum PostingMode {
++    DryRun,
++    Commit,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct ReverseEntryRequest {
++    pub entry_id: JournalEntryId,
++    pub reason: String,
++    pub tenant: TenantContext,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct LockPeriodRequest {
++    pub journal_id: JournalId,
++    pub period: PeriodRef,
++    pub action: PeriodAction,
++    pub tenant: TenantContext,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct CurrencyRevaluationRequest {
++    pub journal_id: JournalId,
++    pub period: PeriodRef,
++    pub currencies: Vec<Currency>,
++    pub tenant: TenantContext,
++}
++
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct AuditTrailFilter {
++    pub entity_id: Option<String>,
++    pub limit: Option<usize>,
++    pub cursor: Option<String>,
++    pub tenant: TenantContext,
++}
++
++pub trait LedgerService: Send + Sync {
++    fn create_company(&self, request: CreateCompanyRequest) -> LedgerResult<Company>;
++    fn upsert_account(&self, request: UpsertAccountRequest) -> LedgerResult<Account>;
++    fn post_entry(&self, request: PostEntryRequest) -> LedgerResult<JournalEntry>;
++    fn reverse_entry(&self, request: ReverseEntryRequest) -> LedgerResult<JournalEntry>;
++    fn lock_period(&self, request: LockPeriodRequest) -> LedgerResult<Journal>;
++    fn revalue_currency(
++        &self,
++        request: CurrencyRevaluationRequest,
++    ) -> LedgerResult<Vec<JournalEntry>>;
++    fn list_audit_trail(&self, filter: AuditTrailFilter) -> LedgerResult<Vec<AuditEvent>>;
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++
++    fn usd() -> Currency {
++        Currency {
++            code: "USD".into(),
++            precision: 2,
++        }
++    }
++
++    fn eur() -> Currency {
++        Currency {
++            code: "EUR".into(),
++            precision: 2,
++        }
++    }
++
++    #[test]
++    fn journal_entry_double_entry_balance_passes() {
++        let entry = JournalEntry {
++            id: "je-1".into(),
++            journal_id: "jnl-1".into(),
++            status: EntryStatus::Draft,
++            origin: EntryOrigin::Manual,
++            memo: None,
++            lines: vec![
++                JournalLine {
++                    id: "ln-1".into(),
++                    account_id: "cash".into(),
++                    side: PostingSide::Debit,
++                    amount_minor: 10_000,
++                    currency: usd(),
++                    functional_amount_minor: 10_000,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: None,
++                },
++                JournalLine {
++                    id: "ln-2".into(),
++                    account_id: "revenue".into(),
++                    side: PostingSide::Credit,
++                    amount_minor: 10_000,
++                    currency: usd(),
++                    functional_amount_minor: 10_000,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: None,
++                },
++            ],
++        };
++
++        assert!(entry.is_balanced());
++        assert!(entry.validate().is_ok());
++    }
++
++    #[test]
++    fn journal_entry_double_entry_balance_fails() {
++        let entry = JournalEntry {
++            id: "je-2".into(),
++            journal_id: "jnl-1".into(),
++            status: EntryStatus::Draft,
++            origin: EntryOrigin::Manual,
++            memo: None,
++            lines: vec![
++                JournalLine {
++                    id: "ln-1".into(),
++                    account_id: "cash".into(),
++                    side: PostingSide::Debit,
++                    amount_minor: 10_000,
++                    currency: usd(),
++                    functional_amount_minor: 10_000,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: None,
++                },
++                JournalLine {
++                    id: "ln-2".into(),
++                    account_id: "revenue".into(),
++                    side: PostingSide::Credit,
++                    amount_minor: 9_000,
++                    currency: usd(),
++                    functional_amount_minor: 9_000,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: None,
++                },
++            ],
++        };
++
++        assert!(!entry.is_balanced());
++        assert!(matches!(entry.validate(), Err(LedgerError::Validation(_))));
++    }
++
++    #[test]
++    fn soft_closed_period_requires_override() {
++        let journal = Journal {
++            id: "jnl-1".into(),
++            company_id: "comp-1".into(),
++            ledger_type: LedgerType::General,
++            period_state: PeriodState::SoftClosed,
++        };
++
++        assert!(!journal.can_post(false));
++        assert!(journal.can_post(true));
++
++        let closed = Journal { period_state: PeriodState::Closed, ..journal.clone() };
++        assert!(!closed.can_post(true));
++    }
++
++    #[test]
++    fn account_restrictions_block_summary_accounts() {
++        let summary_account = Account {
++            id: "acc-1".into(),
++            company_id: "comp-1".into(),
++            code: "1000".into(),
++            name: "Assets".into(),
++            account_type: AccountType::Asset,
++            parent_account_id: None,
++            currency_mode: CurrencyMode::FunctionalOnly,
++            tax_code: None,
++            is_summary: true,
++            is_active: true,
++        };
++
++        let postable = Account { is_summary: false, ..summary_account.clone() };
++
++        assert!(!summary_account.allows_posting());
++        assert!(postable.allows_posting());
++    }
++
++    #[test]
++    fn currency_provenance_requires_rate_metadata() {
++        let mut line = JournalLine {
++            id: "ln-1".into(),
++            account_id: "cash".into(),
++            side: PostingSide::Debit,
++            amount_minor: 10_000,
++            currency: eur(),
++            functional_amount_minor: 10_700,
++            functional_currency: usd(),
++            exchange_rate: None,
++            tax_code: None,
++            memo: None,
++        };
++
++        assert!(!line.has_currency_provenance());
++
++        line.exchange_rate = Some(CurrencyRate {
++            base: eur(),
++            quote: usd(),
++            rate: 1.07,
++            source: Some("ECB".into()),
++            observed_at: SystemTime::now(),
++        });
++
++        assert!(line.has_currency_provenance());
++    }
++}

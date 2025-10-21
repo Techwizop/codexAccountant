@@ -1,0 +1,2604 @@
+commit 955887af96bab9d11d9a92efc4078e0757d7efcf
+Author: Code Snapshot <snapshot@code.local>
+Date:   Wed Oct 15 15:48:23 2025 +0200
+
+    auto turn change snapshot
+
+diff --git a/.code/agents/19012/exec-call_EnEMr2HdTd9Z2a3VWx99u4Ga.txt b/.code/agents/19012/exec-call_EnEMr2HdTd9Z2a3VWx99u4Ga.txt
+new file mode 100644
+index 00000000..90705e47
+--- /dev/null
++++ b/.code/agents/19012/exec-call_EnEMr2HdTd9Z2a3VWx99u4Ga.txt
+@@ -0,0 +1,1125 @@
++## main...origin/main
++ M .codespellignore
++ M .codespellrc
++ M .devcontainer/Dockerfile
++ M .devcontainer/README.md
++ M .devcontainer/devcontainer.json
++ M .github/ISSUE_TEMPLATE/2-bug-report.yml
++ M .github/ISSUE_TEMPLATE/3-docs-issue.yml
++ M .github/ISSUE_TEMPLATE/4-feature-request.yml
++ M .github/ISSUE_TEMPLATE/5-vs-code-extension.yml
++ M .github/codex/home/config.toml
++ M .github/codex/labels/codex-attempt.md
++ M .github/codex/labels/codex-review.md
++ M .github/codex/labels/codex-rust-review.md
++ M .github/codex/labels/codex-triage.md
++ M .github/dependabot.yaml
++ M .github/dotslash-config.json
++ M .github/prompts/issue-deduplicator.txt
++ M .github/prompts/issue-labeler.txt
++ M .github/pull_request_template.md
++ M .github/workflows/ci.yml
++ M .github/workflows/cla.yml
++ M .github/workflows/codespell.yml
++ M .github/workflows/issue-deduplicator.yml
++ M .github/workflows/issue-labeler.yml
++ M .github/workflows/rust-ci.yml
++ M .github/workflows/rust-release.yml
++ M .github/workflows/sdk.yml
++ M .gitignore
++ M .npmrc
++ M .prettierignore
++ M .prettierrc.toml
++ M .vscode/extensions.json
++ M .vscode/launch.json
++ M .vscode/settings.json
++ M AGENTS.md
++ M CHANGELOG.md
++ M LICENSE
++ M NOTICE
++ M PNPM.md
++ M README.md
++ M cliff.toml
++ M codex-cli/.dockerignore
++ M codex-cli/.gitignore
++ M codex-cli/Dockerfile
++ M codex-cli/README.md
++ M codex-cli/bin/codex.js
++ M codex-cli/bin/rg
++ M codex-cli/package-lock.json
++ M codex-cli/package.json
++ M codex-cli/scripts/README.md
++ M codex-cli/scripts/build_container.sh
++ M codex-cli/scripts/build_npm_package.py
++ M codex-cli/scripts/init_firewall.sh
++ M codex-cli/scripts/install_native_deps.py
++ M codex-cli/scripts/run_in_container.sh
++ M codex-rs/.gitignore
++ M codex-rs/Cargo.lock
++ M codex-rs/Cargo.toml
++ M codex-rs/README.md
++ M codex-rs/ansi-escape/Cargo.toml
++ M codex-rs/ansi-escape/README.md
++ M codex-rs/ansi-escape/src/lib.rs
++ M codex-rs/app-server-protocol/Cargo.toml
++ M codex-rs/app-server-protocol/src/jsonrpc_lite.rs
++ M codex-rs/app-server-protocol/src/lib.rs
++ M codex-rs/app-server-protocol/src/protocol.rs
++ M codex-rs/app-server/Cargo.toml
++ M codex-rs/app-server/README.md
++ M codex-rs/app-server/src/codex_message_processor.rs
++ M codex-rs/app-server/src/error_code.rs
++ M codex-rs/app-server/src/fuzzy_file_search.rs
++ M codex-rs/app-server/src/lib.rs
++ M codex-rs/app-server/src/main.rs
++ M codex-rs/app-server/src/message_processor.rs
++ M codex-rs/app-server/src/outgoing_message.rs
++ M codex-rs/app-server/tests/all.rs
++ M codex-rs/app-server/tests/common/Cargo.toml
++ M codex-rs/app-server/tests/common/lib.rs
++ M codex-rs/app-server/tests/common/mcp_process.rs
++ M codex-rs/app-server/tests/common/mock_model_server.rs
++ M codex-rs/app-server/tests/common/responses.rs
++ M codex-rs/app-server/tests/suite/archive_conversation.rs
++ M codex-rs/app-server/tests/suite/auth.rs
++ M codex-rs/app-server/tests/suite/codex_message_processor_flow.rs
++ M codex-rs/app-server/tests/suite/config.rs
++ M codex-rs/app-server/tests/suite/create_conversation.rs
++ M codex-rs/app-server/tests/suite/fuzzy_file_search.rs
++ M codex-rs/app-server/tests/suite/interrupt.rs
++ M codex-rs/app-server/tests/suite/list_resume.rs
++ M codex-rs/app-server/tests/suite/login.rs
++ M codex-rs/app-server/tests/suite/mod.rs
++ M codex-rs/app-server/tests/suite/send_message.rs
++ M codex-rs/app-server/tests/suite/set_default_model.rs
++ M codex-rs/app-server/tests/suite/user_agent.rs
++ M codex-rs/app-server/tests/suite/user_info.rs
++ M codex-rs/apply-patch/Cargo.toml
++ M codex-rs/apply-patch/apply_patch_tool_instructions.md
++ M codex-rs/apply-patch/src/lib.rs
++ M codex-rs/apply-patch/src/main.rs
++ M codex-rs/apply-patch/src/parser.rs
++ M codex-rs/apply-patch/src/seek_sequence.rs
++ M codex-rs/apply-patch/src/standalone_executable.rs
++ M codex-rs/apply-patch/tests/all.rs
++ M codex-rs/apply-patch/tests/suite/cli.rs
++ M codex-rs/apply-patch/tests/suite/mod.rs
++ M codex-rs/arg0/Cargo.toml
++ M codex-rs/arg0/src/lib.rs
++ M codex-rs/backend-client/Cargo.toml
++ M codex-rs/backend-client/src/client.rs
++ M codex-rs/backend-client/src/lib.rs
++ M codex-rs/backend-client/src/types.rs
++ M codex-rs/backend-client/tests/fixtures/task_details_with_diff.json
++ M codex-rs/backend-client/tests/fixtures/task_details_with_error.json
++ M codex-rs/chatgpt/Cargo.toml
++ M codex-rs/chatgpt/README.md
++ M codex-rs/chatgpt/src/apply_command.rs
++ M codex-rs/chatgpt/src/chatgpt_client.rs
++ M codex-rs/chatgpt/src/chatgpt_token.rs
++ M codex-rs/chatgpt/src/get_task.rs
++ M codex-rs/chatgpt/src/lib.rs
++ M codex-rs/chatgpt/tests/all.rs
++ M codex-rs/chatgpt/tests/suite/apply_command_e2e.rs
++ M codex-rs/chatgpt/tests/suite/mod.rs
++ M codex-rs/chatgpt/tests/task_turn_fixture.json
++ M codex-rs/cli/Cargo.toml
++ M codex-rs/cli/src/debug_sandbox.rs
++ M codex-rs/cli/src/exit_status.rs
++ M codex-rs/cli/src/lib.rs
++ M codex-rs/cli/src/login.rs
++ M codex-rs/cli/src/main.rs
++ M codex-rs/cli/src/mcp_cmd.rs
++ M codex-rs/cli/tests/mcp_add_remove.rs
++ M codex-rs/cli/tests/mcp_list.rs
++ M codex-rs/clippy.toml
++ M codex-rs/cloud-tasks-client/Cargo.toml
++ M codex-rs/cloud-tasks-client/src/api.rs
++ M codex-rs/cloud-tasks-client/src/http.rs
++ M codex-rs/cloud-tasks-client/src/lib.rs
++ M codex-rs/cloud-tasks-client/src/mock.rs
++ M codex-rs/cloud-tasks/Cargo.toml
++ M codex-rs/cloud-tasks/src/app.rs
++ M codex-rs/cloud-tasks/src/cli.rs
++ M codex-rs/cloud-tasks/src/env_detect.rs
++ M codex-rs/cloud-tasks/src/lib.rs
++ M codex-rs/cloud-tasks/src/new_task.rs
++ M codex-rs/cloud-tasks/src/scrollable_diff.rs
++ M codex-rs/cloud-tasks/src/ui.rs
++ M codex-rs/cloud-tasks/src/util.rs
++ M codex-rs/cloud-tasks/tests/env_filter.rs
++ M codex-rs/codex-backend-openapi-models/Cargo.toml
++ M codex-rs/codex-backend-openapi-models/src/lib.rs
++ M codex-rs/codex-backend-openapi-models/src/models/code_task_details_response.rs
++ M codex-rs/codex-backend-openapi-models/src/models/external_pull_request_response.rs
++ M codex-rs/codex-backend-openapi-models/src/models/git_pull_request.rs
++ M codex-rs/codex-backend-openapi-models/src/models/mod.rs
++ M codex-rs/codex-backend-openapi-models/src/models/paginated_list_task_list_item_.rs
++ M codex-rs/codex-backend-openapi-models/src/models/task_list_item.rs
++ M codex-rs/codex-backend-openapi-models/src/models/task_response.rs
++ M codex-rs/common/Cargo.toml
++ M codex-rs/common/README.md
++ M codex-rs/common/src/approval_mode_cli_arg.rs
++ M codex-rs/common/src/approval_presets.rs
++ M codex-rs/common/src/config_override.rs
++ M codex-rs/common/src/config_summary.rs
++ M codex-rs/common/src/elapsed.rs
++ M codex-rs/common/src/fuzzy_match.rs
++ M codex-rs/common/src/lib.rs
++ M codex-rs/common/src/model_presets.rs
++ M codex-rs/common/src/sandbox_mode_cli_arg.rs
++ M codex-rs/common/src/sandbox_summary.rs
++ M codex-rs/config.md
++ M codex-rs/core/Cargo.toml
++ M codex-rs/core/README.md
++ M codex-rs/core/gpt_5_codex_prompt.md
++ M codex-rs/core/prompt.md
++ M codex-rs/core/review_prompt.md
++ M codex-rs/core/src/apply_patch.rs
++ M codex-rs/core/src/auth.rs
++ M codex-rs/core/src/bash.rs
++ M codex-rs/core/src/chat_completions.rs
++ M codex-rs/core/src/client.rs
++ M codex-rs/core/src/client_common.rs
++ M codex-rs/core/src/codex.rs
++ M codex-rs/core/src/codex/compact.rs
++ M codex-rs/core/src/codex_conversation.rs
++ M codex-rs/core/src/command_safety/is_dangerous_command.rs
++ M codex-rs/core/src/command_safety/is_safe_command.rs
++ M codex-rs/core/src/command_safety/mod.rs
++ M codex-rs/core/src/command_safety/windows_safe_commands.rs
++ M codex-rs/core/src/config.rs
++ M codex-rs/core/src/config_edit.rs
++ M codex-rs/core/src/config_loader/macos.rs
++ M codex-rs/core/src/config_loader/mod.rs
++ M codex-rs/core/src/config_profile.rs
++ M codex-rs/core/src/config_types.rs
++ M codex-rs/core/src/conversation_history.rs
++ M codex-rs/core/src/conversation_manager.rs
++ M codex-rs/core/src/custom_prompts.rs
++ M codex-rs/core/src/default_client.rs
++ M codex-rs/core/src/environment_context.rs
++ M codex-rs/core/src/error.rs
++ M codex-rs/core/src/event_mapping.rs
++ M codex-rs/core/src/exec.rs
++ M codex-rs/core/src/exec_command/exec_command_params.rs
++ M codex-rs/core/src/exec_command/exec_command_session.rs
++ M codex-rs/core/src/exec_command/mod.rs
++ M codex-rs/core/src/exec_command/responses_api.rs
++ M codex-rs/core/src/exec_command/session_id.rs
++ M codex-rs/core/src/exec_command/session_manager.rs
++ M codex-rs/core/src/exec_env.rs
++ M codex-rs/core/src/executor/backends.rs
++ M codex-rs/core/src/executor/cache.rs
++ M codex-rs/core/src/executor/mod.rs
++ M codex-rs/core/src/executor/runner.rs
++ M codex-rs/core/src/executor/sandbox.rs
++ M codex-rs/core/src/features.rs
++ M codex-rs/core/src/features/legacy.rs
++ M codex-rs/core/src/flags.rs
++ M codex-rs/core/src/function_tool.rs
++ M codex-rs/core/src/git_info.rs
++ M codex-rs/core/src/landlock.rs
++ M codex-rs/core/src/lib.rs
++ M codex-rs/core/src/mcp/auth.rs
++ M codex-rs/core/src/mcp/mod.rs
++ M codex-rs/core/src/mcp_connection_manager.rs
++ M codex-rs/core/src/mcp_tool_call.rs
++ M codex-rs/core/src/message_history.rs
++ M codex-rs/core/src/model_family.rs
++ M codex-rs/core/src/model_provider_info.rs
++ M codex-rs/core/src/openai_model_info.rs
++ M codex-rs/core/src/openai_tools.rs
++ M codex-rs/core/src/otel_init.rs
++ M codex-rs/core/src/parse_command.rs
++ M codex-rs/core/src/project_doc.rs
++ M codex-rs/core/src/review_format.rs
++ M codex-rs/core/src/rollout/list.rs
++ M codex-rs/core/src/rollout/mod.rs
++ M codex-rs/core/src/rollout/policy.rs
++ M codex-rs/core/src/rollout/recorder.rs
++ M codex-rs/core/src/rollout/tests.rs
++ M codex-rs/core/src/safety.rs
++ M codex-rs/core/src/seatbelt.rs
++ M codex-rs/core/src/seatbelt_base_policy.sbpl
++ M codex-rs/core/src/shell.rs
++ M codex-rs/core/src/spawn.rs
++ M codex-rs/core/src/state/mod.rs
++ M codex-rs/core/src/state/service.rs
++ M codex-rs/core/src/state/session.rs
++ M codex-rs/core/src/state/turn.rs
++ M codex-rs/core/src/tasks/compact.rs
++ M codex-rs/core/src/tasks/mod.rs
++ M codex-rs/core/src/tasks/regular.rs
++ M codex-rs/core/src/tasks/review.rs
++ M codex-rs/core/src/terminal.rs
++ M codex-rs/core/src/token_data.rs
++ M codex-rs/core/src/tools/context.rs
++ M codex-rs/core/src/tools/handlers/apply_patch.rs
++ M codex-rs/core/src/tools/handlers/exec_stream.rs
++ M codex-rs/core/src/tools/handlers/grep_files.rs
++ M codex-rs/core/src/tools/handlers/list_dir.rs
++ M codex-rs/core/src/tools/handlers/mcp.rs
++ M codex-rs/core/src/tools/handlers/mod.rs
++ M codex-rs/core/src/tools/handlers/plan.rs
++ M codex-rs/core/src/tools/handlers/read_file.rs
++ M codex-rs/core/src/tools/handlers/shell.rs
++ M codex-rs/core/src/tools/handlers/test_sync.rs
++ M codex-rs/core/src/tools/handlers/tool_apply_patch.lark
++ M codex-rs/core/src/tools/handlers/unified_exec.rs
++ M codex-rs/core/src/tools/handlers/view_image.rs
++ M codex-rs/core/src/tools/mod.rs
++ M codex-rs/core/src/tools/parallel.rs
++ M codex-rs/core/src/tools/registry.rs
++ M codex-rs/core/src/tools/router.rs
++ M codex-rs/core/src/tools/spec.rs
++ M codex-rs/core/src/truncate.rs
++ M codex-rs/core/src/turn_diff_tracker.rs
++ M codex-rs/core/src/unified_exec/errors.rs
++ M codex-rs/core/src/unified_exec/mod.rs
++ M codex-rs/core/src/user_instructions.rs
++ M codex-rs/core/src/user_notification.rs
++ M codex-rs/core/src/util.rs
++ M codex-rs/core/templates/compact/history_bridge.md
++ M codex-rs/core/templates/compact/prompt.md
++ M codex-rs/core/tests/all.rs
++ M codex-rs/core/tests/chat_completions_payload.rs
++ M codex-rs/core/tests/chat_completions_sse.rs
++ M codex-rs/core/tests/cli_responses_fixture.sse
++ M codex-rs/core/tests/common/Cargo.toml
++ M codex-rs/core/tests/common/lib.rs
++ M codex-rs/core/tests/common/responses.rs
++ M codex-rs/core/tests/common/test_codex.rs
++ M codex-rs/core/tests/common/test_codex_exec.rs
++ M codex-rs/core/tests/fixtures/completed_template.json
++ M codex-rs/core/tests/fixtures/incomplete_sse.json
++ M codex-rs/core/tests/responses_headers.rs
++ M codex-rs/core/tests/suite/abort_tasks.rs
++ M codex-rs/core/tests/suite/cli_stream.rs
++ M codex-rs/core/tests/suite/client.rs
++ M codex-rs/core/tests/suite/compact.rs
++ M codex-rs/core/tests/suite/compact_resume_fork.rs
++ M codex-rs/core/tests/suite/exec.rs
++ M codex-rs/core/tests/suite/exec_stream_events.rs
++ M codex-rs/core/tests/suite/fork_conversation.rs
++ M codex-rs/core/tests/suite/grep_files.rs
++ M codex-rs/core/tests/suite/json_result.rs
++ M codex-rs/core/tests/suite/list_dir.rs
++ M codex-rs/core/tests/suite/live_cli.rs
++ M codex-rs/core/tests/suite/mod.rs
++ M codex-rs/core/tests/suite/model_overrides.rs
++ M codex-rs/core/tests/suite/model_tools.rs
++ M codex-rs/core/tests/suite/otel.rs
++ M codex-rs/core/tests/suite/prompt_caching.rs
++ M codex-rs/core/tests/suite/read_file.rs
++ M codex-rs/core/tests/suite/review.rs
++ M codex-rs/core/tests/suite/rmcp_client.rs
++ M codex-rs/core/tests/suite/rollout_list_find.rs
++ M codex-rs/core/tests/suite/seatbelt.rs
++ M codex-rs/core/tests/suite/shell_serialization.rs
++ M codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
++ M codex-rs/core/tests/suite/stream_no_completed.rs
++ M codex-rs/core/tests/suite/tool_harness.rs
++ M codex-rs/core/tests/suite/tool_parallelism.rs
++ M codex-rs/core/tests/suite/tools.rs
++ M codex-rs/core/tests/suite/unified_exec.rs
++ M codex-rs/core/tests/suite/user_notification.rs
++ M codex-rs/core/tests/suite/view_image.rs
++ M codex-rs/default.nix
++ M codex-rs/docs/codex_mcp_interface.md
++ M codex-rs/docs/protocol_v1.md
++ M codex-rs/exec/Cargo.toml
++ M codex-rs/exec/src/cli.rs
++ M codex-rs/exec/src/event_processor.rs
++ M codex-rs/exec/src/event_processor_with_human_output.rs
++ M codex-rs/exec/src/event_processor_with_jsonl_output.rs
++ M codex-rs/exec/src/exec_events.rs
++ M codex-rs/exec/src/lib.rs
++ M codex-rs/exec/src/main.rs
++ M codex-rs/exec/tests/all.rs
++ M codex-rs/exec/tests/event_processor_with_json_output.rs
++ M codex-rs/exec/tests/fixtures/apply_patch_freeform_final.txt
++ M codex-rs/exec/tests/fixtures/cli_responses_fixture.sse
++ M codex-rs/exec/tests/suite/apply_patch.rs
++ M codex-rs/exec/tests/suite/auth_env.rs
++ M codex-rs/exec/tests/suite/mod.rs
++ M codex-rs/exec/tests/suite/originator.rs
++ M codex-rs/exec/tests/suite/output_schema.rs
++ M codex-rs/exec/tests/suite/resume.rs
++ M codex-rs/exec/tests/suite/sandbox.rs
++ M codex-rs/exec/tests/suite/server_error_exit.rs
++ M codex-rs/execpolicy/Cargo.toml
++ M codex-rs/execpolicy/README.md
++ M codex-rs/execpolicy/build.rs
++ M codex-rs/execpolicy/src/arg_matcher.rs
++ M codex-rs/execpolicy/src/arg_resolver.rs
++ M codex-rs/execpolicy/src/arg_type.rs
++ M codex-rs/execpolicy/src/default.policy
++ M codex-rs/execpolicy/src/error.rs
++ M codex-rs/execpolicy/src/exec_call.rs
++ M codex-rs/execpolicy/src/execv_checker.rs
++ M codex-rs/execpolicy/src/lib.rs
++ M codex-rs/execpolicy/src/main.rs
++ M codex-rs/execpolicy/src/opt.rs
++ M codex-rs/execpolicy/src/policy.rs
++ M codex-rs/execpolicy/src/policy_parser.rs
++ M codex-rs/execpolicy/src/program.rs
++ M codex-rs/execpolicy/src/sed_command.rs
++ M codex-rs/execpolicy/src/valid_exec.rs
++ M codex-rs/execpolicy/tests/all.rs
++ M codex-rs/execpolicy/tests/suite/bad.rs
++ M codex-rs/execpolicy/tests/suite/cp.rs
++ M codex-rs/execpolicy/tests/suite/good.rs
++ M codex-rs/execpolicy/tests/suite/head.rs
++ M codex-rs/execpolicy/tests/suite/literal.rs
++ M codex-rs/execpolicy/tests/suite/ls.rs
++ M codex-rs/execpolicy/tests/suite/mod.rs
++ M codex-rs/execpolicy/tests/suite/parse_sed_command.rs
++ M codex-rs/execpolicy/tests/suite/pwd.rs
++ M codex-rs/execpolicy/tests/suite/sed.rs
++ M codex-rs/file-search/Cargo.toml
++ M codex-rs/file-search/README.md
++ M codex-rs/file-search/src/cli.rs
++ M codex-rs/file-search/src/lib.rs
++ M codex-rs/file-search/src/main.rs
++ M codex-rs/git-apply/Cargo.toml
++ M codex-rs/git-apply/src/lib.rs
++ M codex-rs/git-tooling/Cargo.toml
++ M codex-rs/git-tooling/README.md
++ M codex-rs/git-tooling/src/errors.rs
++ M codex-rs/git-tooling/src/ghost_commits.rs
++ M codex-rs/git-tooling/src/lib.rs
++ M codex-rs/git-tooling/src/operations.rs
++ M codex-rs/git-tooling/src/platform.rs
++ M codex-rs/justfile
++ M codex-rs/linux-sandbox/Cargo.toml
++ M codex-rs/linux-sandbox/README.md
++ M codex-rs/linux-sandbox/src/landlock.rs
++ M codex-rs/linux-sandbox/src/lib.rs
++ M codex-rs/linux-sandbox/src/linux_run_main.rs
++ M codex-rs/linux-sandbox/src/main.rs
++ M codex-rs/linux-sandbox/tests/all.rs
++ M codex-rs/linux-sandbox/tests/suite/landlock.rs
++ M codex-rs/linux-sandbox/tests/suite/mod.rs
++ M codex-rs/login/Cargo.toml
++ M codex-rs/login/src/assets/success.html
++ M codex-rs/login/src/device_code_auth.rs
++ M codex-rs/login/src/lib.rs
++ M codex-rs/login/src/pkce.rs
++ M codex-rs/login/src/server.rs
++ M codex-rs/login/tests/all.rs
++ M codex-rs/login/tests/suite/device_code_login.rs
++ M codex-rs/login/tests/suite/login_server_e2e.rs
++ M codex-rs/login/tests/suite/mod.rs
++ M codex-rs/mcp-client/Cargo.toml
++ M codex-rs/mcp-client/src/lib.rs
++ M codex-rs/mcp-client/src/main.rs
++ M codex-rs/mcp-client/src/mcp_client.rs
++ M codex-rs/mcp-server/Cargo.toml
++ M codex-rs/mcp-server/src/codex_tool_config.rs
++ M codex-rs/mcp-server/src/codex_tool_runner.rs
++ M codex-rs/mcp-server/src/error_code.rs
++ M codex-rs/mcp-server/src/exec_approval.rs
++ M codex-rs/mcp-server/src/lib.rs
++ M codex-rs/mcp-server/src/main.rs
++ M codex-rs/mcp-server/src/message_processor.rs
++ M codex-rs/mcp-server/src/outgoing_message.rs
++ M codex-rs/mcp-server/src/patch_approval.rs
++ M codex-rs/mcp-server/src/tool_handlers/mod.rs
++ M codex-rs/mcp-server/tests/all.rs
++ M codex-rs/mcp-server/tests/common/Cargo.toml
++ M codex-rs/mcp-server/tests/common/lib.rs
++ M codex-rs/mcp-server/tests/common/mcp_process.rs
++ M codex-rs/mcp-server/tests/common/mock_model_server.rs
++ M codex-rs/mcp-server/tests/common/responses.rs
++ M codex-rs/mcp-server/tests/suite/codex_tool.rs
++ M codex-rs/mcp-server/tests/suite/mod.rs
++ M codex-rs/mcp-types/Cargo.toml
++ M codex-rs/mcp-types/README.md
++ M codex-rs/mcp-types/check_lib_rs.py
++ M codex-rs/mcp-types/generate_mcp_types.py
++ M codex-rs/mcp-types/schema/2025-03-26/schema.json
++ M codex-rs/mcp-types/schema/2025-06-18/schema.json
++ M codex-rs/mcp-types/src/lib.rs
++ M codex-rs/mcp-types/tests/all.rs
++ M codex-rs/mcp-types/tests/suite/initialize.rs
++ M codex-rs/mcp-types/tests/suite/mod.rs
++ M codex-rs/mcp-types/tests/suite/progress_notification.rs
++ M codex-rs/ollama/Cargo.toml
++ M codex-rs/ollama/src/client.rs
++ M codex-rs/ollama/src/lib.rs
++ M codex-rs/ollama/src/parser.rs
++ M codex-rs/ollama/src/pull.rs
++ M codex-rs/ollama/src/url.rs
++ M codex-rs/otel/Cargo.toml
++ M codex-rs/otel/src/config.rs
++ M codex-rs/otel/src/lib.rs
++ M codex-rs/otel/src/otel_event_manager.rs
++ M codex-rs/otel/src/otel_provider.rs
++ M codex-rs/process-hardening/Cargo.toml
++ M codex-rs/process-hardening/README.md
++ M codex-rs/process-hardening/src/lib.rs
++ M codex-rs/protocol-ts/Cargo.toml
++ M codex-rs/protocol-ts/generate-ts
++ M codex-rs/protocol-ts/src/lib.rs
++ M codex-rs/protocol-ts/src/main.rs
++ M codex-rs/protocol/Cargo.toml
++ M codex-rs/protocol/README.md
++ M codex-rs/protocol/src/config_types.rs
++ M codex-rs/protocol/src/conversation_id.rs
++ M codex-rs/protocol/src/custom_prompts.rs
++ M codex-rs/protocol/src/lib.rs
++ M codex-rs/protocol/src/message_history.rs
++ M codex-rs/protocol/src/models.rs
++ M codex-rs/protocol/src/num_format.rs
++ M codex-rs/protocol/src/parse_command.rs
++ M codex-rs/protocol/src/plan_tool.rs
++ M codex-rs/protocol/src/protocol.rs
++ M codex-rs/responses-api-proxy/Cargo.toml
++ M codex-rs/responses-api-proxy/README.md
++ M codex-rs/responses-api-proxy/npm/README.md
++ M codex-rs/responses-api-proxy/npm/bin/codex-responses-api-proxy.js
++ M codex-rs/responses-api-proxy/npm/package.json
++ M codex-rs/responses-api-proxy/src/lib.rs
++ M codex-rs/responses-api-proxy/src/main.rs
++ M codex-rs/responses-api-proxy/src/read_api_key.rs
++ M codex-rs/rmcp-client/Cargo.toml
++ M codex-rs/rmcp-client/src/auth_status.rs
++ M codex-rs/rmcp-client/src/bin/rmcp_test_server.rs
++ M codex-rs/rmcp-client/src/bin/test_stdio_server.rs
++ M codex-rs/rmcp-client/src/bin/test_streamable_http_server.rs
++ M codex-rs/rmcp-client/src/find_codex_home.rs
++ M codex-rs/rmcp-client/src/lib.rs
++ M codex-rs/rmcp-client/src/logging_client_handler.rs
++ M codex-rs/rmcp-client/src/oauth.rs
++ M codex-rs/rmcp-client/src/perform_oauth_login.rs
++ M codex-rs/rmcp-client/src/rmcp_client.rs
++ M codex-rs/rmcp-client/src/utils.rs
++ M codex-rs/rust-toolchain.toml
++ M codex-rs/rustfmt.toml
++ M codex-rs/scripts/create_github_release
++ M codex-rs/tui/Cargo.toml
++ M codex-rs/tui/frames/blocks/frame_1.txt
++ M codex-rs/tui/frames/blocks/frame_10.txt
++ M codex-rs/tui/frames/blocks/frame_11.txt
++ M codex-rs/tui/frames/blocks/frame_12.txt
++ M codex-rs/tui/frames/blocks/frame_13.txt
++ M codex-rs/tui/frames/blocks/frame_14.txt
++ M codex-rs/tui/frames/blocks/frame_15.txt
++ M codex-rs/tui/frames/blocks/frame_16.txt
++ M codex-rs/tui/frames/blocks/frame_17.txt
++ M codex-rs/tui/frames/blocks/frame_18.txt
++ M codex-rs/tui/frames/blocks/frame_19.txt
++ M codex-rs/tui/frames/blocks/frame_2.txt
++ M codex-rs/tui/frames/blocks/frame_20.txt
++ M codex-rs/tui/frames/blocks/frame_21.txt
++ M codex-rs/tui/frames/blocks/frame_22.txt
++ M codex-rs/tui/frames/blocks/frame_23.txt
++ M codex-rs/tui/frames/blocks/frame_24.txt
++ M codex-rs/tui/frames/blocks/frame_25.txt
++ M codex-rs/tui/frames/blocks/frame_26.txt
++ M codex-rs/tui/frames/blocks/frame_27.txt
++ M codex-rs/tui/frames/blocks/frame_28.txt
++ M codex-rs/tui/frames/blocks/frame_29.txt
++ M codex-rs/tui/frames/blocks/frame_3.txt
++ M codex-rs/tui/frames/blocks/frame_30.txt
++ M codex-rs/tui/frames/blocks/frame_31.txt
++ M codex-rs/tui/frames/blocks/frame_32.txt
++ M codex-rs/tui/frames/blocks/frame_33.txt
++ M codex-rs/tui/frames/blocks/frame_34.txt
++ M codex-rs/tui/frames/blocks/frame_35.txt
++ M codex-rs/tui/frames/blocks/frame_36.txt
++ M codex-rs/tui/frames/blocks/frame_4.txt
++ M codex-rs/tui/frames/blocks/frame_5.txt
++ M codex-rs/tui/frames/blocks/frame_6.txt
++ M codex-rs/tui/frames/blocks/frame_7.txt
++ M codex-rs/tui/frames/blocks/frame_8.txt
++ M codex-rs/tui/frames/blocks/frame_9.txt
++ M codex-rs/tui/frames/codex/frame_1.txt
++ M codex-rs/tui/frames/codex/frame_10.txt
++ M codex-rs/tui/frames/codex/frame_11.txt
++ M codex-rs/tui/frames/codex/frame_12.txt
++ M codex-rs/tui/frames/codex/frame_13.txt
++ M codex-rs/tui/frames/codex/frame_14.txt
++ M codex-rs/tui/frames/codex/frame_15.txt
++ M codex-rs/tui/frames/codex/frame_16.txt
++ M codex-rs/tui/frames/codex/frame_17.txt
++ M codex-rs/tui/frames/codex/frame_18.txt
++ M codex-rs/tui/frames/codex/frame_19.txt
++ M codex-rs/tui/frames/codex/frame_2.txt
++ M codex-rs/tui/frames/codex/frame_20.txt
++ M codex-rs/tui/frames/codex/frame_21.txt
++ M codex-rs/tui/frames/codex/frame_22.txt
++ M codex-rs/tui/frames/codex/frame_23.txt
++ M codex-rs/tui/frames/codex/frame_24.txt
++ M codex-rs/tui/frames/codex/frame_25.txt
++ M codex-rs/tui/frames/codex/frame_26.txt
++ M codex-rs/tui/frames/codex/frame_27.txt
++ M codex-rs/tui/frames/codex/frame_28.txt
++ M codex-rs/tui/frames/codex/frame_29.txt
++ M codex-rs/tui/frames/codex/frame_3.txt
++ M codex-rs/tui/frames/codex/frame_30.txt
++ M codex-rs/tui/frames/codex/frame_31.txt
++ M codex-rs/tui/frames/codex/frame_32.txt
++ M codex-rs/tui/frames/codex/frame_33.txt
++ M codex-rs/tui/frames/codex/frame_34.txt
++ M codex-rs/tui/frames/codex/frame_35.txt
++ M codex-rs/tui/frames/codex/frame_36.txt
++ M codex-rs/tui/frames/codex/frame_4.txt
++ M codex-rs/tui/frames/codex/frame_5.txt
++ M codex-rs/tui/frames/codex/frame_6.txt
++ M codex-rs/tui/frames/codex/frame_7.txt
++ M codex-rs/tui/frames/codex/frame_8.txt
++ M codex-rs/tui/frames/codex/frame_9.txt
++ M codex-rs/tui/frames/default/frame_1.txt
++ M codex-rs/tui/frames/default/frame_10.txt
++ M codex-rs/tui/frames/default/frame_11.txt
++ M codex-rs/tui/frames/default/frame_12.txt
++ M codex-rs/tui/frames/default/frame_13.txt
++ M codex-rs/tui/frames/default/frame_14.txt
++ M codex-rs/tui/frames/default/frame_15.txt
++ M codex-rs/tui/frames/default/frame_16.txt
++ M codex-rs/tui/frames/default/frame_17.txt
++ M codex-rs/tui/frames/default/frame_18.txt
++ M codex-rs/tui/frames/default/frame_19.txt
++ M codex-rs/tui/frames/default/frame_2.txt
++ M codex-rs/tui/frames/default/frame_20.txt
++ M codex-rs/tui/frames/default/frame_21.txt
++ M codex-rs/tui/frames/default/frame_22.txt
++ M codex-rs/tui/frames/default/frame_23.txt
++ M codex-rs/tui/frames/default/frame_24.txt
++ M codex-rs/tui/frames/default/frame_25.txt
++ M codex-rs/tui/frames/default/frame_26.txt
++ M codex-rs/tui/frames/default/frame_27.txt
++ M codex-rs/tui/frames/default/frame_28.txt
++ M codex-rs/tui/frames/default/frame_29.txt
++ M codex-rs/tui/frames/default/frame_3.txt
++ M codex-rs/tui/frames/default/frame_30.txt
++ M codex-rs/tui/frames/default/frame_31.txt
++ M codex-rs/tui/frames/default/frame_32.txt
++ M codex-rs/tui/frames/default/frame_33.txt
++ M codex-rs/tui/frames/default/frame_34.txt
++ M codex-rs/tui/frames/default/frame_35.txt
++ M codex-rs/tui/frames/default/frame_36.txt
++ M codex-rs/tui/frames/default/frame_4.txt
++ M codex-rs/tui/frames/default/frame_5.txt
++ M codex-rs/tui/frames/default/frame_6.txt
++ M codex-rs/tui/frames/default/frame_7.txt
++ M codex-rs/tui/frames/default/frame_8.txt
++ M codex-rs/tui/frames/default/frame_9.txt
++ M codex-rs/tui/frames/dots/frame_1.txt
++ M codex-rs/tui/frames/dots/frame_10.txt
++ M codex-rs/tui/frames/dots/frame_11.txt
++ M codex-rs/tui/frames/dots/frame_12.txt
++ M codex-rs/tui/frames/dots/frame_13.txt
++ M codex-rs/tui/frames/dots/frame_14.txt
++ M codex-rs/tui/frames/dots/frame_15.txt
++ M codex-rs/tui/frames/dots/frame_16.txt
++ M codex-rs/tui/frames/dots/frame_17.txt
++ M codex-rs/tui/frames/dots/frame_18.txt
++ M codex-rs/tui/frames/dots/frame_19.txt
++ M codex-rs/tui/frames/dots/frame_2.txt
++ M codex-rs/tui/frames/dots/frame_20.txt
++ M codex-rs/tui/frames/dots/frame_21.txt
++ M codex-rs/tui/frames/dots/frame_22.txt
++ M codex-rs/tui/frames/dots/frame_23.txt
++ M codex-rs/tui/frames/dots/frame_24.txt
++ M codex-rs/tui/frames/dots/frame_25.txt
++ M codex-rs/tui/frames/dots/frame_26.txt
++ M codex-rs/tui/frames/dots/frame_27.txt
++ M codex-rs/tui/frames/dots/frame_28.txt
++ M codex-rs/tui/frames/dots/frame_29.txt
++ M codex-rs/tui/frames/dots/frame_3.txt
++ M codex-rs/tui/frames/dots/frame_30.txt
++ M codex-rs/tui/frames/dots/frame_31.txt
++ M codex-rs/tui/frames/dots/frame_32.txt
++ M codex-rs/tui/frames/dots/frame_33.txt
++ M codex-rs/tui/frames/dots/frame_34.txt
++ M codex-rs/tui/frames/dots/frame_35.txt
++ M codex-rs/tui/frames/dots/frame_36.txt
++ M codex-rs/tui/frames/dots/frame_4.txt
++ M codex-rs/tui/frames/dots/frame_5.txt
++ M codex-rs/tui/frames/dots/frame_6.txt
++ M codex-rs/tui/frames/dots/frame_7.txt
++ M codex-rs/tui/frames/dots/frame_8.txt
++ M codex-rs/tui/frames/dots/frame_9.txt
++ M codex-rs/tui/frames/hash/frame_1.txt
++ M codex-rs/tui/frames/hash/frame_10.txt
++ M codex-rs/tui/frames/hash/frame_11.txt
++ M codex-rs/tui/frames/hash/frame_12.txt
++ M codex-rs/tui/frames/hash/frame_13.txt
++ M codex-rs/tui/frames/hash/frame_14.txt
++ M codex-rs/tui/frames/hash/frame_15.txt
++ M codex-rs/tui/frames/hash/frame_16.txt
++ M codex-rs/tui/frames/hash/frame_17.txt
++ M codex-rs/tui/frames/hash/frame_18.txt
++ M codex-rs/tui/frames/hash/frame_19.txt
++ M codex-rs/tui/frames/hash/frame_2.txt
++ M codex-rs/tui/frames/hash/frame_20.txt
++ M codex-rs/tui/frames/hash/frame_21.txt
++ M codex-rs/tui/frames/hash/frame_22.txt
++ M codex-rs/tui/frames/hash/frame_23.txt
++ M codex-rs/tui/frames/hash/frame_24.txt
++ M codex-rs/tui/frames/hash/frame_25.txt
++ M codex-rs/tui/frames/hash/frame_26.txt
++ M codex-rs/tui/frames/hash/frame_27.txt
++ M codex-rs/tui/frames/hash/frame_28.txt
++ M codex-rs/tui/frames/hash/frame_29.txt
++ M codex-rs/tui/frames/hash/frame_3.txt
++ M codex-rs/tui/frames/hash/frame_30.txt
++ M codex-rs/tui/frames/hash/frame_31.txt
++ M codex-rs/tui/frames/hash/frame_32.txt
++ M codex-rs/tui/frames/hash/frame_33.txt
++ M codex-rs/tui/frames/hash/frame_34.txt
++ M codex-rs/tui/frames/hash/frame_35.txt
++ M codex-rs/tui/frames/hash/frame_36.txt
++ M codex-rs/tui/frames/hash/frame_4.txt
++ M codex-rs/tui/frames/hash/frame_5.txt
++ M codex-rs/tui/frames/hash/frame_6.txt
++ M codex-rs/tui/frames/hash/frame_7.txt
++ M codex-rs/tui/frames/hash/frame_8.txt
++ M codex-rs/tui/frames/hash/frame_9.txt
++ M codex-rs/tui/frames/hbars/frame_1.txt
++ M codex-rs/tui/frames/hbars/frame_10.txt
++ M codex-rs/tui/frames/hbars/frame_11.txt
++ M codex-rs/tui/frames/hbars/frame_12.txt
++ M codex-rs/tui/frames/hbars/frame_13.txt
++ M codex-rs/tui/frames/hbars/frame_14.txt
++ M codex-rs/tui/frames/hbars/frame_15.txt
++ M codex-rs/tui/frames/hbars/frame_16.txt
++ M codex-rs/tui/frames/hbars/frame_17.txt
++ M codex-rs/tui/frames/hbars/frame_18.txt
++ M codex-rs/tui/frames/hbars/frame_19.txt
++ M codex-rs/tui/frames/hbars/frame_2.txt
++ M codex-rs/tui/frames/hbars/frame_20.txt
++ M codex-rs/tui/frames/hbars/frame_21.txt
++ M codex-rs/tui/frames/hbars/frame_22.txt
++ M codex-rs/tui/frames/hbars/frame_23.txt
++ M codex-rs/tui/frames/hbars/frame_24.txt
++ M codex-rs/tui/frames/hbars/frame_25.txt
++ M codex-rs/tui/frames/hbars/frame_26.txt
++ M codex-rs/tui/frames/hbars/frame_27.txt
++ M codex-rs/tui/frames/hbars/frame_28.txt
++ M codex-rs/tui/frames/hbars/frame_29.txt
++ M codex-rs/tui/frames/hbars/frame_3.txt
++ M codex-rs/tui/frames/hbars/frame_30.txt
++ M codex-rs/tui/frames/hbars/frame_31.txt
++ M codex-rs/tui/frames/hbars/frame_32.txt
++ M codex-rs/tui/frames/hbars/frame_33.txt
++ M codex-rs/tui/frames/hbars/frame_34.txt
++ M codex-rs/tui/frames/hbars/frame_35.txt
++ M codex-rs/tui/frames/hbars/frame_36.txt
++ M codex-rs/tui/frames/hbars/frame_4.txt
++ M codex-rs/tui/frames/hbars/frame_5.txt
++ M codex-rs/tui/frames/hbars/frame_6.txt
++ M codex-rs/tui/frames/hbars/frame_7.txt
++ M codex-rs/tui/frames/hbars/frame_8.txt
++ M codex-rs/tui/frames/hbars/frame_9.txt
++ M codex-rs/tui/frames/openai/frame_1.txt
++ M codex-rs/tui/frames/openai/frame_10.txt
++ M codex-rs/tui/frames/openai/frame_11.txt
++ M codex-rs/tui/frames/openai/frame_12.txt
++ M codex-rs/tui/frames/openai/frame_13.txt
++ M codex-rs/tui/frames/openai/frame_14.txt
++ M codex-rs/tui/frames/openai/frame_15.txt
++ M codex-rs/tui/frames/openai/frame_16.txt
++ M codex-rs/tui/frames/openai/frame_17.txt
++ M codex-rs/tui/frames/openai/frame_18.txt
++ M codex-rs/tui/frames/openai/frame_19.txt
++ M codex-rs/tui/frames/openai/frame_2.txt
++ M codex-rs/tui/frames/openai/frame_20.txt
++ M codex-rs/tui/frames/openai/frame_21.txt
++ M codex-rs/tui/frames/openai/frame_22.txt
++ M codex-rs/tui/frames/openai/frame_23.txt
++ M codex-rs/tui/frames/openai/frame_24.txt
++ M codex-rs/tui/frames/openai/frame_25.txt
++ M codex-rs/tui/frames/openai/frame_26.txt
++ M codex-rs/tui/frames/openai/frame_27.txt
++ M codex-rs/tui/frames/openai/frame_28.txt
++ M codex-rs/tui/frames/openai/frame_29.txt
++ M codex-rs/tui/frames/openai/frame_3.txt
++ M codex-rs/tui/frames/openai/frame_30.txt
++ M codex-rs/tui/frames/openai/frame_31.txt
++ M codex-rs/tui/frames/openai/frame_32.txt
++ M codex-rs/tui/frames/openai/frame_33.txt
++ M codex-rs/tui/frames/openai/frame_34.txt
++ M codex-rs/tui/frames/openai/frame_35.txt
++ M codex-rs/tui/frames/openai/frame_36.txt
++ M codex-rs/tui/frames/openai/frame_4.txt
++ M codex-rs/tui/frames/openai/frame_5.txt
++ M codex-rs/tui/frames/openai/frame_6.txt
++ M codex-rs/tui/frames/openai/frame_7.txt
++ M codex-rs/tui/frames/openai/frame_8.txt
++ M codex-rs/tui/frames/openai/frame_9.txt
++ M codex-rs/tui/frames/shapes/frame_1.txt
++ M codex-rs/tui/frames/shapes/frame_10.txt
++ M codex-rs/tui/frames/shapes/frame_11.txt
++ M codex-rs/tui/frames/shapes/frame_12.txt
++ M codex-rs/tui/frames/shapes/frame_13.txt
++ M codex-rs/tui/frames/shapes/frame_14.txt
++ M codex-rs/tui/frames/shapes/frame_15.txt
++ M codex-rs/tui/frames/shapes/frame_16.txt
++ M codex-rs/tui/frames/shapes/frame_17.txt
++ M codex-rs/tui/frames/shapes/frame_18.txt
++ M codex-rs/tui/frames/shapes/frame_19.txt
++ M codex-rs/tui/frames/shapes/frame_2.txt
++ M codex-rs/tui/frames/shapes/frame_20.txt
++ M codex-rs/tui/frames/shapes/frame_21.txt
++ M codex-rs/tui/frames/shapes/frame_22.txt
++ M codex-rs/tui/frames/shapes/frame_23.txt
++ M codex-rs/tui/frames/shapes/frame_24.txt
++ M codex-rs/tui/frames/shapes/frame_25.txt
++ M codex-rs/tui/frames/shapes/frame_26.txt
++ M codex-rs/tui/frames/shapes/frame_27.txt
++ M codex-rs/tui/frames/shapes/frame_28.txt
++ M codex-rs/tui/frames/shapes/frame_29.txt
++ M codex-rs/tui/frames/shapes/frame_3.txt
++ M codex-rs/tui/frames/shapes/frame_30.txt
++ M codex-rs/tui/frames/shapes/frame_31.txt
++ M codex-rs/tui/frames/shapes/frame_32.txt
++ M codex-rs/tui/frames/shapes/frame_33.txt
++ M codex-rs/tui/frames/shapes/frame_34.txt
++ M codex-rs/tui/frames/shapes/frame_35.txt
++ M codex-rs/tui/frames/shapes/frame_36.txt
++ M codex-rs/tui/frames/shapes/frame_4.txt
++ M codex-rs/tui/frames/shapes/frame_5.txt
++ M codex-rs/tui/frames/shapes/frame_6.txt
++ M codex-rs/tui/frames/shapes/frame_7.txt
++ M codex-rs/tui/frames/shapes/frame_8.txt
++ M codex-rs/tui/frames/shapes/frame_9.txt
++ M codex-rs/tui/frames/slug/frame_1.txt
++ M codex-rs/tui/frames/slug/frame_10.txt
++ M codex-rs/tui/frames/slug/frame_11.txt
++ M codex-rs/tui/frames/slug/frame_12.txt
++ M codex-rs/tui/frames/slug/frame_13.txt
++ M codex-rs/tui/frames/slug/frame_14.txt
++ M codex-rs/tui/frames/slug/frame_15.txt
++ M codex-rs/tui/frames/slug/frame_16.txt
++ M codex-rs/tui/frames/slug/frame_17.txt
++ M codex-rs/tui/frames/slug/frame_18.txt
++ M codex-rs/tui/frames/slug/frame_19.txt
++ M codex-rs/tui/frames/slug/frame_2.txt
++ M codex-rs/tui/frames/slug/frame_20.txt
++ M codex-rs/tui/frames/slug/frame_21.txt
++ M codex-rs/tui/frames/slug/frame_22.txt
++ M codex-rs/tui/frames/slug/frame_23.txt
++ M codex-rs/tui/frames/slug/frame_24.txt
++ M codex-rs/tui/frames/slug/frame_25.txt
++ M codex-rs/tui/frames/slug/frame_26.txt
++ M codex-rs/tui/frames/slug/frame_27.txt
++ M codex-rs/tui/frames/slug/frame_28.txt
++ M codex-rs/tui/frames/slug/frame_29.txt
++ M codex-rs/tui/frames/slug/frame_3.txt
++ M codex-rs/tui/frames/slug/frame_30.txt
++ M codex-rs/tui/frames/slug/frame_31.txt
++ M codex-rs/tui/frames/slug/frame_32.txt
++ M codex-rs/tui/frames/slug/frame_33.txt
++ M codex-rs/tui/frames/slug/frame_34.txt
++ M codex-rs/tui/frames/slug/frame_35.txt
++ M codex-rs/tui/frames/slug/frame_36.txt
++ M codex-rs/tui/frames/slug/frame_4.txt
++ M codex-rs/tui/frames/slug/frame_5.txt
++ M codex-rs/tui/frames/slug/frame_6.txt
++ M codex-rs/tui/frames/slug/frame_7.txt
++ M codex-rs/tui/frames/slug/frame_8.txt
++ M codex-rs/tui/frames/slug/frame_9.txt
++ M codex-rs/tui/frames/vbars/frame_1.txt
++ M codex-rs/tui/frames/vbars/frame_10.txt
++ M codex-rs/tui/frames/vbars/frame_11.txt
++ M codex-rs/tui/frames/vbars/frame_12.txt
++ M codex-rs/tui/frames/vbars/frame_13.txt
++ M codex-rs/tui/frames/vbars/frame_14.txt
++ M codex-rs/tui/frames/vbars/frame_15.txt
++ M codex-rs/tui/frames/vbars/frame_16.txt
++ M codex-rs/tui/frames/vbars/frame_17.txt
++ M codex-rs/tui/frames/vbars/frame_18.txt
++ M codex-rs/tui/frames/vbars/frame_19.txt
++ M codex-rs/tui/frames/vbars/frame_2.txt
++ M codex-rs/tui/frames/vbars/frame_20.txt
++ M codex-rs/tui/frames/vbars/frame_21.txt
++ M codex-rs/tui/frames/vbars/frame_22.txt
++ M codex-rs/tui/frames/vbars/frame_23.txt
++ M codex-rs/tui/frames/vbars/frame_24.txt
++ M codex-rs/tui/frames/vbars/frame_25.txt
++ M codex-rs/tui/frames/vbars/frame_26.txt
++ M codex-rs/tui/frames/vbars/frame_27.txt
++ M codex-rs/tui/frames/vbars/frame_28.txt
++ M codex-rs/tui/frames/vbars/frame_29.txt
++ M codex-rs/tui/frames/vbars/frame_3.txt
++ M codex-rs/tui/frames/vbars/frame_30.txt
++ M codex-rs/tui/frames/vbars/frame_31.txt
++ M codex-rs/tui/frames/vbars/frame_32.txt
++ M codex-rs/tui/frames/vbars/frame_33.txt
++ M codex-rs/tui/frames/vbars/frame_34.txt
++ M codex-rs/tui/frames/vbars/frame_35.txt
++ M codex-rs/tui/frames/vbars/frame_36.txt
++ M codex-rs/tui/frames/vbars/frame_4.txt
++ M codex-rs/tui/frames/vbars/frame_5.txt
++ M codex-rs/tui/frames/vbars/frame_6.txt
++ M codex-rs/tui/frames/vbars/frame_7.txt
++ M codex-rs/tui/frames/vbars/frame_8.txt
++ M codex-rs/tui/frames/vbars/frame_9.txt
++ M codex-rs/tui/prompt_for_init_command.md
++ M codex-rs/tui/src/app.rs
++ M codex-rs/tui/src/app_backtrack.rs
++ M codex-rs/tui/src/app_event.rs
++ M codex-rs/tui/src/app_event_sender.rs
++ M codex-rs/tui/src/ascii_animation.rs
++ M codex-rs/tui/src/bin/md-events.rs
++ M codex-rs/tui/src/bottom_pane/approval_overlay.rs
++ M codex-rs/tui/src/bottom_pane/bottom_pane_view.rs
++ M codex-rs/tui/src/bottom_pane/chat_composer.rs
++ M codex-rs/tui/src/bottom_pane/chat_composer_history.rs
++ M codex-rs/tui/src/bottom_pane/command_popup.rs
++ M codex-rs/tui/src/bottom_pane/custom_prompt_view.rs
++ M codex-rs/tui/src/bottom_pane/file_search_popup.rs
++ M codex-rs/tui/src/bottom_pane/footer.rs
++ M codex-rs/tui/src/bottom_pane/list_selection_view.rs
++ M codex-rs/tui/src/bottom_pane/mod.rs
++ M codex-rs/tui/src/bottom_pane/paste_burst.rs
++ M codex-rs/tui/src/bottom_pane/popup_consts.rs
++ M codex-rs/tui/src/bottom_pane/prompt_args.rs
++ M codex-rs/tui/src/bottom_pane/scroll_state.rs
++ M codex-rs/tui/src/bottom_pane/selection_popup_common.rs
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__backspace_after_pastes.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__empty.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_interrupt.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_quit.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_then_esc_hint.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_backtrack.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_from_overlay.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_hidden_while_typing.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_overlay_then_external_esc_hint.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_shortcut_overlay.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__large.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__multiple_pastes.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__slash_popup_mo.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__small.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_idle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_running.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_idle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_primed.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_context_running.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_default.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_shift_and_esc.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_with_subtitle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_without_subtitle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_and_composer_fill_height_without_bottom_padding.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_1.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_2.snap
++ M codex-rs/tui/src/bottom_pane/textarea.rs
++ M codex-rs/tui/src/chatwidget.rs
++ M codex-rs/tui/src/chatwidget/agent.rs
++ M codex-rs/tui/src/chatwidget/interrupts.rs
++ M codex-rs/tui/src/chatwidget/session_header.rs
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__apply_patch_manual_flow_history_approved.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec_no_reason.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_patch.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__binary_size_ideal_response.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h1.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h2.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h3.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h1.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h2.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h3.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_exec_and_status_layout_vt100_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_markdown_code_blocks_vt100_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__disabled_slash_command_while_task_running_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_long.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_multiline.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_approved_short.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_modal_exec.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step1_start_ls.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step2_finish_ls.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step3_start_cat_foo.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step4_finish_cat_foo.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step5_finish_sed_range.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step6_finish_cat_bar.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__interrupt_exec_marks_failed.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__local_image_attachment_history_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_reasoning_selection_popup.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_selection_popup.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_active.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_and_approval_modal.snap
++ M codex-rs/tui/src/chatwidget/tests.rs
++ M codex-rs/tui/src/citation_regex.rs
++ M codex-rs/tui/src/cli.rs
++ M codex-rs/tui/src/clipboard_paste.rs
++ M codex-rs/tui/src/color.rs
++ M codex-rs/tui/src/custom_terminal.rs
++ M codex-rs/tui/src/diff_render.rs
++ M codex-rs/tui/src/exec_cell/mod.rs
++ M codex-rs/tui/src/exec_cell/model.rs
++ M codex-rs/tui/src/exec_cell/render.rs
++ M codex-rs/tui/src/exec_command.rs
++ M codex-rs/tui/src/file_search.rs
++ M codex-rs/tui/src/frames.rs
++ M codex-rs/tui/src/get_git_diff.rs
++ M codex-rs/tui/src/history_cell.rs
++ M codex-rs/tui/src/insert_history.rs
++ M codex-rs/tui/src/key_hint.rs
++ M codex-rs/tui/src/lib.rs
++ M codex-rs/tui/src/live_wrap.rs
++ M codex-rs/tui/src/main.rs
++ M codex-rs/tui/src/markdown.rs
++ M codex-rs/tui/src/markdown_render.rs
++ M codex-rs/tui/src/markdown_render_tests.rs
++ M codex-rs/tui/src/markdown_stream.rs
++ M codex-rs/tui/src/onboarding/auth.rs
++ M codex-rs/tui/src/onboarding/mod.rs
++ M codex-rs/tui/src/onboarding/onboarding_screen.rs
++ M codex-rs/tui/src/onboarding/snapshots/codex_tui__onboarding__trust_directory__tests__renders_snapshot_for_git_repo.snap
++ M codex-rs/tui/src/onboarding/trust_directory.rs
++ M codex-rs/tui/src/onboarding/welcome.rs
++ M codex-rs/tui/src/onboarding/windows.rs
++ M codex-rs/tui/src/pager_overlay.rs
++ M codex-rs/tui/src/public_widgets/composer_input.rs
++ M codex-rs/tui/src/public_widgets/mod.rs
++ M codex-rs/tui/src/render/highlight.rs
++ M codex-rs/tui/src/render/line_utils.rs
++ M codex-rs/tui/src/render/mod.rs
++ M codex-rs/tui/src/render/renderable.rs
++ M codex-rs/tui/src/resume_picker.rs
++ M codex-rs/tui/src/session_log.rs
++ M codex-rs/tui/src/shimmer.rs
++ M codex-rs/tui/src/slash_command.rs
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__add_details.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_add_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_delete_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_multiple_files_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_line_numbers_three_digits_text.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_relativizes_path.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines_text.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_with_rename_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__blank_context_line.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__single_line_replacement_counts.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__update_details_with_rename.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__vertical_ellipsis_between_hunks.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__wrap_behavior_insert.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__active_mcp_tool_call_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesced_reads_dedupe_names.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesces_reads_across_multiple_calls.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesces_sequential_reads_within_one_call.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_error_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_inline_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_success_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_wrapped_outputs_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_both_lines_wrap_with_correct_prefixes.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_without_wrap_uses_branch_then_eight_spaces.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_wraps_with_extra_indent_on_subsequent_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__plan_update_with_note_and_wrapping_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__plan_update_without_note_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__ran_cell_multiline_with_stderr_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_compact_when_fits.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_wraps_with_four_space_continuation.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__stderr_tail_more_than_five_lines_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__user_history_cell_wraps_and_prefixes_each_line_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__markdown_render__markdown_render_tests__markdown_render_complex_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_snapshot_basic.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_wraps_long_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_apply_patch_scroll_vt100.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_snapshot_basic.snap
++ M codex-rs/tui/src/snapshots/codex_tui__resume_picker__tests__resume_picker_table.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_truncated.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_queued_messages.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_working_header.snap
++ M codex-rs/tui/src/status/account.rs
++ M codex-rs/tui/src/status/card.rs
++ M codex-rs/tui/src/status/format.rs
++ M codex-rs/tui/src/status/helpers.rs
++ M codex-rs/tui/src/status/mod.rs
++ M codex-rs/tui/src/status/rate_limits.rs
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
++ M codex-rs/tui/src/status/tests.rs
++ M codex-rs/tui/src/status_indicator_widget.rs
++ M codex-rs/tui/src/streaming/controller.rs
++ M codex-rs/tui/src/streaming/mod.rs
++ M codex-rs/tui/src/style.rs
++ M codex-rs/tui/src/terminal_palette.rs
++ M codex-rs/tui/src/test_backend.rs
++ M codex-rs/tui/src/text_formatting.rs
++ M codex-rs/tui/src/tui.rs
++ M codex-rs/tui/src/ui_consts.rs
++ M codex-rs/tui/src/updates.rs
++ M codex-rs/tui/src/version.rs
++ M codex-rs/tui/src/wrapping.rs
++ M codex-rs/tui/styles.md
++ M codex-rs/tui/tests/all.rs
++ M codex-rs/tui/tests/fixtures/binary-size-log.jsonl
++ M codex-rs/tui/tests/fixtures/oss-story.jsonl
++ M codex-rs/tui/tests/suite/mod.rs
++ M codex-rs/tui/tests/suite/status_indicator.rs
++ M codex-rs/tui/tests/suite/vt100_history.rs
++ M codex-rs/tui/tests/suite/vt100_live_commit.rs
++ M codex-rs/tui/tests/test_backend.rs
++ M codex-rs/utils/json-to-toml/Cargo.toml
++ M codex-rs/utils/json-to-toml/src/lib.rs
++ M codex-rs/utils/readiness/Cargo.toml
++ M codex-rs/utils/readiness/src/lib.rs
++ M codex-rs/utils/string/Cargo.toml
++ M codex-rs/utils/string/src/lib.rs
++ M docs/CLA.md
++ M docs/advanced.md
++ M docs/authentication.md
++ M docs/config.md
++ M docs/contributing.md
++ M docs/exec.md
++ M docs/experimental.md
++ M docs/faq.md
++ M docs/getting-started.md
++ M docs/install.md
++ M docs/license.md
++ M docs/open-source-fund.md
++ M docs/platform-sandboxing.md
++ M docs/prompts.md
++ M docs/release_management.md
++ M docs/sandbox.md
++ M docs/zdr.md
++ M flake.lock
++ M flake.nix
++ M package.json
++ M pnpm-lock.yaml
++ M pnpm-workspace.yaml
++ M scripts/asciicheck.py
++ M scripts/readme_toc.py
++ M scripts/stage_npm_packages.py
++ M sdk/typescript/.prettierignore
++ M sdk/typescript/.prettierrc
++ M sdk/typescript/README.md
++ M sdk/typescript/eslint.config.js
++ M sdk/typescript/jest.config.cjs
++ M sdk/typescript/package.json
++ M sdk/typescript/samples/basic_streaming.ts
++ M sdk/typescript/samples/helpers.ts
++ M sdk/typescript/samples/structured_output.ts
++ M sdk/typescript/samples/structured_output_zod.ts
++ M sdk/typescript/src/codex.ts
++ M sdk/typescript/src/codexOptions.ts
++ M sdk/typescript/src/events.ts
++ M sdk/typescript/src/exec.ts
++ M sdk/typescript/src/index.ts
++ M sdk/typescript/src/items.ts
++ M sdk/typescript/src/outputSchemaFile.ts
++ M sdk/typescript/src/thread.ts
++ M sdk/typescript/src/threadOptions.ts
++ M sdk/typescript/src/turnOptions.ts
++ M sdk/typescript/tests/codexExecSpy.ts
++ M sdk/typescript/tests/responsesProxy.ts
++ M sdk/typescript/tests/run.test.ts
++ M sdk/typescript/tests/runStreamed.test.ts
++ M sdk/typescript/tsconfig.json
++ M sdk/typescript/tsup.config.ts
++?? .code/
++?? codex-rs/app-server/tests/suite/ledger_create_company.rs
++?? codex-rs/codex-ledger/
++?? docs/accounting/
+diff --git a/.code/agents/19012/exec-call_KycOOdZAkpbTNdzqcu9k8vZg.txt b/.code/agents/19012/exec-call_KycOOdZAkpbTNdzqcu9k8vZg.txt
+new file mode 100644
+index 00000000..062c8fc9
+--- /dev/null
++++ b/.code/agents/19012/exec-call_KycOOdZAkpbTNdzqcu9k8vZg.txt
+@@ -0,0 +1,1195 @@
++diff --git a/codex-rs/app-server-protocol/src/protocol.rs b/codex-rs/app-server-protocol/src/protocol.rs
++index 845a2431..ad1b410e 100644
++--- a/codex-rs/app-server-protocol/src/protocol.rs
+++++ b/codex-rs/app-server-protocol/src/protocol.rs
++@@ -171,6 +171,26 @@ client_request_definitions! {
++         params: ExecOneOffCommandParams,
++         response: ExecOneOffCommandResponse,
++     },
+++    LedgerCreateCompany {
+++        params: LedgerCreateCompanyParams,
+++        response: LedgerCreateCompanyResponse,
+++    },
+++    LedgerUpsertAccount {
+++        params: LedgerUpsertAccountParams,
+++        response: LedgerUpsertAccountResponse,
+++    },
+++    LedgerPostEntry {
+++        params: LedgerPostEntryParams,
+++        response: LedgerPostEntryResponse,
+++    },
+++    LedgerReverseEntry {
+++        params: LedgerReverseEntryParams,
+++        response: LedgerReverseEntryResponse,
+++    },
+++    LedgerLockPeriod {
+++        params: LedgerLockPeriodParams,
+++        response: LedgerLockPeriodResponse,
+++    },
++ }
++ 
++ #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
++@@ -194,6 +214,261 @@ pub struct InitializeResponse {
++     pub user_agent: String,
++ }
++ 
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerCurrency {
+++    pub code: String,
+++    pub precision: u8,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerFiscalCalendar {
+++    pub periods_per_year: u8,
+++    pub opening_month: u8,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerCompany {
+++    pub id: String,
+++    pub name: String,
+++    pub base_currency: LedgerCurrency,
+++    pub fiscal_calendar: LedgerFiscalCalendar,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub metadata: Option<String>,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerCreateCompanyParams {
+++    pub name: String,
+++    pub base_currency: LedgerCurrency,
+++    pub fiscal_calendar: LedgerFiscalCalendar,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerCreateCompanyResponse {
+++    pub company: LedgerCompany,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerAccountType {
+++    Asset,
+++    Liability,
+++    Equity,
+++    Revenue,
+++    Expense,
+++    OffBalance,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerCurrencyMode {
+++    FunctionalOnly,
+++    Transactional,
+++    MultiCurrency,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerTaxCode {
+++    pub code: String,
+++    pub description: String,
+++    pub rate_percent: f32,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerAccount {
+++    pub id: String,
+++    pub company_id: String,
+++    pub code: String,
+++    pub name: String,
+++    pub account_type: LedgerAccountType,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub parent_account_id: Option<String>,
+++    pub currency_mode: LedgerCurrencyMode,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub tax_code: Option<LedgerTaxCode>,
+++    pub is_summary: bool,
+++    pub is_active: bool,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerUpsertAccountParams {
+++    pub account: LedgerAccount,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerUpsertAccountResponse {
+++    pub account: LedgerAccount,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerCurrencyRate {
+++    pub base: LedgerCurrency,
+++    pub quote: LedgerCurrency,
+++    pub rate: f64,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub source: Option<String>,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerPostingSide {
+++    Debit,
+++    Credit,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerJournalLine {
+++    pub id: String,
+++    pub account_id: String,
+++    pub side: LedgerPostingSide,
+++    pub amount_minor: i64,
+++    pub currency: LedgerCurrency,
+++    pub functional_amount_minor: i64,
+++    pub functional_currency: LedgerCurrency,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub exchange_rate: Option<LedgerCurrencyRate>,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub tax_code: Option<LedgerTaxCode>,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub memo: Option<String>,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerEntryStatus {
+++    Draft,
+++    Proposed,
+++    Posted,
+++    Reversed,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerEntryOrigin {
+++    Manual,
+++    Ingestion,
+++    AiSuggested,
+++    Adjustment,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerJournalEntry {
+++    pub id: String,
+++    pub journal_id: String,
+++    pub status: LedgerEntryStatus,
+++    pub lines: Vec<LedgerJournalLine>,
+++    pub origin: LedgerEntryOrigin,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub memo: Option<String>,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub reverses_entry_id: Option<String>,
+++    #[serde(skip_serializing_if = "Option::is_none")]
+++    pub reversed_by_entry_id: Option<String>,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerPostingMode {
+++    DryRun,
+++    Commit,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerPostEntryParams {
+++    pub entry: LedgerJournalEntry,
+++    pub mode: LedgerPostingMode,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerPostEntryResponse {
+++    pub entry: LedgerJournalEntry,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerReverseEntryParams {
+++    pub entry_id: String,
+++    pub reason: String,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerReverseEntryResponse {
+++    pub entry: LedgerJournalEntry,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerPeriodRef {
+++    pub fiscal_year: i32,
+++    pub period: u8,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerPeriodAction {
+++    SoftClose,
+++    Close,
+++    ReopenSoft,
+++    ReopenFull,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerJournalType {
+++    General,
+++    AccountsPayable,
+++    AccountsReceivable,
+++    Cash,
+++    SubLedger,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub enum LedgerPeriodState {
+++    Open,
+++    SoftClosed,
+++    Closed,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerJournal {
+++    pub id: String,
+++    pub company_id: String,
+++    pub ledger_type: LedgerJournalType,
+++    pub period_state: LedgerPeriodState,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerLockPeriodParams {
+++    pub company_id: String,
+++    pub journal_id: String,
+++    pub period: LedgerPeriodRef,
+++    pub action: LedgerPeriodAction,
+++}
+++
+++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+++#[serde(rename_all = "camelCase")]
+++pub struct LedgerLockPeriodResponse {
+++    pub journal: LedgerJournal,
+++}
+++
++ #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
++ #[serde(rename_all = "camelCase")]
++ pub struct NewConversationParams {
++diff --git a/codex-rs/app-server/src/codex_message_processor.rs b/codex-rs/app-server/src/codex_message_processor.rs
++index cb894a51..e22a0f70 100644
++--- a/codex-rs/app-server/src/codex_message_processor.rs
+++++ b/codex-rs/app-server/src/codex_message_processor.rs
++@@ -25,6 +25,64 @@ use codex_app_server_protocol::InputItem as WireInputItem;
++ use codex_app_server_protocol::InterruptConversationParams;
++ use codex_app_server_protocol::InterruptConversationResponse;
++ use codex_app_server_protocol::JSONRPCErrorError;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerAccount;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerAccountType;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCompany;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCreateCompanyParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCreateCompanyResponse;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCurrency;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCurrencyMode;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCurrencyRate;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerEntryOrigin;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerEntryStatus;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerFiscalCalendar;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerJournal;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerJournalEntry;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerJournalLine;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerJournalType;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerLockPeriodParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerLockPeriodResponse;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPeriodAction;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPeriodRef;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPeriodState;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPostEntryParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPostEntryResponse;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPostingMode;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPostingSide;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerReverseEntryParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerReverseEntryResponse;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerTaxCode;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerUpsertAccountParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerUpsertAccountResponse;
++ use codex_app_server_protocol::ListConversationsParams;
++ use codex_app_server_protocol::ListConversationsResponse;
++ use codex_app_server_protocol::LoginApiKeyParams;
++@@ -80,6 +138,60 @@ use codex_core::protocol::ExecApprovalRequestEvent;
++ use codex_core::protocol::InputItem as CoreInputItem;
++ use codex_core::protocol::Op;
++ use codex_core::protocol::ReviewDecision;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::Account as LedgerAccountModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::AccountType as LedgerAccountTypeModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::CreateCompanyRequest as LedgerCreateCompanyRequest;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::Currency as LedgerCurrencyModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::CurrencyMode as LedgerCurrencyModeModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::CurrencyRate as LedgerCurrencyRateModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::EntryOrigin as LedgerEntryOriginModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::EntryStatus as LedgerEntryStatusModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::FiscalCalendar as LedgerFiscalCalendarModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::InMemoryLedgerService;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::Journal as LedgerJournalModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::JournalEntry as LedgerJournalEntryModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::JournalLine as LedgerJournalLineModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::LedgerError;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::LedgerType as LedgerJournalTypeModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::LockPeriodRequest as LedgerLockPeriodRequest;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PeriodAction as LedgerPeriodActionModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PeriodRef as LedgerPeriodRefModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PeriodState as LedgerPeriodStateModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PostEntryRequest as LedgerPostEntryRequest;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PostingMode as LedgerPostingModeModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::PostingSide as LedgerPostingSideModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::ReverseEntryRequest as LedgerReverseEntryRequest;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::Role as LedgerRole;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::TaxCode as LedgerTaxCodeModel;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::TenantContext as LedgerTenantContext;
+++#[cfg(feature = "ledger")]
+++use codex_ledger::UpsertAccountRequest as LedgerUpsertAccountRequest;
++ use codex_login::ServerOptions as LoginServerOptions;
++ use codex_login::ShutdownHandle;
++ use codex_login::run_login_server;
++@@ -96,6 +208,8 @@ use std::sync::Arc;
++ use std::sync::atomic::AtomicBool;
++ use std::sync::atomic::Ordering;
++ use std::time::Duration;
+++#[cfg(feature = "ledger")]
+++use std::time::SystemTime;
++ use tokio::select;
++ use tokio::sync::Mutex;
++ use tokio::sync::oneshot;
++@@ -130,6 +244,8 @@ pub(crate) struct CodexMessageProcessor {
++     // Queue of pending interrupt requests per conversation. We reply when TurnAborted arrives.
++     pending_interrupts: Arc<Mutex<HashMap<ConversationId, Vec<RequestId>>>>,
++     pending_fuzzy_searches: Arc<Mutex<HashMap<String, Arc<AtomicBool>>>>,
+++    #[cfg(feature = "ledger")]
+++    ledger_service: Option<Arc<InMemoryLedgerService>>,
++ }
++ 
++ impl CodexMessageProcessor {
++@@ -139,6 +255,7 @@ impl CodexMessageProcessor {
++         outgoing: Arc<OutgoingMessageSender>,
++         codex_linux_sandbox_exe: Option<PathBuf>,
++         config: Arc<Config>,
+++        #[cfg(feature = "ledger")] ledger_service: Option<Arc<InMemoryLedgerService>>,
++     ) -> Self {
++         Self {
++             auth_manager,
++@@ -150,6 +267,8 @@ impl CodexMessageProcessor {
++             active_login: Arc::new(Mutex::new(None)),
++             pending_interrupts: Arc::new(Mutex::new(HashMap::new())),
++             pending_fuzzy_searches: Arc::new(Mutex::new(HashMap::new())),
+++            #[cfg(feature = "ledger")]
+++            ledger_service,
++         }
++     }
++ 
++@@ -227,6 +346,86 @@ impl CodexMessageProcessor {
++             } => {
++                 self.get_user_agent(request_id).await;
++             }
+++            ClientRequest::LedgerCreateCompany { request_id, params } => {
+++                #[cfg(feature = "ledger")]
+++                {
+++                    self.handle_ledger_create_company(request_id, params).await;
+++                }
+++                #[cfg(not(feature = "ledger"))]
+++                {
+++                    let _ = params;
+++                    let error = JSONRPCErrorError {
+++                        code: INVALID_REQUEST_ERROR_CODE,
+++                        message: "ledger feature not enabled".to_string(),
+++                        data: None,
+++                    };
+++                    self.outgoing.send_error(request_id, error).await;
+++                }
+++            }
+++            ClientRequest::LedgerUpsertAccount { request_id, params } => {
+++                #[cfg(feature = "ledger")]
+++                {
+++                    self.handle_ledger_upsert_account(request_id, params).await;
+++                }
+++                #[cfg(not(feature = "ledger"))]
+++                {
+++                    let _ = params;
+++                    let error = JSONRPCErrorError {
+++                        code: INVALID_REQUEST_ERROR_CODE,
+++                        message: "ledger feature not enabled".to_string(),
+++                        data: None,
+++                    };
+++                    self.outgoing.send_error(request_id, error).await;
+++                }
+++            }
+++            ClientRequest::LedgerPostEntry { request_id, params } => {
+++                #[cfg(feature = "ledger")]
+++                {
+++                    self.handle_ledger_post_entry(request_id, params).await;
+++                }
+++                #[cfg(not(feature = "ledger"))]
+++                {
+++                    let _ = params;
+++                    let error = JSONRPCErrorError {
+++                        code: INVALID_REQUEST_ERROR_CODE,
+++                        message: "ledger feature not enabled".to_string(),
+++                        data: None,
+++                    };
+++                    self.outgoing.send_error(request_id, error).await;
+++                }
+++            }
+++            ClientRequest::LedgerReverseEntry { request_id, params } => {
+++                #[cfg(feature = "ledger")]
+++                {
+++                    self.handle_ledger_reverse_entry(request_id, params).await;
+++                }
+++                #[cfg(not(feature = "ledger"))]
+++                {
+++                    let _ = params;
+++                    let error = JSONRPCErrorError {
+++                        code: INVALID_REQUEST_ERROR_CODE,
+++                        message: "ledger feature not enabled".to_string(),
+++                        data: None,
+++                    };
+++                    self.outgoing.send_error(request_id, error).await;
+++                }
+++            }
+++            ClientRequest::LedgerLockPeriod { request_id, params } => {
+++                #[cfg(feature = "ledger")]
+++                {
+++                    self.handle_ledger_lock_period(request_id, params).await;
+++                }
+++                #[cfg(not(feature = "ledger"))]
+++                {
+++                    let _ = params;
+++                    let error = JSONRPCErrorError {
+++                        code: INVALID_REQUEST_ERROR_CODE,
+++                        message: "ledger feature not enabled".to_string(),
+++                        data: None,
+++                    };
+++                    self.outgoing.send_error(request_id, error).await;
+++                }
+++            }
++             ClientRequest::UserInfo {
++                 request_id,
++                 params: _,
++@@ -1486,6 +1685,563 @@ fn extract_conversation_summary(
++     })
++ }
++ 
+++#[cfg(feature = "ledger")]
+++impl CodexMessageProcessor {
+++    async fn handle_ledger_create_company(
+++        &self,
+++        request_id: RequestId,
+++        params: LedgerCreateCompanyParams,
+++    ) {
+++        let Some(service) = self.ledger_service.as_ref() else {
+++            let error = JSONRPCErrorError {
+++                code: INVALID_REQUEST_ERROR_CODE,
+++                message: "ledger service not configured".to_string(),
+++                data: None,
+++            };
+++            self.outgoing.send_error(request_id, error).await;
+++            return;
+++        };
+++
+++        let request = LedgerCreateCompanyRequest {
+++            name: params.name,
+++            base_currency: to_ledger_currency(params.base_currency),
+++            fiscal_calendar: to_ledger_fiscal_calendar(params.fiscal_calendar),
+++            tenant: default_ledger_tenant_context(),
+++        };
+++
+++        match service.create_company(request).await {
+++            Ok(company) => {
+++                let response = LedgerCreateCompanyResponse {
+++                    company: from_ledger_company(company),
+++                };
+++                self.outgoing.send_response(request_id, response).await;
+++            }
+++            Err(err) => {
+++                let error = ledger_error_to_jsonrpc(err);
+++                self.outgoing.send_error(request_id, error).await;
+++            }
+++        }
+++    }
+++
+++    async fn handle_ledger_upsert_account(
+++        &self,
+++        request_id: RequestId,
+++        params: LedgerUpsertAccountParams,
+++    ) {
+++        let Some(service) = self.ledger_service.as_ref() else {
+++            let error = JSONRPCErrorError {
+++                code: INVALID_REQUEST_ERROR_CODE,
+++                message: "ledger service not configured".to_string(),
+++                data: None,
+++            };
+++            self.outgoing.send_error(request_id, error).await;
+++            return;
+++        };
+++
+++        let request = LedgerUpsertAccountRequest {
+++            account: to_ledger_account(params.account),
+++            tenant: default_ledger_tenant_context(),
+++        };
+++
+++        match service.upsert_account(request).await {
+++            Ok(account) => {
+++                let response = LedgerUpsertAccountResponse {
+++                    account: from_ledger_account(account),
+++                };
+++                self.outgoing.send_response(request_id, response).await;
+++            }
+++            Err(err) => {
+++                let error = ledger_error_to_jsonrpc(err);
+++                self.outgoing.send_error(request_id, error).await;
+++            }
+++        }
+++    }
+++
+++    async fn handle_ledger_post_entry(&self, request_id: RequestId, params: LedgerPostEntryParams) {
+++        let Some(service) = self.ledger_service.as_ref() else {
+++            let error = JSONRPCErrorError {
+++                code: INVALID_REQUEST_ERROR_CODE,
+++                message: "ledger service not configured".to_string(),
+++                data: None,
+++            };
+++            self.outgoing.send_error(request_id, error).await;
+++            return;
+++        };
+++
+++        let LedgerPostEntryParams { entry, mode } = params;
+++        let request = LedgerPostEntryRequest {
+++            entry: to_ledger_journal_entry(entry),
+++            tenant: default_ledger_tenant_context(),
+++            mode: to_ledger_posting_mode(mode),
+++        };
+++
+++        match service.post_entry(request).await {
+++            Ok(entry) => {
+++                let response = LedgerPostEntryResponse {
+++                    entry: from_ledger_journal_entry(entry),
+++                };
+++                self.outgoing.send_response(request_id, response).await;
+++            }
+++            Err(err) => {
+++                let error = ledger_error_to_jsonrpc(err);
+++                self.outgoing.send_error(request_id, error).await;
+++            }
+++        }
+++    }
+++
+++    async fn handle_ledger_reverse_entry(
+++        &self,
+++        request_id: RequestId,
+++        params: LedgerReverseEntryParams,
+++    ) {
+++        let Some(service) = self.ledger_service.as_ref() else {
+++            let error = JSONRPCErrorError {
+++                code: INVALID_REQUEST_ERROR_CODE,
+++                message: "ledger service not configured".to_string(),
+++                data: None,
+++            };
+++            self.outgoing.send_error(request_id, error).await;
+++            return;
+++        };
+++
+++        let request = LedgerReverseEntryRequest {
+++            entry_id: params.entry_id,
+++            reason: params.reason,
+++            tenant: default_ledger_tenant_context(),
+++        };
+++
+++        match service.reverse_entry(request).await {
+++            Ok(entry) => {
+++                let response = LedgerReverseEntryResponse {
+++                    entry: from_ledger_journal_entry(entry),
+++                };
+++                self.outgoing.send_response(request_id, response).await;
+++            }
+++            Err(err) => {
+++                let error = ledger_error_to_jsonrpc(err);
+++                self.outgoing.send_error(request_id, error).await;
+++            }
+++        }
+++    }
+++
+++    async fn handle_ledger_lock_period(
+++        &self,
+++        request_id: RequestId,
+++        params: LedgerLockPeriodParams,
+++    ) {
+++        let Some(service) = self.ledger_service.as_ref() else {
+++            let error = JSONRPCErrorError {
+++                code: INVALID_REQUEST_ERROR_CODE,
+++                message: "ledger service not configured".to_string(),
+++                data: None,
+++            };
+++            self.outgoing.send_error(request_id, error).await;
+++            return;
+++        };
+++
+++        let LedgerLockPeriodParams {
+++            company_id,
+++            journal_id,
+++            period,
+++            action,
+++        } = params;
+++
+++        let request = LedgerLockPeriodRequest {
+++            journal_id,
+++            period: to_ledger_period_ref(period),
+++            action: to_ledger_period_action(action),
+++            tenant: ledger_tenant_context_for_company(company_id),
+++        };
+++
+++        match service.lock_period(request).await {
+++            Ok(journal) => {
+++                let response = LedgerLockPeriodResponse {
+++                    journal: from_ledger_journal(journal),
+++                };
+++                self.outgoing.send_response(request_id, response).await;
+++            }
+++            Err(err) => {
+++                let error = ledger_error_to_jsonrpc(err);
+++                self.outgoing.send_error(request_id, error).await;
+++            }
+++        }
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn default_ledger_tenant_context() -> LedgerTenantContext {
+++    LedgerTenantContext {
+++        tenant_id: "ledger-admin".to_string(),
+++        user_id: "codex-app-server".to_string(),
+++        roles: vec![LedgerRole::ServiceAccount],
+++        locale: Some("en-US".to_string()),
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn ledger_tenant_context_for_company(company_id: String) -> LedgerTenantContext {
+++    LedgerTenantContext {
+++        tenant_id: company_id,
+++        ..default_ledger_tenant_context()
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_currency(currency: LedgerCurrency) -> LedgerCurrencyModel {
+++    LedgerCurrencyModel {
+++        code: currency.code,
+++        precision: currency.precision,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_fiscal_calendar(calendar: LedgerFiscalCalendar) -> LedgerFiscalCalendarModel {
+++    LedgerFiscalCalendarModel {
+++        periods_per_year: calendar.periods_per_year,
+++        opening_month: calendar.opening_month,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_company(company: codex_ledger::Company) -> LedgerCompany {
+++    LedgerCompany {
+++        id: company.id,
+++        name: company.name,
+++        base_currency: LedgerCurrency {
+++            code: company.base_currency.code,
+++            precision: company.base_currency.precision,
+++        },
+++        fiscal_calendar: LedgerFiscalCalendar {
+++            periods_per_year: company.fiscal_calendar.periods_per_year,
+++            opening_month: company.fiscal_calendar.opening_month,
+++        },
+++        metadata: company.metadata,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_account_type(account_type: LedgerAccountType) -> LedgerAccountTypeModel {
+++    match account_type {
+++        LedgerAccountType::Asset => LedgerAccountTypeModel::Asset,
+++        LedgerAccountType::Liability => LedgerAccountTypeModel::Liability,
+++        LedgerAccountType::Equity => LedgerAccountTypeModel::Equity,
+++        LedgerAccountType::Revenue => LedgerAccountTypeModel::Revenue,
+++        LedgerAccountType::Expense => LedgerAccountTypeModel::Expense,
+++        LedgerAccountType::OffBalance => LedgerAccountTypeModel::OffBalance,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_account_type(account_type: LedgerAccountTypeModel) -> LedgerAccountType {
+++    match account_type {
+++        LedgerAccountTypeModel::Asset => LedgerAccountType::Asset,
+++        LedgerAccountTypeModel::Liability => LedgerAccountType::Liability,
+++        LedgerAccountTypeModel::Equity => LedgerAccountType::Equity,
+++        LedgerAccountTypeModel::Revenue => LedgerAccountType::Revenue,
+++        LedgerAccountTypeModel::Expense => LedgerAccountType::Expense,
+++        LedgerAccountTypeModel::OffBalance => LedgerAccountType::OffBalance,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_currency_mode(mode: LedgerCurrencyMode) -> LedgerCurrencyModeModel {
+++    match mode {
+++        LedgerCurrencyMode::FunctionalOnly => LedgerCurrencyModeModel::FunctionalOnly,
+++        LedgerCurrencyMode::Transactional => LedgerCurrencyModeModel::Transactional,
+++        LedgerCurrencyMode::MultiCurrency => LedgerCurrencyModeModel::MultiCurrency,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_currency_mode(mode: LedgerCurrencyModeModel) -> LedgerCurrencyMode {
+++    match mode {
+++        LedgerCurrencyModeModel::FunctionalOnly => LedgerCurrencyMode::FunctionalOnly,
+++        LedgerCurrencyModeModel::Transactional => LedgerCurrencyMode::Transactional,
+++        LedgerCurrencyModeModel::MultiCurrency => LedgerCurrencyMode::MultiCurrency,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_tax_code(tax: LedgerTaxCode) -> LedgerTaxCodeModel {
+++    LedgerTaxCodeModel {
+++        code: tax.code,
+++        description: tax.description,
+++        rate_percent: tax.rate_percent,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_tax_code(tax: LedgerTaxCodeModel) -> LedgerTaxCode {
+++    LedgerTaxCode {
+++        code: tax.code,
+++        description: tax.description,
+++        rate_percent: tax.rate_percent,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_account(account: LedgerAccount) -> LedgerAccountModel {
+++    LedgerAccountModel {
+++        id: account.id,
+++        company_id: account.company_id,
+++        code: account.code,
+++        name: account.name,
+++        account_type: to_ledger_account_type(account.account_type),
+++        parent_account_id: account.parent_account_id,
+++        currency_mode: to_ledger_currency_mode(account.currency_mode),
+++        tax_code: account.tax_code.map(to_ledger_tax_code),
+++        is_summary: account.is_summary,
+++        is_active: account.is_active,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_account(account: LedgerAccountModel) -> LedgerAccount {
+++    LedgerAccount {
+++        id: account.id,
+++        company_id: account.company_id,
+++        code: account.code,
+++        name: account.name,
+++        account_type: from_ledger_account_type(account.account_type),
+++        parent_account_id: account.parent_account_id,
+++        currency_mode: from_ledger_currency_mode(account.currency_mode),
+++        tax_code: account.tax_code.map(from_ledger_tax_code),
+++        is_summary: account.is_summary,
+++        is_active: account.is_active,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_posting_side(side: LedgerPostingSide) -> LedgerPostingSideModel {
+++    match side {
+++        LedgerPostingSide::Debit => LedgerPostingSideModel::Debit,
+++        LedgerPostingSide::Credit => LedgerPostingSideModel::Credit,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_posting_side(side: LedgerPostingSideModel) -> LedgerPostingSide {
+++    match side {
+++        LedgerPostingSideModel::Debit => LedgerPostingSide::Debit,
+++        LedgerPostingSideModel::Credit => LedgerPostingSide::Credit,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_currency_rate(rate: LedgerCurrencyRate) -> LedgerCurrencyRateModel {
+++    LedgerCurrencyRateModel {
+++        base: to_ledger_currency(rate.base),
+++        quote: to_ledger_currency(rate.quote),
+++        rate: rate.rate,
+++        source: rate.source,
+++        observed_at: SystemTime::now(),
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_currency_rate(rate: LedgerCurrencyRateModel) -> LedgerCurrencyRate {
+++    LedgerCurrencyRate {
+++        base: LedgerCurrency {
+++            code: rate.base.code,
+++            precision: rate.base.precision,
+++        },
+++        quote: LedgerCurrency {
+++            code: rate.quote.code,
+++            precision: rate.quote.precision,
+++        },
+++        rate: rate.rate,
+++        source: rate.source,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_journal_line(line: LedgerJournalLine) -> LedgerJournalLineModel {
+++    LedgerJournalLineModel {
+++        id: line.id,
+++        account_id: line.account_id,
+++        side: to_ledger_posting_side(line.side),
+++        amount_minor: line.amount_minor,
+++        currency: to_ledger_currency(line.currency),
+++        functional_amount_minor: line.functional_amount_minor,
+++        functional_currency: to_ledger_currency(line.functional_currency),
+++        exchange_rate: line.exchange_rate.map(to_ledger_currency_rate),
+++        tax_code: line.tax_code.map(to_ledger_tax_code),
+++        memo: line.memo,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_journal_line(line: LedgerJournalLineModel) -> LedgerJournalLine {
+++    LedgerJournalLine {
+++        id: line.id,
+++        account_id: line.account_id,
+++        side: from_ledger_posting_side(line.side),
+++        amount_minor: line.amount_minor,
+++        currency: LedgerCurrency {
+++            code: line.currency.code,
+++            precision: line.currency.precision,
+++        },
+++        functional_amount_minor: line.functional_amount_minor,
+++        functional_currency: LedgerCurrency {
+++            code: line.functional_currency.code,
+++            precision: line.functional_currency.precision,
+++        },
+++        exchange_rate: line.exchange_rate.map(from_ledger_currency_rate),
+++        tax_code: line.tax_code.map(from_ledger_tax_code),
+++        memo: line.memo,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_entry_status(status: LedgerEntryStatus) -> LedgerEntryStatusModel {
+++    match status {
+++        LedgerEntryStatus::Draft => LedgerEntryStatusModel::Draft,
+++        LedgerEntryStatus::Proposed => LedgerEntryStatusModel::Proposed,
+++        LedgerEntryStatus::Posted => LedgerEntryStatusModel::Posted,
+++        LedgerEntryStatus::Reversed => LedgerEntryStatusModel::Reversed,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_entry_status(status: LedgerEntryStatusModel) -> LedgerEntryStatus {
+++    match status {
+++        LedgerEntryStatusModel::Draft => LedgerEntryStatus::Draft,
+++        LedgerEntryStatusModel::Proposed => LedgerEntryStatus::Proposed,
+++        LedgerEntryStatusModel::Posted => LedgerEntryStatus::Posted,
+++        LedgerEntryStatusModel::Reversed => LedgerEntryStatus::Reversed,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_entry_origin(origin: LedgerEntryOrigin) -> LedgerEntryOriginModel {
+++    match origin {
+++        LedgerEntryOrigin::Manual => LedgerEntryOriginModel::Manual,
+++        LedgerEntryOrigin::Ingestion => LedgerEntryOriginModel::Ingestion,
+++        LedgerEntryOrigin::AiSuggested => LedgerEntryOriginModel::AiSuggested,
+++        LedgerEntryOrigin::Adjustment => LedgerEntryOriginModel::Adjustment,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_entry_origin(origin: LedgerEntryOriginModel) -> LedgerEntryOrigin {
+++    match origin {
+++        LedgerEntryOriginModel::Manual => LedgerEntryOrigin::Manual,
+++        LedgerEntryOriginModel::Ingestion => LedgerEntryOrigin::Ingestion,
+++        LedgerEntryOriginModel::AiSuggested => LedgerEntryOrigin::AiSuggested,
+++        LedgerEntryOriginModel::Adjustment => LedgerEntryOrigin::Adjustment,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_journal_entry(entry: LedgerJournalEntry) -> LedgerJournalEntryModel {
+++    LedgerJournalEntryModel {
+++        id: entry.id,
+++        journal_id: entry.journal_id,
+++        status: to_ledger_entry_status(entry.status),
+++        lines: entry
+++            .lines
+++            .into_iter()
+++            .map(to_ledger_journal_line)
+++            .collect(),
+++        origin: to_ledger_entry_origin(entry.origin),
+++        memo: entry.memo,
+++        reverses_entry_id: entry.reverses_entry_id,
+++        reversed_by_entry_id: entry.reversed_by_entry_id,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_journal_entry(entry: LedgerJournalEntryModel) -> LedgerJournalEntry {
+++    LedgerJournalEntry {
+++        id: entry.id,
+++        journal_id: entry.journal_id,
+++        status: from_ledger_entry_status(entry.status),
+++        lines: entry
+++            .lines
+++            .into_iter()
+++            .map(from_ledger_journal_line)
+++            .collect(),
+++        origin: from_ledger_entry_origin(entry.origin),
+++        memo: entry.memo,
+++        reverses_entry_id: entry.reverses_entry_id,
+++        reversed_by_entry_id: entry.reversed_by_entry_id,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_posting_mode(mode: LedgerPostingMode) -> LedgerPostingModeModel {
+++    match mode {
+++        LedgerPostingMode::DryRun => LedgerPostingModeModel::DryRun,
+++        LedgerPostingMode::Commit => LedgerPostingModeModel::Commit,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_period_action(action: LedgerPeriodAction) -> LedgerPeriodActionModel {
+++    match action {
+++        LedgerPeriodAction::SoftClose => LedgerPeriodActionModel::SoftClose,
+++        LedgerPeriodAction::Close => LedgerPeriodActionModel::Close,
+++        LedgerPeriodAction::ReopenSoft => LedgerPeriodActionModel::ReopenSoft,
+++        LedgerPeriodAction::ReopenFull => LedgerPeriodActionModel::ReopenFull,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn to_ledger_period_ref(period: LedgerPeriodRef) -> LedgerPeriodRefModel {
+++    LedgerPeriodRefModel {
+++        fiscal_year: period.fiscal_year,
+++        period: period.period,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_journal_type(journal_type: LedgerJournalTypeModel) -> LedgerJournalType {
+++    match journal_type {
+++        LedgerJournalTypeModel::General => LedgerJournalType::General,
+++        LedgerJournalTypeModel::AccountsPayable => LedgerJournalType::AccountsPayable,
+++        LedgerJournalTypeModel::AccountsReceivable => LedgerJournalType::AccountsReceivable,
+++        LedgerJournalTypeModel::Cash => LedgerJournalType::Cash,
+++        LedgerJournalTypeModel::SubLedger => LedgerJournalType::SubLedger,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_period_state(state: LedgerPeriodStateModel) -> LedgerPeriodState {
+++    match state {
+++        LedgerPeriodStateModel::Open => LedgerPeriodState::Open,
+++        LedgerPeriodStateModel::SoftClosed => LedgerPeriodState::SoftClosed,
+++        LedgerPeriodStateModel::Closed => LedgerPeriodState::Closed,
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn from_ledger_journal(journal: LedgerJournalModel) -> LedgerJournal {
+++    LedgerJournal {
+++        id: journal.id,
+++        company_id: journal.company_id,
+++        ledger_type: from_ledger_journal_type(journal.ledger_type),
+++        period_state: from_ledger_period_state(journal.period_state),
+++    }
+++}
+++
+++#[cfg(feature = "ledger")]
+++fn ledger_error_to_jsonrpc(error: LedgerError) -> JSONRPCErrorError {
+++    match error {
+++        LedgerError::Internal(message) => JSONRPCErrorError {
+++            code: INTERNAL_ERROR_CODE,
+++            message,
+++            data: None,
+++        },
+++        LedgerError::NotFound(message)
+++        | LedgerError::Rejected(message)
+++        | LedgerError::Validation(message) => JSONRPCErrorError {
+++            code: INVALID_REQUEST_ERROR_CODE,
+++            message,
+++            data: None,
+++        },
+++    }
+++}
+++
++ #[cfg(test)]
++ mod tests {
++     use super::*;
++diff --git a/codex-rs/app-server/tests/common/mcp_process.rs b/codex-rs/app-server/tests/common/mcp_process.rs
++index 29768df8..1460508e 100644
++--- a/codex-rs/app-server/tests/common/mcp_process.rs
+++++ b/codex-rs/app-server/tests/common/mcp_process.rs
++@@ -20,6 +20,20 @@ use codex_app_server_protocol::ClientNotification;
++ use codex_app_server_protocol::GetAuthStatusParams;
++ use codex_app_server_protocol::InitializeParams;
++ use codex_app_server_protocol::InterruptConversationParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerCreateCompanyParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerLockPeriodParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPeriodAction;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPeriodRef;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerPostEntryParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerReverseEntryParams;
+++#[cfg(feature = "ledger")]
+++use codex_app_server_protocol::LedgerUpsertAccountParams;
++ use codex_app_server_protocol::ListConversationsParams;
++ use codex_app_server_protocol::LoginApiKeyParams;
++ use codex_app_server_protocol::NewConversationParams;
++@@ -313,6 +327,60 @@ impl McpProcess {
++         self.send_request("fuzzyFileSearch", Some(params)).await
++     }
++ 
+++    #[cfg(feature = "ledger")]
+++    pub async fn send_ledger_create_company_request(
+++        &mut self,
+++        params: LedgerCreateCompanyParams,
+++    ) -> anyhow::Result<i64> {
+++        let params = Some(serde_json::to_value(params)?);
+++        self.send_request("ledgerCreateCompany", params).await
+++    }
+++
+++    #[cfg(feature = "ledger")]
+++    pub async fn send_ledger_upsert_account_request(
+++        &mut self,
+++        params: LedgerUpsertAccountParams,
+++    ) -> anyhow::Result<i64> {
+++        let params = Some(serde_json::to_value(params)?);
+++        self.send_request("ledgerUpsertAccount", params).await
+++    }
+++
+++    #[cfg(feature = "ledger")]
+++    pub async fn send_ledger_post_entry_request(
+++        &mut self,
+++        params: LedgerPostEntryParams,
+++    ) -> anyhow::Result<i64> {
+++        let params = Some(serde_json::to_value(params)?);
+++        self.send_request("ledgerPostEntry", params).await
+++    }
+++
+++    #[cfg(feature = "ledger")]
+++    pub async fn send_ledger_reverse_entry_request(
+++        &mut self,
+++        params: LedgerReverseEntryParams,
+++    ) -> anyhow::Result<i64> {
+++        let params = Some(serde_json::to_value(params)?);
+++        self.send_request("ledgerReverseEntry", params).await
+++    }
+++
+++    #[cfg(feature = "ledger")]
+++    pub async fn send_ledger_lock_period_request(
+++        &mut self,
+++        company_id: String,
+++        journal_id: String,
+++        period: LedgerPeriodRef,
+++        action: LedgerPeriodAction,
+++    ) -> anyhow::Result<i64> {
+++        let params = LedgerLockPeriodParams {
+++            company_id,
+++            journal_id,
+++            period,
+++            action,
+++        };
+++        let params = Some(serde_json::to_value(params)?);
+++        self.send_request("ledgerLockPeriod", params).await
+++    }
+++
++     async fn send_request(
++         &mut self,
++         method: &str,
+diff --git a/.code/agents/61d69ffa-7627-4b37-8bc2-c9e20f9d5565/result.txt b/.code/agents/61d69ffa-7627-4b37-8bc2-c9e20f9d5565/result.txt
+new file mode 100644
+index 00000000..a6f05671
+--- /dev/null
++++ b/.code/agents/61d69ffa-7627-4b37-8bc2-c9e20f9d5565/result.txt
+@@ -0,0 +1,54 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (12.89GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --new-window --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   149	  4128	code
++    0	    29	   276	   crashpad-handler
++    0	   196	 14164	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    94	 14512	pty-host
++    0	   100	 15300	shared-process
++    0	    48	 21688	   utility-network-service
++    0	   101	 32400	file-watcher [1]
++    0	    83	 32660	   gpu-process
++    0	   595	 33164	extension-host [1]
++    0	    10	  2856	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     6	  7652	       C:\windows\system32\conhost.exe 0x4
++    0	    79	  6832	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     6	 30472	       C:\windows\system32\conhost.exe 0x4
++    0	    88	 14540	     electron-nodejs (eslintServer.js )
++    0	    27	 19252	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     6	 11676	       C:\windows\system32\conhost.exe 0x4
++    0	    90	 31392	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=33164
++    0	    89	 32536	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 3561 files
++|      File types: rs(462) txt(442) o(311) json(181) timestamp(163) d(142)
++|                  snap(107) rmeta(106) rlib(104) md(58)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/.code/agents/9ad4ec31-1f09-4adc-87f1-15f8f6988543/result.txt b/.code/agents/9ad4ec31-1f09-4adc-87f1-15f8f6988543/result.txt
+new file mode 100644
+index 00000000..da970e16
+--- /dev/null
++++ b/.code/agents/9ad4ec31-1f09-4adc-87f1-15f8f6988543/result.txt
+@@ -0,0 +1,54 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (12.93GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --new-window --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   149	  4128	code
++    0	    29	   276	   crashpad-handler
++    0	   196	 14164	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    94	 14512	pty-host
++    0	   100	 15300	shared-process
++    0	    48	 21688	   utility-network-service
++    0	   101	 32400	file-watcher [1]
++    0	    83	 32660	   gpu-process
++    0	   595	 33164	extension-host [1]
++    0	    10	  2856	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     6	  7652	       C:\windows\system32\conhost.exe 0x4
++    0	    79	  6832	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     6	 30472	       C:\windows\system32\conhost.exe 0x4
++    0	    88	 14540	     electron-nodejs (eslintServer.js )
++    0	    27	 19252	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     6	 11676	       C:\windows\system32\conhost.exe 0x4
++    0	    90	 31392	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=33164
++    0	    89	 32536	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 3561 files
++|      File types: rs(462) txt(442) o(311) json(181) timestamp(163) d(142)
++|                  snap(107) rmeta(106) rlib(104) md(58)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/codex-rs/app-server-protocol/src/protocol.rs b/codex-rs/app-server-protocol/src/protocol.rs
+index 9befe971..ad1b410e 100644
+--- a/codex-rs/app-server-protocol/src/protocol.rs
++++ b/codex-rs/app-server-protocol/src/protocol.rs
+@@ -457,6 +457,7 @@ pub struct LedgerJournal {
+ #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+ #[serde(rename_all = "camelCase")]
+ pub struct LedgerLockPeriodParams {
++    pub company_id: String,
+     pub journal_id: String,
+     pub period: LedgerPeriodRef,
+     pub action: LedgerPeriodAction,
+diff --git a/codex-rs/app-server/src/codex_message_processor.rs b/codex-rs/app-server/src/codex_message_processor.rs
+index 2848bf78..e22a0f70 100644
+--- a/codex-rs/app-server/src/codex_message_processor.rs
++++ b/codex-rs/app-server/src/codex_message_processor.rs
+@@ -1839,11 +1839,18 @@ impl CodexMessageProcessor {
+             return;
+         };
+ 
++        let LedgerLockPeriodParams {
++            company_id,
++            journal_id,
++            period,
++            action,
++        } = params;
++
+         let request = LedgerLockPeriodRequest {
+-            journal_id: params.journal_id,
+-            period: to_ledger_period_ref(params.period),
+-            action: to_ledger_period_action(params.action),
+-            tenant: default_ledger_tenant_context(),
++            journal_id,
++            period: to_ledger_period_ref(period),
++            action: to_ledger_period_action(action),
++            tenant: ledger_tenant_context_for_company(company_id),
+         };
+ 
+         match service.lock_period(request).await {
+@@ -1871,6 +1878,14 @@ fn default_ledger_tenant_context() -> LedgerTenantContext {
+     }
+ }
+ 
++#[cfg(feature = "ledger")]
++fn ledger_tenant_context_for_company(company_id: String) -> LedgerTenantContext {
++    LedgerTenantContext {
++        tenant_id: company_id,
++        ..default_ledger_tenant_context()
++    }
++}
++
+ #[cfg(feature = "ledger")]
+ fn to_ledger_currency(currency: LedgerCurrency) -> LedgerCurrencyModel {
+     LedgerCurrencyModel {
+diff --git a/codex-rs/app-server/tests/common/mcp_process.rs b/codex-rs/app-server/tests/common/mcp_process.rs
+index 8eb99546..1460508e 100644
+--- a/codex-rs/app-server/tests/common/mcp_process.rs
++++ b/codex-rs/app-server/tests/common/mcp_process.rs
+@@ -25,6 +25,10 @@ use codex_app_server_protocol::LedgerCreateCompanyParams;
+ #[cfg(feature = "ledger")]
+ use codex_app_server_protocol::LedgerLockPeriodParams;
+ #[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodAction;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodRef;
++#[cfg(feature = "ledger")]
+ use codex_app_server_protocol::LedgerPostEntryParams;
+ #[cfg(feature = "ledger")]
+ use codex_app_server_protocol::LedgerReverseEntryParams;
+@@ -362,8 +366,17 @@ impl McpProcess {
+     #[cfg(feature = "ledger")]
+     pub async fn send_ledger_lock_period_request(
+         &mut self,
+-        params: LedgerLockPeriodParams,
++        company_id: String,
++        journal_id: String,
++        period: LedgerPeriodRef,
++        action: LedgerPeriodAction,
+     ) -> anyhow::Result<i64> {
++        let params = LedgerLockPeriodParams {
++            company_id,
++            journal_id,
++            period,
++            action,
++        };
+         let params = Some(serde_json::to_value(params)?);
+         self.send_request("ledgerLockPeriod", params).await
+     }
+diff --git a/codex-rs/app-server/tests/suite/ledger_create_company.rs b/codex-rs/app-server/tests/suite/ledger_create_company.rs
+index e86e6425..ae04f920 100644
+--- a/codex-rs/app-server/tests/suite/ledger_create_company.rs
++++ b/codex-rs/app-server/tests/suite/ledger_create_company.rs
+@@ -10,6 +10,10 @@ use codex_app_server_protocol::LedgerCreateCompanyParams;
+ use codex_app_server_protocol::LedgerCreateCompanyResponse;
+ use codex_app_server_protocol::LedgerCurrency;
+ use codex_app_server_protocol::LedgerFiscalCalendar;
++use codex_app_server_protocol::LedgerLockPeriodResponse;
++use codex_app_server_protocol::LedgerPeriodAction;
++use codex_app_server_protocol::LedgerPeriodRef;
++use codex_app_server_protocol::LedgerPeriodState;
+ use codex_app_server_protocol::RequestId;
+ use pretty_assertions::assert_eq;
+ use tempfile::TempDir;
+@@ -42,7 +46,6 @@ async fn ledger_create_company_provisions_company() {
+             periods_per_year: 12,
+             opening_month: 1,
+         },
+-        metadata: None,
+     };
+ 
+     let request_id = mcp
+@@ -67,6 +70,34 @@ async fn ledger_create_company_provisions_company() {
+     assert_eq!(company.base_currency.precision, 2);
+     assert_eq!(company.fiscal_calendar.periods_per_year, 12);
+     assert!(company.id.starts_with("co-"));
++
++    let lock_request_id = mcp
++        .send_ledger_lock_period_request(
++            company.id.clone(),
++            "jnl-gl".to_string(),
++            LedgerPeriodRef {
++                fiscal_year: 2025,
++                period: 1,
++            },
++            LedgerPeriodAction::SoftClose,
++        )
++        .await
++        .expect("send ledgerLockPeriod");
++
++    let lock_response: JSONRPCResponse = timeout(
++        DEFAULT_READ_TIMEOUT,
++        mcp.read_stream_until_response_message(RequestId::Integer(lock_request_id)),
++    )
++    .await
++    .expect("ledgerLockPeriod timeout")
++    .expect("ledgerLockPeriod response");
++
++    let LedgerLockPeriodResponse { journal } =
++        to_response::<LedgerLockPeriodResponse>(lock_response)
++            .expect("deserialize ledgerLockPeriod response");
++
++    assert_eq!(journal.company_id, company.id);
++    assert_eq!(journal.period_state, LedgerPeriodState::SoftClosed);
+ }
+ 
+ fn create_config_toml(codex_home: &Path) -> std::io::Result<()> {

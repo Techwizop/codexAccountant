@@ -6,6 +6,10 @@ version = { workspace = true }
 [lib]
 path = "lib.rs"
 
+[features]
+default = []
+ledger = []
+
 [dependencies]
 anyhow = { workspace = true }
 assert_cmd = { workspace = true }

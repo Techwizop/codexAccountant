@@ -19,3 +19,8 @@
 - Avoid ANSI `blue` and `yellow` because for now the style guide doesn't use them. Prefer a foreground color mentioned above.
 
 (There are some rules to try to catch this in `clippy.toml`.)
+
+# Preview line helpers
+
+- Use `wrap_plain_line`, `wrap_bullet_line`, and `wrap_subdetail_line` from `preview_wrapping.rs` for ledger/reconciliation dashboards so wrapped spans stay within the shared `PREVIEW_WRAP_WIDTH` (72 columns).
+- When a different prefix is absolutely required, add a brief comment explaining why the helper cannot be used to avoid drifting prefixes across dashboards.

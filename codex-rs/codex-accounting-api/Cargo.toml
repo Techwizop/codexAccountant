@@ -1,0 +1,27 @@
+[package]
+edition = "2024"
+name = "codex-accounting-api"
+version = { workspace = true }
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+chrono = { workspace = true }
+codex-app-server-protocol = { workspace = true }
+codex-approvals = { workspace = true }
+codex-bank-ingest = { workspace = true }
+codex-ledger = { workspace = true }
+codex-reconcile = { workspace = true }
+codex-tenancy = { workspace = true }
+codex-policy = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tempfile = { workspace = true }

@@ -1,0 +1,57 @@
+---
+source: tui/src/reconciliation_preview.rs
+expression: sanitized
+---
+Reconciliation dashboard
+Company Demo Manufacturing (co-1)
+
+Ingest health [###########.........] 53% 8 of 15 deduped • last feed
+              <AGO>
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+Reconciliation coverage [###############.....] 73% 8 matched • 3 pending
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+    └ See CLI summary for duplicate set <ID>
+Approvals backlog [##########..........] 50% 1 overdue • 2 open
+
+Bank transactions
+  • <DATE> Stripe payout $125.00
+    └ account operating-cash • ref REF-001
+  • <DATE> Utility payment -$42.00
+    └ account operating-cash • ref REF-002 • 1 dup trimmed
+  • <DATE> Vendor ACH -$81.00
+    └ account operating-cash • ref REF-003
+  • <DATE> Vendor ACH remainder -$15.00
+    └ account operating-cash • ref REF-004
+  … additional transactions trimmed
+
+Match candidates
+  • txn-001 ⇔ je-demo-1 pending 82%
+  • txn-003 ⇔ je-demo-1 partial 71%
+    └ group grp-split
+  • txn-004 ⇔ je-demo-1 partial 71%
+    └ group grp-split
+  • txn-002 ⇔ je-demo-1 written-off 68%
+    └ group grp-utility • write-off APR-UTILITY-ADJ
+  … additional candidates trimmed
+
+SLA indicators
+  • Overdue approvals 1 of 2
+  • Next SLA overdue by <DURATION>
+
+Approvals backlog details
+  • Write-off approval pending $81.00 USD HIGH
+    └ stage 1/1 • SLA overdue by <DURATION> • submitted <AGO>
+  • Monthly reconciliation sign-off pending $50.00 USD
+    └ stage 1/1 • SLA due in <DURATION> • submitted <AGO>
+
+Snapshot generated <AGO>
+Telemetry tx 13 • candidates 5 • write-offs 0
+Period locks 0 total • close 0 • soft 0 • reopen 0
+Policy decisions auto-post 0 • needs-approval 0 • reject 0
+Approvals snapshot 2 open / 1 overdue
+Telemetry file in-memory (set CODEX_HOME to persist)

@@ -1,0 +1,5 @@
+transaction_id,account_id,posted_date,amount,currency,description,source_reference,checksum,voided
+txn-001,acct-100,2024-10-01,105.50,USD,Coffee run,REF-001,,false
+txn-duplicate-0,acct-100,2024-10-02,42.00,USD,Team snacks,REF-002,,false
+txn-duplicate-1,acct-100,2024-10-02,42.00,USD,Team snacks (retry),REF-002,,false
+txn-eur-void,acct-100,2024-10-03,-15.75,EUR,Refund,,,true

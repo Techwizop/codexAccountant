@@ -1,0 +1,2281 @@
+     1	use crate::error_code::INTERNAL_ERROR_CODE;
+     2	use crate::error_code::INVALID_REQUEST_ERROR_CODE;
+     3	use crate::fuzzy_file_search::run_fuzzy_file_search;
+     4	use crate::outgoing_message::OutgoingMessageSender;
+     5	use crate::outgoing_message::OutgoingNotification;
+     6	use codex_app_server_protocol::AddConversationListenerParams;
+     7	use codex_app_server_protocol::AddConversationSubscriptionResponse;
+     8	use codex_app_server_protocol::ApplyPatchApprovalParams;
+     9	use codex_app_server_protocol::ApplyPatchApprovalResponse;
+    10	use codex_app_server_protocol::ArchiveConversationParams;
+    11	use codex_app_server_protocol::ArchiveConversationResponse;
+    12	use codex_app_server_protocol::AuthStatusChangeNotification;
+    13	use codex_app_server_protocol::ClientRequest;
+    14	use codex_app_server_protocol::ConversationSummary;
+    15	use codex_app_server_protocol::ExecCommandApprovalParams;
+    16	use codex_app_server_protocol::ExecCommandApprovalResponse;
+    17	use codex_app_server_protocol::ExecOneOffCommandParams;
+    18	use codex_app_server_protocol::ExecOneOffCommandResponse;
+    19	use codex_app_server_protocol::FuzzyFileSearchParams;
+    20	use codex_app_server_protocol::FuzzyFileSearchResponse;
+    21	use codex_app_server_protocol::GetUserAgentResponse;
+    22	use codex_app_server_protocol::GetUserSavedConfigResponse;
+    23	use codex_app_server_protocol::GitDiffToRemoteResponse;
+    24	use codex_app_server_protocol::InputItem as WireInputItem;
+    25	use codex_app_server_protocol::InterruptConversationParams;
+    26	use codex_app_server_protocol::InterruptConversationResponse;
+    27	use codex_app_server_protocol::JSONRPCErrorError;
+    28	#[cfg(feature = "ledger")]
+    29	use codex_app_server_protocol::LedgerAccount;
+    30	#[cfg(feature = "ledger")]
+    31	use codex_app_server_protocol::LedgerAccountType;
+    32	#[cfg(feature = "ledger")]
+    33	use codex_app_server_protocol::LedgerCompany;
+    34	#[cfg(feature = "ledger")]
+    35	use codex_app_server_protocol::LedgerCreateCompanyParams;
+    36	#[cfg(feature = "ledger")]
+    37	use codex_app_server_protocol::LedgerCreateCompanyResponse;
+    38	#[cfg(feature = "ledger")]
+    39	use codex_app_server_protocol::LedgerCurrency;
+    40	#[cfg(feature = "ledger")]
+    41	use codex_app_server_protocol::LedgerCurrencyMode;
+    42	#[cfg(feature = "ledger")]
+    43	use codex_app_server_protocol::LedgerCurrencyRate;
+    44	#[cfg(feature = "ledger")]
+    45	use codex_app_server_protocol::LedgerEntryOrigin;
+    46	#[cfg(feature = "ledger")]
+    47	use codex_app_server_protocol::LedgerEntryStatus;
+    48	#[cfg(feature = "ledger")]
+    49	use codex_app_server_protocol::LedgerFiscalCalendar;
+    50	#[cfg(feature = "ledger")]
+    51	use codex_app_server_protocol::LedgerJournal;
+    52	#[cfg(feature = "ledger")]
+    53	use codex_app_server_protocol::LedgerJournalEntry;
+    54	#[cfg(feature = "ledger")]
+    55	use codex_app_server_protocol::LedgerJournalLine;
+    56	#[cfg(feature = "ledger")]
+    57	use codex_app_server_protocol::LedgerJournalType;
+    58	#[cfg(feature = "ledger")]
+    59	use codex_app_server_protocol::LedgerLockPeriodParams;
+    60	#[cfg(feature = "ledger")]
+    61	use codex_app_server_protocol::LedgerLockPeriodResponse;
+    62	#[cfg(feature = "ledger")]
+    63	use codex_app_server_protocol::LedgerPeriodAction;
+    64	#[cfg(feature = "ledger")]
+    65	use codex_app_server_protocol::LedgerPeriodRef;
+    66	#[cfg(feature = "ledger")]
+    67	use codex_app_server_protocol::LedgerPeriodState;
+    68	#[cfg(feature = "ledger")]
+    69	use codex_app_server_protocol::LedgerPostEntryParams;
+    70	#[cfg(feature = "ledger")]
+    71	use codex_app_server_protocol::LedgerPostEntryResponse;
+    72	#[cfg(feature = "ledger")]
+    73	use codex_app_server_protocol::LedgerPostingMode;
+    74	#[cfg(feature = "ledger")]
+    75	use codex_app_server_protocol::LedgerPostingSide;
+    76	#[cfg(feature = "ledger")]
+    77	use codex_app_server_protocol::LedgerReverseEntryParams;
+    78	#[cfg(feature = "ledger")]
+    79	use codex_app_server_protocol::LedgerReverseEntryResponse;
+    80	#[cfg(feature = "ledger")]
+    81	use codex_app_server_protocol::LedgerTaxCode;
+    82	#[cfg(feature = "ledger")]
+    83	use codex_app_server_protocol::LedgerUpsertAccountParams;
+    84	#[cfg(feature = "ledger")]
+    85	use codex_app_server_protocol::LedgerUpsertAccountResponse;
+    86	use codex_app_server_protocol::ListConversationsParams;
+    87	use codex_app_server_protocol::ListConversationsResponse;
+    88	use codex_app_server_protocol::LoginApiKeyParams;
+    89	use codex_app_server_protocol::LoginApiKeyResponse;
+    90	use codex_app_server_protocol::LoginChatGptCompleteNotification;
+    91	use codex_app_server_protocol::LoginChatGptResponse;
+    92	use codex_app_server_protocol::NewConversationParams;
+    93	use codex_app_server_protocol::NewConversationResponse;
+    94	use codex_app_server_protocol::RemoveConversationListenerParams;
+    95	use codex_app_server_protocol::RemoveConversationSubscriptionResponse;
+    96	use codex_app_server_protocol::RequestId;
+    97	use codex_app_server_protocol::Result as JsonRpcResult;
+    98	use codex_app_server_protocol::ResumeConversationParams;
+    99	use codex_app_server_protocol::SendUserMessageParams;
+   100	use codex_app_server_protocol::SendUserMessageResponse;
+   101	use codex_app_server_protocol::SendUserTurnParams;
+   102	use codex_app_server_protocol::SendUserTurnResponse;
+   103	use codex_app_server_protocol::ServerNotification;
+   104	use codex_app_server_protocol::ServerRequestPayload;
+   105	use codex_app_server_protocol::SessionConfiguredNotification;
+   106	use codex_app_server_protocol::SetDefaultModelParams;
+   107	use codex_app_server_protocol::SetDefaultModelResponse;
+   108	use codex_app_server_protocol::UserInfoResponse;
+   109	use codex_app_server_protocol::UserSavedConfig;
+   110	use codex_core::AuthManager;
+   111	use codex_core::CodexConversation;
+   112	use codex_core::ConversationManager;
+   113	use codex_core::Cursor as RolloutCursor;
+   114	use codex_core::INTERACTIVE_SESSION_SOURCES;
+   115	use codex_core::NewConversation;
+   116	use codex_core::RolloutRecorder;
+   117	use codex_core::SessionMeta;
+   118	use codex_core::auth::CLIENT_ID;
+   119	use codex_core::auth::get_auth_file;
+   120	use codex_core::auth::login_with_api_key;
+   121	use codex_core::auth::try_read_auth_json;
+   122	use codex_core::config::Config;
+   123	use codex_core::config::ConfigOverrides;
+   124	use codex_core::config::ConfigToml;
+   125	use codex_core::config::load_config_as_toml;
+   126	use codex_core::config_edit::CONFIG_KEY_EFFORT;
+   127	use codex_core::config_edit::CONFIG_KEY_MODEL;
+   128	use codex_core::config_edit::persist_overrides_and_clear_if_none;
+   129	use codex_core::default_client::get_codex_user_agent;
+   130	use codex_core::exec::ExecParams;
+   131	use codex_core::exec_env::create_env;
+   132	use codex_core::get_platform_sandbox;
+   133	use codex_core::git_info::git_diff_to_remote;
+   134	use codex_core::protocol::ApplyPatchApprovalRequestEvent;
+   135	use codex_core::protocol::Event;
+   136	use codex_core::protocol::EventMsg;
+   137	use codex_core::protocol::ExecApprovalRequestEvent;
+   138	use codex_core::protocol::InputItem as CoreInputItem;
+   139	use codex_core::protocol::Op;
+   140	use codex_core::protocol::ReviewDecision;
+   141	#[cfg(feature = "ledger")]
+   142	use codex_ledger::Account as LedgerAccountModel;
+   143	#[cfg(feature = "ledger")]
+   144	use codex_ledger::AccountType as LedgerAccountTypeModel;
+   145	#[cfg(feature = "ledger")]
+   146	use codex_ledger::CreateCompanyRequest as LedgerCreateCompanyRequest;
+   147	#[cfg(feature = "ledger")]
+   148	use codex_ledger::Currency as LedgerCurrencyModel;
+   149	#[cfg(feature = "ledger")]
+   150	use codex_ledger::CurrencyMode as LedgerCurrencyModeModel;
+   151	#[cfg(feature = "ledger")]
+   152	use codex_ledger::CurrencyRate as LedgerCurrencyRateModel;
+   153	#[cfg(feature = "ledger")]
+   154	use codex_ledger::EntryOrigin as LedgerEntryOriginModel;
+   155	#[cfg(feature = "ledger")]
+   156	use codex_ledger::EntryStatus as LedgerEntryStatusModel;
+   157	#[cfg(feature = "ledger")]
+   158	use codex_ledger::FiscalCalendar as LedgerFiscalCalendarModel;
+   159	#[cfg(feature = "ledger")]
+   160	use codex_ledger::InMemoryLedgerService;
+   161	#[cfg(feature = "ledger")]
+   162	use codex_ledger::Journal as LedgerJournalModel;
+   163	#[cfg(feature = "ledger")]
+   164	use codex_ledger::JournalEntry as LedgerJournalEntryModel;
+   165	#[cfg(feature = "ledger")]
+   166	use codex_ledger::JournalLine as LedgerJournalLineModel;
+   167	#[cfg(feature = "ledger")]
+   168	use codex_ledger::LedgerError;
+   169	#[cfg(feature = "ledger")]
+   170	use codex_ledger::LedgerType as LedgerJournalTypeModel;
+   171	#[cfg(feature = "ledger")]
+   172	use codex_ledger::LockPeriodRequest as LedgerLockPeriodRequest;
+   173	#[cfg(feature = "ledger")]
+   174	use codex_ledger::PeriodAction as LedgerPeriodActionModel;
+   175	#[cfg(feature = "ledger")]
+   176	use codex_ledger::PeriodRef as LedgerPeriodRefModel;
+   177	#[cfg(feature = "ledger")]
+   178	use codex_ledger::PeriodState as LedgerPeriodStateModel;
+   179	#[cfg(feature = "ledger")]
+   180	use codex_ledger::PostEntryRequest as LedgerPostEntryRequest;
+   181	#[cfg(feature = "ledger")]
+   182	use codex_ledger::PostingMode as LedgerPostingModeModel;
+   183	#[cfg(feature = "ledger")]
+   184	use codex_ledger::PostingSide as LedgerPostingSideModel;
+   185	#[cfg(feature = "ledger")]
+   186	use codex_ledger::ReverseEntryRequest as LedgerReverseEntryRequest;
+   187	#[cfg(feature = "ledger")]
+   188	use codex_ledger::Role as LedgerRole;
+   189	#[cfg(feature = "ledger")]
+   190	use codex_ledger::TaxCode as LedgerTaxCodeModel;
+   191	#[cfg(feature = "ledger")]
+   192	use codex_ledger::TenantContext as LedgerTenantContext;
+   193	#[cfg(feature = "ledger")]
+   194	use codex_ledger::UpsertAccountRequest as LedgerUpsertAccountRequest;
+   195	use codex_login::ServerOptions as LoginServerOptions;
+   196	use codex_login::ShutdownHandle;
+   197	use codex_login::run_login_server;
+   198	use codex_protocol::ConversationId;
+   199	use codex_protocol::models::ContentItem;
+   200	use codex_protocol::models::ResponseItem;
+   201	use codex_protocol::protocol::InputMessageKind;
+   202	use codex_protocol::protocol::USER_MESSAGE_BEGIN;
+   203	use codex_utils_json_to_toml::json_to_toml;
+   204	use std::collections::HashMap;
+   205	use std::ffi::OsStr;
+   206	use std::path::PathBuf;
+   207	use std::sync::Arc;
+   208	use std::sync::atomic::AtomicBool;
+   209	use std::sync::atomic::Ordering;
+   210	use std::time::Duration;
+   211	#[cfg(feature = "ledger")]
+   212	use std::time::SystemTime;
+   213	use tokio::select;
+   214	use tokio::sync::Mutex;
+   215	use tokio::sync::oneshot;
+   216	use tracing::error;
+   217	use tracing::info;
+   218	use tracing::warn;
+   219	use uuid::Uuid;
+   220	
+   221	// Duration before a ChatGPT login attempt is abandoned.
+   222	const LOGIN_CHATGPT_TIMEOUT: Duration = Duration::from_secs(10 * 60);
+   223	
+   224	struct ActiveLogin {
+   225	    shutdown_handle: ShutdownHandle,
+   226	    login_id: Uuid,
+   227	}
+   228	
+   229	impl ActiveLogin {
+   230	    fn drop(&self) {
+   231	        self.shutdown_handle.shutdown();
+   232	    }
+   233	}
+   234	
+   235	/// Handles JSON-RPC messages for Codex conversations.
+   236	pub(crate) struct CodexMessageProcessor {
+   237	    auth_manager: Arc<AuthManager>,
+   238	    conversation_manager: Arc<ConversationManager>,
+   239	    outgoing: Arc<OutgoingMessageSender>,
+   240	    codex_linux_sandbox_exe: Option<PathBuf>,
+   241	    config: Arc<Config>,
+   242	    conversation_listeners: HashMap<Uuid, oneshot::Sender<()>>,
+   243	    active_login: Arc<Mutex<Option<ActiveLogin>>>,
+   244	    // Queue of pending interrupt requests per conversation. We reply when TurnAborted arrives.
+   245	    pending_interrupts: Arc<Mutex<HashMap<ConversationId, Vec<RequestId>>>>,
+   246	    pending_fuzzy_searches: Arc<Mutex<HashMap<String, Arc<AtomicBool>>>>,
+   247	    #[cfg(feature = "ledger")]
+   248	    ledger_service: Option<Arc<InMemoryLedgerService>>,
+   249	}
+   250	
+   251	impl CodexMessageProcessor {
+   252	    pub fn new(
+   253	        auth_manager: Arc<AuthManager>,
+   254	        conversation_manager: Arc<ConversationManager>,
+   255	        outgoing: Arc<OutgoingMessageSender>,
+   256	        codex_linux_sandbox_exe: Option<PathBuf>,
+   257	        config: Arc<Config>,
+   258	        #[cfg(feature = "ledger")] ledger_service: Option<Arc<InMemoryLedgerService>>,
+   259	    ) -> Self {
+   260	        Self {
+   261	            auth_manager,
+   262	            conversation_manager,
+   263	            outgoing,
+   264	            codex_linux_sandbox_exe,
+   265	            config,
+   266	            conversation_listeners: HashMap::new(),
+   267	            active_login: Arc::new(Mutex::new(None)),
+   268	            pending_interrupts: Arc::new(Mutex::new(HashMap::new())),
+   269	            pending_fuzzy_searches: Arc::new(Mutex::new(HashMap::new())),
+   270	            #[cfg(feature = "ledger")]
+   271	            ledger_service,
+   272	        }
+   273	    }
+   274	
+   275	    pub async fn process_request(&mut self, request: ClientRequest) {
+   276	        match request {
+   277	            ClientRequest::Initialize { .. } => {
+   278	                panic!("Initialize should be handled in MessageProcessor");
+   279	            }
+   280	            ClientRequest::NewConversation { request_id, params } => {
+   281	                // Do not tokio::spawn() to process new_conversation()
+   282	                // asynchronously because we need to ensure the conversation is
+   283	                // created before processing any subsequent messages.
+   284	                self.process_new_conversation(request_id, params).await;
+   285	            }
+   286	            ClientRequest::ListConversations { request_id, params } => {
+   287	                self.handle_list_conversations(request_id, params).await;
+   288	            }
+   289	            ClientRequest::ResumeConversation { request_id, params } => {
+   290	                self.handle_resume_conversation(request_id, params).await;
+   291	            }
+   292	            ClientRequest::ArchiveConversation { request_id, params } => {
+   293	                self.archive_conversation(request_id, params).await;
+   294	            }
+   295	            ClientRequest::SendUserMessage { request_id, params } => {
+   296	                self.send_user_message(request_id, params).await;
+   297	            }
+   298	            ClientRequest::SendUserTurn { request_id, params } => {
+   299	                self.send_user_turn(request_id, params).await;
+   300	            }
+   301	            ClientRequest::InterruptConversation { request_id, params } => {
+   302	                self.interrupt_conversation(request_id, params).await;
+   303	            }
+   304	            ClientRequest::AddConversationListener { request_id, params } => {
+   305	                self.add_conversation_listener(request_id, params).await;
+   306	            }
+   307	            ClientRequest::RemoveConversationListener { request_id, params } => {
+   308	                self.remove_conversation_listener(request_id, params).await;
+   309	            }
+   310	            ClientRequest::GitDiffToRemote { request_id, params } => {
+   311	                self.git_diff_to_origin(request_id, params.cwd).await;
+   312	            }
+   313	            ClientRequest::LoginApiKey { request_id, params } => {
+   314	                self.login_api_key(request_id, params).await;
+   315	            }
+   316	            ClientRequest::LoginChatGpt {
+   317	                request_id,
+   318	                params: _,
+   319	            } => {
+   320	                self.login_chatgpt(request_id).await;
+   321	            }
+   322	            ClientRequest::CancelLoginChatGpt { request_id, params } => {
+   323	                self.cancel_login_chatgpt(request_id, params.login_id).await;
+   324	            }
+   325	            ClientRequest::LogoutChatGpt {
+   326	                request_id,
+   327	                params: _,
+   328	            } => {
+   329	                self.logout_chatgpt(request_id).await;
+   330	            }
+   331	            ClientRequest::GetAuthStatus { request_id, params } => {
+   332	                self.get_auth_status(request_id, params).await;
+   333	            }
+   334	            ClientRequest::GetUserSavedConfig {
+   335	                request_id,
+   336	                params: _,
+   337	            } => {
+   338	                self.get_user_saved_config(request_id).await;
+   339	            }
+   340	            ClientRequest::SetDefaultModel { request_id, params } => {
+   341	                self.set_default_model(request_id, params).await;
+   342	            }
+   343	            ClientRequest::GetUserAgent {
+   344	                request_id,
+   345	                params: _,
+   346	            } => {
+   347	                self.get_user_agent(request_id).await;
+   348	            }
+   349	            ClientRequest::LedgerCreateCompany { request_id, params } => {
+   350	                #[cfg(feature = "ledger")]
+   351	                {
+   352	                    self.handle_ledger_create_company(request_id, params).await;
+   353	                }
+   354	                #[cfg(not(feature = "ledger"))]
+   355	                {
+   356	                    let _ = params;
+   357	                    let error = JSONRPCErrorError {
+   358	                        code: INVALID_REQUEST_ERROR_CODE,
+   359	                        message: "ledger feature not enabled".to_string(),
+   360	                        data: None,
+   361	                    };
+   362	                    self.outgoing.send_error(request_id, error).await;
+   363	                }
+   364	            }
+   365	            ClientRequest::LedgerUpsertAccount { request_id, params } => {
+   366	                #[cfg(feature = "ledger")]
+   367	                {
+   368	                    self.handle_ledger_upsert_account(request_id, params).await;
+   369	                }
+   370	                #[cfg(not(feature = "ledger"))]
+   371	                {
+   372	                    let _ = params;
+   373	                    let error = JSONRPCErrorError {
+   374	                        code: INVALID_REQUEST_ERROR_CODE,
+   375	                        message: "ledger feature not enabled".to_string(),
+   376	                        data: None,
+   377	                    };
+   378	                    self.outgoing.send_error(request_id, error).await;
+   379	                }
+   380	            }
+   381	            ClientRequest::LedgerPostEntry { request_id, params } => {
+   382	                #[cfg(feature = "ledger")]
+   383	                {
+   384	                    self.handle_ledger_post_entry(request_id, params).await;
+   385	                }
+   386	                #[cfg(not(feature = "ledger"))]
+   387	                {
+   388	                    let _ = params;
+   389	                    let error = JSONRPCErrorError {
+   390	                        code: INVALID_REQUEST_ERROR_CODE,
+   391	                        message: "ledger feature not enabled".to_string(),
+   392	                        data: None,
+   393	                    };
+   394	                    self.outgoing.send_error(request_id, error).await;
+   395	                }
+   396	            }
+   397	            ClientRequest::LedgerReverseEntry { request_id, params } => {
+   398	                #[cfg(feature = "ledger")]
+   399	                {
+   400	                    self.handle_ledger_reverse_entry(request_id, params).await;
+   401	                }
+   402	                #[cfg(not(feature = "ledger"))]
+   403	                {
+   404	                    let _ = params;
+   405	                    let error = JSONRPCErrorError {
+   406	                        code: INVALID_REQUEST_ERROR_CODE,
+   407	                        message: "ledger feature not enabled".to_string(),
+   408	                        data: None,
+   409	                    };
+   410	                    self.outgoing.send_error(request_id, error).await;
+   411	                }
+   412	            }
+   413	            ClientRequest::LedgerLockPeriod { request_id, params } => {
+   414	                #[cfg(feature = "ledger")]
+   415	                {
+   416	                    self.handle_ledger_lock_period(request_id, params).await;
+   417	                }
+   418	                #[cfg(not(feature = "ledger"))]
+   419	                {
+   420	                    let _ = params;
+   421	                    let error = JSONRPCErrorError {
+   422	                        code: INVALID_REQUEST_ERROR_CODE,
+   423	                        message: "ledger feature not enabled".to_string(),
+   424	                        data: None,
+   425	                    };
+   426	                    self.outgoing.send_error(request_id, error).await;
+   427	                }
+   428	            }
+   429	            ClientRequest::UserInfo {
+   430	                request_id,
+   431	                params: _,
+   432	            } => {
+   433	                self.get_user_info(request_id).await;
+   434	            }
+   435	            ClientRequest::FuzzyFileSearch { request_id, params } => {
+   436	                self.fuzzy_file_search(request_id, params).await;
+   437	            }
+   438	            ClientRequest::ExecOneOffCommand { request_id, params } => {
+   439	                self.exec_one_off_command(request_id, params).await;
+   440	            }
+   441	        }
+   442	    }
+   443	
+   444	    async fn login_api_key(&mut self, request_id: RequestId, params: LoginApiKeyParams) {
+   445	        {
+   446	            let mut guard = self.active_login.lock().await;
+   447	            if let Some(active) = guard.take() {
+   448	                active.drop();
+   449	            }
+   450	        }
+   451	
+   452	        match login_with_api_key(&self.config.codex_home, &params.api_key) {
+   453	            Ok(()) => {
+   454	                self.auth_manager.reload();
+   455	                self.outgoing
+   456	                    .send_response(request_id, LoginApiKeyResponse {})
+   457	                    .await;
+   458	
+   459	                let payload = AuthStatusChangeNotification {
+   460	                    auth_method: self.auth_manager.auth().map(|auth| auth.mode),
+   461	                };
+   462	                self.outgoing
+   463	                    .send_server_notification(ServerNotification::AuthStatusChange(payload))
+   464	                    .await;
+   465	            }
+   466	            Err(err) => {
+   467	                let error = JSONRPCErrorError {
+   468	                    code: INTERNAL_ERROR_CODE,
+   469	                    message: format!("failed to save api key: {err}"),
+   470	                    data: None,
+   471	                };
+   472	                self.outgoing.send_error(request_id, error).await;
+   473	            }
+   474	        }
+   475	    }
+   476	
+   477	    async fn login_chatgpt(&mut self, request_id: RequestId) {
+   478	        let config = self.config.as_ref();
+   479	
+   480	        let opts = LoginServerOptions {
+   481	            open_browser: false,
+   482	            ..LoginServerOptions::new(config.codex_home.clone(), CLIENT_ID.to_string())
+   483	        };
+   484	
+   485	        enum LoginChatGptReply {
+   486	            Response(LoginChatGptResponse),
+   487	            Error(JSONRPCErrorError),
+   488	        }
+   489	
+   490	        let reply = match run_login_server(opts) {
+   491	            Ok(server) => {
+   492	                let login_id = Uuid::new_v4();
+   493	                let shutdown_handle = server.cancel_handle();
+   494	
+   495	                // Replace active login if present.
+   496	                {
+   497	                    let mut guard = self.active_login.lock().await;
+   498	                    if let Some(existing) = guard.take() {
+   499	                        existing.drop();
+   500	                    }
+   501	                    *guard = Some(ActiveLogin {
+   502	                        shutdown_handle: shutdown_handle.clone(),
+   503	                        login_id,
+   504	                    });
+   505	                }
+   506	
+   507	                let response = LoginChatGptResponse {
+   508	                    login_id,
+   509	                    auth_url: server.auth_url.clone(),
+   510	                };
+   511	
+   512	                // Spawn background task to monitor completion.
+   513	                let outgoing_clone = self.outgoing.clone();
+   514	                let active_login = self.active_login.clone();
+   515	                let auth_manager = self.auth_manager.clone();
+   516	                tokio::spawn(async move {
+   517	                    let (success, error_msg) = match tokio::time::timeout(
+   518	                        LOGIN_CHATGPT_TIMEOUT,
+   519	                        server.block_until_done(),
+   520	                    )
+   521	                    .await
+   522	                    {
+   523	                        Ok(Ok(())) => (true, None),
+   524	                        Ok(Err(err)) => (false, Some(format!("Login server error: {err}"))),
+   525	                        Err(_elapsed) => {
+   526	                            // Timeout: cancel server and report
+   527	                            shutdown_handle.shutdown();
+   528	                            (false, Some("Login timed out".to_string()))
+   529	                        }
+   530	                    };
+   531	                    let payload = LoginChatGptCompleteNotification {
+   532	                        login_id,
+   533	                        success,
+   534	                        error: error_msg,
+   535	                    };
+   536	                    outgoing_clone
+   537	                        .send_server_notification(ServerNotification::LoginChatGptComplete(payload))
+   538	                        .await;
+   539	
+   540	                    // Send an auth status change notification.
+   541	                    if success {
+   542	                        // Update in-memory auth cache now that login completed.
+   543	                        auth_manager.reload();
+   544	
+   545	                        // Notify clients with the actual current auth mode.
+   546	                        let current_auth_method = auth_manager.auth().map(|a| a.mode);
+   547	                        let payload = AuthStatusChangeNotification {
+   548	                            auth_method: current_auth_method,
+   549	                        };
+   550	                        outgoing_clone
+   551	                            .send_server_notification(ServerNotification::AuthStatusChange(payload))
+   552	                            .await;
+   553	                    }
+   554	
+   555	                    // Clear the active login if it matches this attempt. It may have been replaced or cancelled.
+   556	                    let mut guard = active_login.lock().await;
+   557	                    if guard.as_ref().map(|l| l.login_id) == Some(login_id) {
+   558	                        *guard = None;
+   559	                    }
+   560	                });
+   561	
+   562	                LoginChatGptReply::Response(response)
+   563	            }
+   564	            Err(err) => LoginChatGptReply::Error(JSONRPCErrorError {
+   565	                code: INTERNAL_ERROR_CODE,
+   566	                message: format!("failed to start login server: {err}"),
+   567	                data: None,
+   568	            }),
+   569	        };
+   570	
+   571	        match reply {
+   572	            LoginChatGptReply::Response(resp) => {
+   573	                self.outgoing.send_response(request_id, resp).await
+   574	            }
+   575	            LoginChatGptReply::Error(err) => self.outgoing.send_error(request_id, err).await,
+   576	        }
+   577	    }
+   578	
+   579	    async fn cancel_login_chatgpt(&mut self, request_id: RequestId, login_id: Uuid) {
+   580	        let mut guard = self.active_login.lock().await;
+   581	        if guard.as_ref().map(|l| l.login_id) == Some(login_id) {
+   582	            if let Some(active) = guard.take() {
+   583	                active.drop();
+   584	            }
+   585	            drop(guard);
+   586	            self.outgoing
+   587	                .send_response(
+   588	                    request_id,
+   589	                    codex_app_server_protocol::CancelLoginChatGptResponse {},
+   590	                )
+   591	                .await;
+   592	        } else {
+   593	            drop(guard);
+   594	            let error = JSONRPCErrorError {
+   595	                code: INVALID_REQUEST_ERROR_CODE,
+   596	                message: format!("login id not found: {login_id}"),
+   597	                data: None,
+   598	            };
+   599	            self.outgoing.send_error(request_id, error).await;
+   600	        }
+   601	    }
+   602	
+   603	    async fn logout_chatgpt(&mut self, request_id: RequestId) {
+   604	        {
+   605	            // Cancel any active login attempt.
+   606	            let mut guard = self.active_login.lock().await;
+   607	            if let Some(active) = guard.take() {
+   608	                active.drop();
+   609	            }
+   610	        }
+   611	
+   612	        if let Err(err) = self.auth_manager.logout() {
+   613	            let error = JSONRPCErrorError {
+   614	                code: INTERNAL_ERROR_CODE,
+   615	                message: format!("logout failed: {err}"),
+   616	                data: None,
+   617	            };
+   618	            self.outgoing.send_error(request_id, error).await;
+   619	            return;
+   620	        }
+   621	
+   622	        self.outgoing
+   623	            .send_response(
+   624	                request_id,
+   625	                codex_app_server_protocol::LogoutChatGptResponse {},
+   626	            )
+   627	            .await;
+   628	
+   629	        // Send auth status change notification reflecting the current auth mode
+   630	        // after logout.
+   631	        let current_auth_method = self.auth_manager.auth().map(|auth| auth.mode);
+   632	        let payload = AuthStatusChangeNotification {
+   633	            auth_method: current_auth_method,
+   634	        };
+   635	        self.outgoing
+   636	            .send_server_notification(ServerNotification::AuthStatusChange(payload))
+   637	            .await;
+   638	    }
+   639	
+   640	    async fn get_auth_status(
+   641	        &self,
+   642	        request_id: RequestId,
+   643	        params: codex_app_server_protocol::GetAuthStatusParams,
+   644	    ) {
+   645	        let include_token = params.include_token.unwrap_or(false);
+   646	        let do_refresh = params.refresh_token.unwrap_or(false);
+   647	
+   648	        if do_refresh && let Err(err) = self.auth_manager.refresh_token().await {
+   649	            tracing::warn!("failed to refresh token while getting auth status: {err}");
+   650	        }
+   651	
+   652	        // Determine whether auth is required based on the active model provider.
+   653	        // If a custom provider is configured with `requires_openai_auth == false`,
+   654	        // then no auth step is required; otherwise, default to requiring auth.
+   655	        let requires_openai_auth = self.config.model_provider.requires_openai_auth;
+   656	
+   657	        let response = if !requires_openai_auth {
+   658	            codex_app_server_protocol::GetAuthStatusResponse {
+   659	                auth_method: None,
+   660	                auth_token: None,
+   661	                requires_openai_auth: Some(false),
+   662	            }
+   663	        } else {
+   664	            match self.auth_manager.auth() {
+   665	                Some(auth) => {
+   666	                    let auth_mode = auth.mode;
+   667	                    let (reported_auth_method, token_opt) = match auth.get_token().await {
+   668	                        Ok(token) if !token.is_empty() => {
+   669	                            let tok = if include_token { Some(token) } else { None };
+   670	                            (Some(auth_mode), tok)
+   671	                        }
+   672	                        Ok(_) => (None, None),
+   673	                        Err(err) => {
+   674	                            tracing::warn!("failed to get token for auth status: {err}");
+   675	                            (None, None)
+   676	                        }
+   677	                    };
+   678	                    codex_app_server_protocol::GetAuthStatusResponse {
+   679	                        auth_method: reported_auth_method,
+   680	                        auth_token: token_opt,
+   681	                        requires_openai_auth: Some(true),
+   682	                    }
+   683	                }
+   684	                None => codex_app_server_protocol::GetAuthStatusResponse {
+   685	                    auth_method: None,
+   686	                    auth_token: None,
+   687	                    requires_openai_auth: Some(true),
+   688	                },
+   689	            }
+   690	        };
+   691	
+   692	        self.outgoing.send_response(request_id, response).await;
+   693	    }
+   694	
+   695	    async fn get_user_agent(&self, request_id: RequestId) {
+   696	        let user_agent = get_codex_user_agent();
+   697	        let response = GetUserAgentResponse { user_agent };
+   698	        self.outgoing.send_response(request_id, response).await;
+   699	    }
+   700	
+   701	    async fn get_user_saved_config(&self, request_id: RequestId) {
+   702	        let toml_value = match load_config_as_toml(&self.config.codex_home).await {
+   703	            Ok(val) => val,
+   704	            Err(err) => {
+   705	                let error = JSONRPCErrorError {
+   706	                    code: INTERNAL_ERROR_CODE,
+   707	                    message: format!("failed to load config.toml: {err}"),
+   708	                    data: None,
+   709	                };
+   710	                self.outgoing.send_error(request_id, error).await;
+   711	                return;
+   712	            }
+   713	        };
+   714	
+   715	        let cfg: ConfigToml = match toml_value.try_into() {
+   716	            Ok(cfg) => cfg,
+   717	            Err(err) => {
+   718	                let error = JSONRPCErrorError {
+   719	                    code: INTERNAL_ERROR_CODE,
+   720	                    message: format!("failed to parse config.toml: {err}"),
+   721	                    data: None,
+   722	                };
+   723	                self.outgoing.send_error(request_id, error).await;
+   724	                return;
+   725	            }
+   726	        };
+   727	
+   728	        let user_saved_config: UserSavedConfig = cfg.into();
+   729	
+   730	        let response = GetUserSavedConfigResponse {
+   731	            config: user_saved_config,
+   732	        };
+   733	        self.outgoing.send_response(request_id, response).await;
+   734	    }
+   735	
+   736	    async fn get_user_info(&self, request_id: RequestId) {
+   737	        // Read alleged user email from auth.json (best-effort; not verified).
+   738	        let auth_path = get_auth_file(&self.config.codex_home);
+   739	        let alleged_user_email = match try_read_auth_json(&auth_path) {
+   740	            Ok(auth) => auth.tokens.and_then(|t| t.id_token.email),
+   741	            Err(_) => None,
+   742	        };
+   743	
+   744	        let response = UserInfoResponse { alleged_user_email };
+   745	        self.outgoing.send_response(request_id, response).await;
+   746	    }
+   747	
+   748	    async fn set_default_model(&self, request_id: RequestId, params: SetDefaultModelParams) {
+   749	        let SetDefaultModelParams {
+   750	            model,
+   751	            reasoning_effort,
+   752	        } = params;
+   753	        let effort_str = reasoning_effort.map(|effort| effort.to_string());
+   754	
+   755	        let overrides: [(&[&str], Option<&str>); 2] = [
+   756	            (&[CONFIG_KEY_MODEL], model.as_deref()),
+   757	            (&[CONFIG_KEY_EFFORT], effort_str.as_deref()),
+   758	        ];
+   759	
+   760	        match persist_overrides_and_clear_if_none(
+   761	            &self.config.codex_home,
+   762	            self.config.active_profile.as_deref(),
+   763	            &overrides,
+   764	        )
+   765	        .await
+   766	        {
+   767	            Ok(()) => {
+   768	                let response = SetDefaultModelResponse {};
+   769	                self.outgoing.send_response(request_id, response).await;
+   770	            }
+   771	            Err(err) => {
+   772	                let error = JSONRPCErrorError {
+   773	                    code: INTERNAL_ERROR_CODE,
+   774	                    message: format!("failed to persist overrides: {err}"),
+   775	                    data: None,
+   776	                };
+   777	                self.outgoing.send_error(request_id, error).await;
+   778	            }
+   779	        }
+   780	    }
+   781	
+   782	    async fn exec_one_off_command(&self, request_id: RequestId, params: ExecOneOffCommandParams) {
+   783	        tracing::debug!("ExecOneOffCommand params: {params:?}");
+   784	
+   785	        if params.command.is_empty() {
+   786	            let error = JSONRPCErrorError {
+   787	                code: INVALID_REQUEST_ERROR_CODE,
+   788	                message: "command must not be empty".to_string(),
+   789	                data: None,
+   790	            };
+   791	            self.outgoing.send_error(request_id, error).await;
+   792	            return;
+   793	        }
+   794	
+   795	        let cwd = params.cwd.unwrap_or_else(|| self.config.cwd.clone());
+   796	        let env = create_env(&self.config.shell_environment_policy);
+   797	        let timeout_ms = params.timeout_ms;
+   798	        let exec_params = ExecParams {
+   799	            command: params.command,
+   800	            cwd,
+   801	            timeout_ms,
+   802	            env,
+   803	            with_escalated_permissions: None,
+   804	            justification: None,
+   805	        };
+   806	
+   807	        let effective_policy = params
+   808	            .sandbox_policy
+   809	            .unwrap_or_else(|| self.config.sandbox_policy.clone());
+   810	
+   811	        let sandbox_type = match &effective_policy {
+   812	            codex_core::protocol::SandboxPolicy::DangerFullAccess => {
+   813	                codex_core::exec::SandboxType::None
+   814	            }
+   815	            _ => get_platform_sandbox().unwrap_or(codex_core::exec::SandboxType::None),
+   816	        };
+   817	        tracing::debug!("Sandbox type: {sandbox_type:?}");
+   818	        let codex_linux_sandbox_exe = self.config.codex_linux_sandbox_exe.clone();
+   819	        let outgoing = self.outgoing.clone();
+   820	        let req_id = request_id;
+   821	        let sandbox_cwd = self.config.cwd.clone();
+   822	
+   823	        tokio::spawn(async move {
+   824	            match codex_core::exec::process_exec_tool_call(
+   825	                exec_params,
+   826	                sandbox_type,
+   827	                &effective_policy,
+   828	                sandbox_cwd.as_path(),
+   829	                &codex_linux_sandbox_exe,
+   830	                None,
+   831	            )
+   832	            .await
+   833	            {
+   834	                Ok(output) => {
+   835	                    let response = ExecOneOffCommandResponse {
+   836	                        exit_code: output.exit_code,
+   837	                        stdout: output.stdout.text,
+   838	                        stderr: output.stderr.text,
+   839	                    };
+   840	                    outgoing.send_response(req_id, response).await;
+   841	                }
+   842	                Err(err) => {
+   843	                    let error = JSONRPCErrorError {
+   844	                        code: INTERNAL_ERROR_CODE,
+   845	                        message: format!("exec failed: {err}"),
+   846	                        data: None,
+   847	                    };
+   848	                    outgoing.send_error(req_id, error).await;
+   849	                }
+   850	            }
+   851	        });
+   852	    }
+   853	
+   854	    async fn process_new_conversation(&self, request_id: RequestId, params: NewConversationParams) {
+   855	        let config =
+   856	            match derive_config_from_params(params, self.codex_linux_sandbox_exe.clone()).await {
+   857	                Ok(config) => config,
+   858	                Err(err) => {
+   859	                    let error = JSONRPCErrorError {
+   860	                        code: INVALID_REQUEST_ERROR_CODE,
+   861	                        message: format!("error deriving config: {err}"),
+   862	                        data: None,
+   863	                    };
+   864	                    self.outgoing.send_error(request_id, error).await;
+   865	                    return;
+   866	                }
+   867	            };
+   868	
+   869	        match self.conversation_manager.new_conversation(config).await {
+   870	            Ok(conversation_id) => {
+   871	                let NewConversation {
+   872	                    conversation_id,
+   873	                    session_configured,
+   874	                    ..
+   875	                } = conversation_id;
+   876	                let response = NewConversationResponse {
+   877	                    conversation_id,
+   878	                    model: session_configured.model,
+   879	                    reasoning_effort: session_configured.reasoning_effort,
+   880	                    rollout_path: session_configured.rollout_path,
+   881	                };
+   882	                self.outgoing.send_response(request_id, response).await;
+   883	            }
+   884	            Err(err) => {
+   885	                let error = JSONRPCErrorError {
+   886	                    code: INTERNAL_ERROR_CODE,
+   887	                    message: format!("error creating conversation: {err}"),
+   888	                    data: None,
+   889	                };
+   890	                self.outgoing.send_error(request_id, error).await;
+   891	            }
+   892	        }
+   893	    }
+   894	
+   895	    async fn handle_list_conversations(
+   896	        &self,
+   897	        request_id: RequestId,
+   898	        params: ListConversationsParams,
+   899	    ) {
+   900	        let page_size = params.page_size.unwrap_or(25);
+   901	        // Decode the optional cursor string to a Cursor via serde (Cursor implements Deserialize from string)
+   902	        let cursor_obj: Option<RolloutCursor> = match params.cursor {
+   903	            Some(s) => serde_json::from_str::<RolloutCursor>(&format!("\"{s}\"")).ok(),
+   904	            None => None,
+   905	        };
+   906	        let cursor_ref = cursor_obj.as_ref();
+   907	
+   908	        let page = match RolloutRecorder::list_conversations(
+   909	            &self.config.codex_home,
+   910	            page_size,
+   911	            cursor_ref,
+   912	            INTERACTIVE_SESSION_SOURCES,
+   913	        )
+   914	        .await
+   915	        {
+   916	            Ok(p) => p,
+   917	            Err(err) => {
+   918	                let error = JSONRPCErrorError {
+   919	                    code: INTERNAL_ERROR_CODE,
+   920	                    message: format!("failed to list conversations: {err}"),
+   921	                    data: None,
+   922	                };
+   923	                self.outgoing.send_error(request_id, error).await;
+   924	                return;
+   925	            }
+   926	        };
+   927	
+   928	        let items = page
+   929	            .items
+   930	            .into_iter()
+   931	            .filter_map(|it| extract_conversation_summary(it.path, &it.head))
+   932	            .collect();
+   933	
+   934	        // Encode next_cursor as a plain string
+   935	        let next_cursor = match page.next_cursor {
+   936	            Some(c) => match serde_json::to_value(&c) {
+   937	                Ok(serde_json::Value::String(s)) => Some(s),
+   938	                _ => None,
+   939	            },
+   940	            None => None,
+   941	        };
+   942	
+   943	        let response = ListConversationsResponse { items, next_cursor };
+   944	        self.outgoing.send_response(request_id, response).await;
+   945	    }
+   946	
+   947	    async fn handle_resume_conversation(
+   948	        &self,
+   949	        request_id: RequestId,
+   950	        params: ResumeConversationParams,
+   951	    ) {
+   952	        // Derive a Config using the same logic as new conversation, honoring overrides if provided.
+   953	        let config = match params.overrides {
+   954	            Some(overrides) => {
+   955	                derive_config_from_params(overrides, self.codex_linux_sandbox_exe.clone()).await
+   956	            }
+   957	            None => Ok(self.config.as_ref().clone()),
+   958	        };
+   959	        let config = match config {
+   960	            Ok(cfg) => cfg,
+   961	            Err(err) => {
+   962	                let error = JSONRPCErrorError {
+   963	                    code: INVALID_REQUEST_ERROR_CODE,
+   964	                    message: format!("error deriving config: {err}"),
+   965	                    data: None,
+   966	                };
+   967	                self.outgoing.send_error(request_id, error).await;
+   968	                return;
+   969	            }
+   970	        };
+   971	
+   972	        match self
+   973	            .conversation_manager
+   974	            .resume_conversation_from_rollout(
+   975	                config,
+   976	                params.path.clone(),
+   977	                self.auth_manager.clone(),
+   978	            )
+   979	            .await
+   980	        {
+   981	            Ok(NewConversation {
+   982	                conversation_id,
+   983	                session_configured,
+   984	                ..
+   985	            }) => {
+   986	                self.outgoing
+   987	                    .send_server_notification(ServerNotification::SessionConfigured(
+   988	                        SessionConfiguredNotification {
+   989	                            session_id: session_configured.session_id,
+   990	                            model: session_configured.model.clone(),
+   991	                            reasoning_effort: session_configured.reasoning_effort,
+   992	                            history_log_id: session_configured.history_log_id,
+   993	                            history_entry_count: session_configured.history_entry_count,
+   994	                            initial_messages: session_configured.initial_messages.clone(),
+   995	                            rollout_path: session_configured.rollout_path.clone(),
+   996	                        },
+   997	                    ))
+   998	                    .await;
+   999	                let initial_messages = session_configured.initial_messages.map(|msgs| {
+  1000	                    msgs.into_iter()
+  1001	                        .filter(|event| {
+  1002	                            // Don't send non-plain user messages (like user instructions
+  1003	                            // or environment context) back so they don't get rendered.
+  1004	                            if let EventMsg::UserMessage(user_message) = event {
+  1005	                                return matches!(user_message.kind, Some(InputMessageKind::Plain));
+  1006	                            }
+  1007	                            true
+  1008	                        })
+  1009	                        .collect()
+  1010	                });
+  1011	
+  1012	                // Reply with conversation id + model and initial messages (when present)
+  1013	                let response = codex_app_server_protocol::ResumeConversationResponse {
+  1014	                    conversation_id,
+  1015	                    model: session_configured.model.clone(),
+  1016	                    initial_messages,
+  1017	                };
+  1018	                self.outgoing.send_response(request_id, response).await;
+  1019	            }
+  1020	            Err(err) => {
+  1021	                let error = JSONRPCErrorError {
+  1022	                    code: INTERNAL_ERROR_CODE,
+  1023	                    message: format!("error resuming conversation: {err}"),
+  1024	                    data: None,
+  1025	                };
+  1026	                self.outgoing.send_error(request_id, error).await;
+  1027	            }
+  1028	        }
+  1029	    }
+  1030	
+  1031	    async fn archive_conversation(&self, request_id: RequestId, params: ArchiveConversationParams) {
+  1032	        let ArchiveConversationParams {
+  1033	            conversation_id,
+  1034	            rollout_path,
+  1035	        } = params;
+  1036	
+  1037	        // Verify that the rollout path is in the sessions directory or else
+  1038	        // a malicious client could specify an arbitrary path.
+  1039	        let rollout_folder = self.config.codex_home.join(codex_core::SESSIONS_SUBDIR);
+  1040	        let canonical_rollout_path = tokio::fs::canonicalize(&rollout_path).await;
+  1041	        let canonical_rollout_path = if let Ok(path) = canonical_rollout_path
+  1042	            && path.starts_with(&rollout_folder)
+  1043	        {
+  1044	            path
+  1045	        } else {
+  1046	            let error = JSONRPCErrorError {
+  1047	                code: INVALID_REQUEST_ERROR_CODE,
+  1048	                message: format!(
+  1049	                    "rollout path `{}` must be in sessions directory",
+  1050	                    rollout_path.display()
+  1051	                ),
+  1052	                data: None,
+  1053	            };
+  1054	            self.outgoing.send_error(request_id, error).await;
+  1055	            return;
+  1056	        };
+  1057	
+  1058	        let required_suffix = format!("{conversation_id}.jsonl");
+  1059	        let Some(file_name) = canonical_rollout_path.file_name().map(OsStr::to_owned) else {
+  1060	            let error = JSONRPCErrorError {
+  1061	                code: INVALID_REQUEST_ERROR_CODE,
+  1062	                message: format!(
+  1063	                    "rollout path `{}` missing file name",
+  1064	                    rollout_path.display()
+  1065	                ),
+  1066	                data: None,
+  1067	            };
+  1068	            self.outgoing.send_error(request_id, error).await;
+  1069	            return;
+  1070	        };
+  1071	
+  1072	        if !file_name
+  1073	            .to_string_lossy()
+  1074	            .ends_with(required_suffix.as_str())
+  1075	        {
+  1076	            let error = JSONRPCErrorError {
+  1077	                code: INVALID_REQUEST_ERROR_CODE,
+  1078	                message: format!(
+  1079	                    "rollout path `{}` does not match conversation id {conversation_id}",
+  1080	                    rollout_path.display()
+  1081	                ),
+  1082	                data: None,
+  1083	            };
+  1084	            self.outgoing.send_error(request_id, error).await;
+  1085	            return;
+  1086	        }
+  1087	
+  1088	        let removed_conversation = self
+  1089	            .conversation_manager
+  1090	            .remove_conversation(&conversation_id)
+  1091	            .await;
+  1092	        if let Some(conversation) = removed_conversation {
+  1093	            info!("conversation {conversation_id} was active; shutting down");
+  1094	            let conversation_clone = conversation.clone();
+  1095	            let notify = Arc::new(tokio::sync::Notify::new());
+  1096	            let notify_clone = notify.clone();
+  1097	
+  1098	            // Establish the listener for ShutdownComplete before submitting
+  1099	            // Shutdown so it is not missed.
+  1100	            let is_shutdown = tokio::spawn(async move {
+  1101	                loop {
+  1102	                    select! {
+  1103	                        _ = notify_clone.notified() => {
+  1104	                            break;
+  1105	                        }
+  1106	                        event = conversation_clone.next_event() => {
+  1107	                            if let Ok(event) = event && matches!(event.msg, EventMsg::ShutdownComplete) {
+  1108	                                break;
+  1109	                            }
+  1110	                        }
+  1111	                    }
+  1112	                }
+  1113	            });
+  1114	
+  1115	            // Request shutdown.
+  1116	            match conversation.submit(Op::Shutdown).await {
+  1117	                Ok(_) => {
+  1118	                    // Successfully submitted Shutdown; wait before proceeding.
+  1119	                    select! {
+  1120	                        _ = is_shutdown => {
+  1121	                            // Normal shutdown: proceed with archive.
+  1122	                        }
+  1123	                        _ = tokio::time::sleep(Duration::from_secs(10)) => {
+  1124	                            warn!("conversation {conversation_id} shutdown timed out; proceeding with archive");
+  1125	                            notify.notify_one();
+  1126	                        }
+  1127	                    }
+  1128	                }
+  1129	                Err(err) => {
+  1130	                    error!("failed to submit Shutdown to conversation {conversation_id}: {err}");
+  1131	                    notify.notify_one();
+  1132	                    // Perhaps we lost a shutdown race, so let's continue to
+  1133	                    // clean up the .jsonl file.
+  1134	                }
+  1135	            }
+  1136	        }
+  1137	
+  1138	        // Move the .jsonl file to the archived sessions subdir.
+  1139	        let result: std::io::Result<()> = async {
+  1140	            let archive_folder = self
+  1141	                .config
+  1142	                .codex_home
+  1143	                .join(codex_core::ARCHIVED_SESSIONS_SUBDIR);
+  1144	            tokio::fs::create_dir_all(&archive_folder).await?;
+  1145	            tokio::fs::rename(&canonical_rollout_path, &archive_folder.join(&file_name)).await?;
+  1146	            Ok(())
+  1147	        }
+  1148	        .await;
+  1149	
+  1150	        match result {
+  1151	            Ok(()) => {
+  1152	                let response = ArchiveConversationResponse {};
+  1153	                self.outgoing.send_response(request_id, response).await;
+  1154	            }
+  1155	            Err(err) => {
+  1156	                let error = JSONRPCErrorError {
+  1157	                    code: INTERNAL_ERROR_CODE,
+  1158	                    message: format!("failed to archive conversation: {err}"),
+  1159	                    data: None,
+  1160	                };
+  1161	                self.outgoing.send_error(request_id, error).await;
+  1162	            }
+  1163	        }
+  1164	    }
+  1165	
+  1166	    async fn send_user_message(&self, request_id: RequestId, params: SendUserMessageParams) {
+  1167	        let SendUserMessageParams {
+  1168	            conversation_id,
+  1169	            items,
+  1170	        } = params;
+  1171	        let Ok(conversation) = self
+  1172	            .conversation_manager
+  1173	            .get_conversation(conversation_id)
+  1174	            .await
+  1175	        else {
+  1176	            let error = JSONRPCErrorError {
+  1177	                code: INVALID_REQUEST_ERROR_CODE,
+  1178	                message: format!("conversation not found: {conversation_id}"),
+  1179	                data: None,
+  1180	            };
+  1181	            self.outgoing.send_error(request_id, error).await;
+  1182	            return;
+  1183	        };
+  1184	
+  1185	        let mapped_items: Vec<CoreInputItem> = items
+  1186	            .into_iter()
+  1187	            .map(|item| match item {
+  1188	                WireInputItem::Text { text } => CoreInputItem::Text { text },
+  1189	                WireInputItem::Image { image_url } => CoreInputItem::Image { image_url },
+  1190	                WireInputItem::LocalImage { path } => CoreInputItem::LocalImage { path },
+  1191	            })
+  1192	            .collect();
+  1193	
+  1194	        // Submit user input to the conversation.
+  1195	        let _ = conversation
+  1196	            .submit(Op::UserInput {
+  1197	                items: mapped_items,
+  1198	            })
+  1199	            .await;
+  1200	
+  1201	        // Acknowledge with an empty result.
+  1202	        self.outgoing
+  1203	            .send_response(request_id, SendUserMessageResponse {})
+  1204	            .await;
+  1205	    }
+  1206	
+  1207	    async fn send_user_turn(&self, request_id: RequestId, params: SendUserTurnParams) {
+  1208	        let SendUserTurnParams {
+  1209	            conversation_id,
+  1210	            items,
+  1211	            cwd,
+  1212	            approval_policy,
+  1213	            sandbox_policy,
+  1214	            model,
+  1215	            effort,
+  1216	            summary,
+  1217	        } = params;
+  1218	
+  1219	        let Ok(conversation) = self
+  1220	            .conversation_manager
+  1221	            .get_conversation(conversation_id)
+  1222	            .await
+  1223	        else {
+  1224	            let error = JSONRPCErrorError {
+  1225	                code: INVALID_REQUEST_ERROR_CODE,
+  1226	                message: format!("conversation not found: {conversation_id}"),
+  1227	                data: None,
+  1228	            };
+  1229	            self.outgoing.send_error(request_id, error).await;
+  1230	            return;
+  1231	        };
+  1232	
+  1233	        let mapped_items: Vec<CoreInputItem> = items
+  1234	            .into_iter()
+  1235	            .map(|item| match item {
+  1236	                WireInputItem::Text { text } => CoreInputItem::Text { text },
+  1237	                WireInputItem::Image { image_url } => CoreInputItem::Image { image_url },
+  1238	                WireInputItem::LocalImage { path } => CoreInputItem::LocalImage { path },
+  1239	            })
+  1240	            .collect();
+  1241	
+  1242	        let _ = conversation
+  1243	            .submit(Op::UserTurn {
+  1244	                items: mapped_items,
+  1245	                cwd,
+  1246	                approval_policy,
+  1247	                sandbox_policy,
+  1248	                model,
+  1249	                effort,
+  1250	                summary,
+  1251	                final_output_json_schema: None,
+  1252	            })
+  1253	            .await;
+  1254	
+  1255	        self.outgoing
+  1256	            .send_response(request_id, SendUserTurnResponse {})
+  1257	            .await;
+  1258	    }
+  1259	
+  1260	    async fn interrupt_conversation(
+  1261	        &mut self,
+  1262	        request_id: RequestId,
+  1263	        params: InterruptConversationParams,
+  1264	    ) {
+  1265	        let InterruptConversationParams { conversation_id } = params;
+  1266	        let Ok(conversation) = self
+  1267	            .conversation_manager
+  1268	            .get_conversation(conversation_id)
+  1269	            .await
+  1270	        else {
+  1271	            let error = JSONRPCErrorError {
+  1272	                code: INVALID_REQUEST_ERROR_CODE,
+  1273	                message: format!("conversation not found: {conversation_id}"),
+  1274	                data: None,
+  1275	            };
+  1276	            self.outgoing.send_error(request_id, error).await;
+  1277	            return;
+  1278	        };
+  1279	
+  1280	        // Record the pending interrupt so we can reply when TurnAborted arrives.
+  1281	        {
+  1282	            let mut map = self.pending_interrupts.lock().await;
+  1283	            map.entry(conversation_id).or_default().push(request_id);
+  1284	        }
+  1285	
+  1286	        // Submit the interrupt; we'll respond upon TurnAborted.
+  1287	        let _ = conversation.submit(Op::Interrupt).await;
+  1288	    }
+  1289	
+  1290	    async fn add_conversation_listener(
+  1291	        &mut self,
+  1292	        request_id: RequestId,
+  1293	        params: AddConversationListenerParams,
+  1294	    ) {
+  1295	        let AddConversationListenerParams { conversation_id } = params;
+  1296	        let Ok(conversation) = self
+  1297	            .conversation_manager
+  1298	            .get_conversation(conversation_id)
+  1299	            .await
+  1300	        else {
+  1301	            let error = JSONRPCErrorError {
+  1302	                code: INVALID_REQUEST_ERROR_CODE,
+  1303	                message: format!("conversation not found: {conversation_id}"),
+  1304	                data: None,
+  1305	            };
+  1306	            self.outgoing.send_error(request_id, error).await;
+  1307	            return;
+  1308	        };
+  1309	
+  1310	        let subscription_id = Uuid::new_v4();
+  1311	        let (cancel_tx, mut cancel_rx) = oneshot::channel();
+  1312	        self.conversation_listeners
+  1313	            .insert(subscription_id, cancel_tx);
+  1314	        let outgoing_for_task = self.outgoing.clone();
+  1315	        let pending_interrupts = self.pending_interrupts.clone();
+  1316	        tokio::spawn(async move {
+  1317	            loop {
+  1318	                tokio::select! {
+  1319	                    _ = &mut cancel_rx => {
+  1320	                        // User has unsubscribed, so exit this task.
+  1321	                        break;
+  1322	                    }
+  1323	                    event = conversation.next_event() => {
+  1324	                        let event = match event {
+  1325	                            Ok(event) => event,
+  1326	                            Err(err) => {
+  1327	                                tracing::warn!("conversation.next_event() failed with: {err}");
+  1328	                                break;
+  1329	                            }
+  1330	                        };
+  1331	
+  1332	                        // For now, we send a notification for every event,
+  1333	                        // JSON-serializing the `Event` as-is, but these should
+  1334	                        // be migrated to be variants of `ServerNotification`
+  1335	                        // instead.
+  1336	                        let method = format!("codex/event/{}", event.msg);
+  1337	                        let mut params = match serde_json::to_value(event.clone()) {
+  1338	                            Ok(serde_json::Value::Object(map)) => map,
+  1339	                            Ok(_) => {
+  1340	                                error!("event did not serialize to an object");
+  1341	                                continue;
+  1342	                            }
+  1343	                            Err(err) => {
+  1344	                                error!("failed to serialize event: {err}");
+  1345	                                continue;
+  1346	                            }
+  1347	                        };
+  1348	                        params.insert("conversationId".to_string(), conversation_id.to_string().into());
+  1349	
+  1350	                        outgoing_for_task.send_notification(OutgoingNotification {
+  1351	                            method,
+  1352	                            params: Some(params.into()),
+  1353	                        })
+  1354	                        .await;
+  1355	
+  1356	                        apply_bespoke_event_handling(event.clone(), conversation_id, conversation.clone(), outgoing_for_task.clone(), pending_interrupts.clone()).await;
+  1357	                    }
+  1358	                }
+  1359	            }
+  1360	        });
+  1361	        let response = AddConversationSubscriptionResponse { subscription_id };
+  1362	        self.outgoing.send_response(request_id, response).await;
+  1363	    }
+  1364	
+  1365	    async fn remove_conversation_listener(
+  1366	        &mut self,
+  1367	        request_id: RequestId,
+  1368	        params: RemoveConversationListenerParams,
+  1369	    ) {
+  1370	        let RemoveConversationListenerParams { subscription_id } = params;
+  1371	        match self.conversation_listeners.remove(&subscription_id) {
+  1372	            Some(sender) => {
+  1373	                // Signal the spawned task to exit and acknowledge.
+  1374	                let _ = sender.send(());
+  1375	                let response = RemoveConversationSubscriptionResponse {};
+  1376	                self.outgoing.send_response(request_id, response).await;
+  1377	            }
+  1378	            None => {
+  1379	                let error = JSONRPCErrorError {
+  1380	                    code: INVALID_REQUEST_ERROR_CODE,
+  1381	                    message: format!("subscription not found: {subscription_id}"),
+  1382	                    data: None,
+  1383	                };
+  1384	                self.outgoing.send_error(request_id, error).await;
+  1385	            }
+  1386	        }
+  1387	    }
+  1388	
+  1389	    async fn git_diff_to_origin(&self, request_id: RequestId, cwd: PathBuf) {
+  1390	        let diff = git_diff_to_remote(&cwd).await;
+  1391	        match diff {
+  1392	            Some(value) => {
+  1393	                let response = GitDiffToRemoteResponse {
+  1394	                    sha: value.sha,
+  1395	                    diff: value.diff,
+  1396	                };
+  1397	                self.outgoing.send_response(request_id, response).await;
+  1398	            }
+  1399	            None => {
+  1400	                let error = JSONRPCErrorError {
+  1401	                    code: INVALID_REQUEST_ERROR_CODE,
+  1402	                    message: format!("failed to compute git diff to remote for cwd: {cwd:?}"),
+  1403	                    data: None,
+  1404	                };
+  1405	                self.outgoing.send_error(request_id, error).await;
+  1406	            }
+  1407	        }
+  1408	    }
+  1409	
+  1410	    async fn fuzzy_file_search(&mut self, request_id: RequestId, params: FuzzyFileSearchParams) {
+  1411	        let FuzzyFileSearchParams {
+  1412	            query,
+  1413	            roots,
+  1414	            cancellation_token,
+  1415	        } = params;
+  1416	
+  1417	        let cancel_flag = match cancellation_token.clone() {
+  1418	            Some(token) => {
+  1419	                let mut pending_fuzzy_searches = self.pending_fuzzy_searches.lock().await;
+  1420	                // if a cancellation_token is provided and a pending_request exists for
+  1421	                // that token, cancel it
+  1422	                if let Some(existing) = pending_fuzzy_searches.get(&token) {
+  1423	                    existing.store(true, Ordering::Relaxed);
+  1424	                }
+  1425	                let flag = Arc::new(AtomicBool::new(false));
+  1426	                pending_fuzzy_searches.insert(token.clone(), flag.clone());
+  1427	                flag
+  1428	            }
+  1429	            None => Arc::new(AtomicBool::new(false)),
+  1430	        };
+  1431	
+  1432	        let results = match query.as_str() {
+  1433	            "" => vec![],
+  1434	            _ => run_fuzzy_file_search(query, roots, cancel_flag.clone()).await,
+  1435	        };
+  1436	
+  1437	        if let Some(token) = cancellation_token {
+  1438	            let mut pending_fuzzy_searches = self.pending_fuzzy_searches.lock().await;
+  1439	            if let Some(current_flag) = pending_fuzzy_searches.get(&token)
+  1440	                && Arc::ptr_eq(current_flag, &cancel_flag)
+  1441	            {
+  1442	                pending_fuzzy_searches.remove(&token);
+  1443	            }
+  1444	        }
+  1445	
+  1446	        let response = FuzzyFileSearchResponse { files: results };
+  1447	        self.outgoing.send_response(request_id, response).await;
+  1448	    }
+  1449	}
+  1450	
+  1451	async fn apply_bespoke_event_handling(
+  1452	    event: Event,
+  1453	    conversation_id: ConversationId,
+  1454	    conversation: Arc<CodexConversation>,
+  1455	    outgoing: Arc<OutgoingMessageSender>,
+  1456	    pending_interrupts: Arc<Mutex<HashMap<ConversationId, Vec<RequestId>>>>,
+  1457	) {
+  1458	    let Event { id: event_id, msg } = event;
+  1459	    match msg {
+  1460	        EventMsg::ApplyPatchApprovalRequest(ApplyPatchApprovalRequestEvent {
+  1461	            call_id,
+  1462	            changes,
+  1463	            reason,
+  1464	            grant_root,
+  1465	        }) => {
+  1466	            let params = ApplyPatchApprovalParams {
+  1467	                conversation_id,
+  1468	                call_id,
+  1469	                file_changes: changes,
+  1470	                reason,
+  1471	                grant_root,
+  1472	            };
+  1473	            let rx = outgoing
+  1474	                .send_request(ServerRequestPayload::ApplyPatchApproval(params))
+  1475	                .await;
+  1476	            // TODO(mbolin): Enforce a timeout so this task does not live indefinitely?
+  1477	            tokio::spawn(async move {
+  1478	                on_patch_approval_response(event_id, rx, conversation).await;
+  1479	            });
+  1480	        }
+  1481	        EventMsg::ExecApprovalRequest(ExecApprovalRequestEvent {
+  1482	            call_id,
+  1483	            command,
+  1484	            cwd,
+  1485	            reason,
+  1486	        }) => {
+  1487	            let params = ExecCommandApprovalParams {
+  1488	                conversation_id,
+  1489	                call_id,
+  1490	                command,
+  1491	                cwd,
+  1492	                reason,
+  1493	            };
+  1494	            let rx = outgoing
+  1495	                .send_request(ServerRequestPayload::ExecCommandApproval(params))
+  1496	                .await;
+  1497	
+  1498	            // TODO(mbolin): Enforce a timeout so this task does not live indefinitely?
+  1499	            tokio::spawn(async move {
+  1500	                on_exec_approval_response(event_id, rx, conversation).await;
+  1501	            });
+  1502	        }
+  1503	        // If this is a TurnAborted, reply to any pending interrupt requests.
+  1504	        EventMsg::TurnAborted(turn_aborted_event) => {
+  1505	            let pending = {
+  1506	                let mut map = pending_interrupts.lock().await;
+  1507	                map.remove(&conversation_id).unwrap_or_default()
+  1508	            };
+  1509	            if !pending.is_empty() {
+  1510	                let response = InterruptConversationResponse {
+  1511	                    abort_reason: turn_aborted_event.reason,
+  1512	                };
+  1513	                for rid in pending {
+  1514	                    outgoing.send_response(rid, response.clone()).await;
+  1515	                }
+  1516	            }
+  1517	        }
+  1518	
+  1519	        _ => {}
+  1520	    }
+  1521	}
+  1522	
+  1523	async fn derive_config_from_params(
+  1524	    params: NewConversationParams,
+  1525	    codex_linux_sandbox_exe: Option<PathBuf>,
+  1526	) -> std::io::Result<Config> {
+  1527	    let NewConversationParams {
+  1528	        model,
+  1529	        profile,
+  1530	        cwd,
+  1531	        approval_policy,
+  1532	        sandbox: sandbox_mode,
+  1533	        config: cli_overrides,
+  1534	        base_instructions,
+  1535	        include_plan_tool,
+  1536	        include_apply_patch_tool,
+  1537	    } = params;
+  1538	    let overrides = ConfigOverrides {
+  1539	        model,
+  1540	        review_model: None,
+  1541	        config_profile: profile,
+  1542	        cwd: cwd.map(PathBuf::from),
+  1543	        approval_policy,
+  1544	        sandbox_mode,
+  1545	        model_provider: None,
+  1546	        codex_linux_sandbox_exe,
+  1547	        base_instructions,
+  1548	        include_plan_tool,
+  1549	        include_apply_patch_tool,
+  1550	        include_view_image_tool: None,
+  1551	        show_raw_agent_reasoning: None,
+  1552	        tools_web_search_request: None,
+  1553	    };
+  1554	
+  1555	    let cli_overrides = cli_overrides
+  1556	        .unwrap_or_default()
+  1557	        .into_iter()
+  1558	        .map(|(k, v)| (k, json_to_toml(v)))
+  1559	        .collect();
+  1560	
+  1561	    Config::load_with_cli_overrides(cli_overrides, overrides).await
+  1562	}
+  1563	
+  1564	async fn on_patch_approval_response(
+  1565	    event_id: String,
+  1566	    receiver: oneshot::Receiver<JsonRpcResult>,
+  1567	    codex: Arc<CodexConversation>,
+  1568	) {
+  1569	    let response = receiver.await;
+  1570	    let value = match response {
+  1571	        Ok(value) => value,
+  1572	        Err(err) => {
+  1573	            error!("request failed: {err:?}");
+  1574	            if let Err(submit_err) = codex
+  1575	                .submit(Op::PatchApproval {
+  1576	                    id: event_id.clone(),
+  1577	                    decision: ReviewDecision::Denied,
+  1578	                })
+  1579	                .await
+  1580	            {
+  1581	                error!("failed to submit denied PatchApproval after request failure: {submit_err}");
+  1582	            }
+  1583	            return;
+  1584	        }
+  1585	    };
+  1586	
+  1587	    let response =
+  1588	        serde_json::from_value::<ApplyPatchApprovalResponse>(value).unwrap_or_else(|err| {
+  1589	            error!("failed to deserialize ApplyPatchApprovalResponse: {err}");
+  1590	            ApplyPatchApprovalResponse {
+  1591	                decision: ReviewDecision::Denied,
+  1592	            }
+  1593	        });
+  1594	
+  1595	    if let Err(err) = codex
+  1596	        .submit(Op::PatchApproval {
+  1597	            id: event_id,
+  1598	            decision: response.decision,
+  1599	        })
+  1600	        .await
+  1601	    {
+  1602	        error!("failed to submit PatchApproval: {err}");
+  1603	    }
+  1604	}
+  1605	
+  1606	async fn on_exec_approval_response(
+  1607	    event_id: String,
+  1608	    receiver: oneshot::Receiver<JsonRpcResult>,
+  1609	    conversation: Arc<CodexConversation>,
+  1610	) {
+  1611	    let response = receiver.await;
+  1612	    let value = match response {
+  1613	        Ok(value) => value,
+  1614	        Err(err) => {
+  1615	            error!("request failed: {err:?}");
+  1616	            return;
+  1617	        }
+  1618	    };
+  1619	
+  1620	    // Try to deserialize `value` and then make the appropriate call to `codex`.
+  1621	    let response =
+  1622	        serde_json::from_value::<ExecCommandApprovalResponse>(value).unwrap_or_else(|err| {
+  1623	            error!("failed to deserialize ExecCommandApprovalResponse: {err}");
+  1624	            // If we cannot deserialize the response, we deny the request to be
+  1625	            // conservative.
+  1626	            ExecCommandApprovalResponse {
+  1627	                decision: ReviewDecision::Denied,
+  1628	            }
+  1629	        });
+  1630	
+  1631	    if let Err(err) = conversation
+  1632	        .submit(Op::ExecApproval {
+  1633	            id: event_id,
+  1634	            decision: response.decision,
+  1635	        })
+  1636	        .await
+  1637	    {
+  1638	        error!("failed to submit ExecApproval: {err}");
+  1639	    }
+  1640	}
+  1641	
+  1642	fn extract_conversation_summary(
+  1643	    path: PathBuf,
+  1644	    head: &[serde_json::Value],
+  1645	) -> Option<ConversationSummary> {
+  1646	    let session_meta = match head.first() {
+  1647	        Some(first_line) => serde_json::from_value::<SessionMeta>(first_line.clone()).ok()?,
+  1648	        None => return None,
+  1649	    };
+  1650	
+  1651	    let preview = head
+  1652	        .iter()
+  1653	        .filter_map(|value| serde_json::from_value::<ResponseItem>(value.clone()).ok())
+  1654	        .find_map(|item| match item {
+  1655	            ResponseItem::Message { content, .. } => {
+  1656	                content.into_iter().find_map(|content| match content {
+  1657	                    ContentItem::InputText { text } => {
+  1658	                        match InputMessageKind::from(("user", &text)) {
+  1659	                            InputMessageKind::Plain => Some(text),
+  1660	                            _ => None,
+  1661	                        }
+  1662	                    }
+  1663	                    _ => None,
+  1664	                })
+  1665	            }
+  1666	            _ => None,
+  1667	        })?;
+  1668	
+  1669	    let preview = match preview.find(USER_MESSAGE_BEGIN) {
+  1670	        Some(idx) => preview[idx + USER_MESSAGE_BEGIN.len()..].trim(),
+  1671	        None => preview.as_str(),
+  1672	    };
+  1673	
+  1674	    let timestamp = if session_meta.timestamp.is_empty() {
+  1675	        None
+  1676	    } else {
+  1677	        Some(session_meta.timestamp.clone())
+  1678	    };
+  1679	
+  1680	    Some(ConversationSummary {
+  1681	        conversation_id: session_meta.id,
+  1682	        timestamp,
+  1683	        path,
+  1684	        preview: preview.to_string(),
+  1685	    })
+  1686	}
+  1687	
+  1688	#[cfg(feature = "ledger")]
+  1689	impl CodexMessageProcessor {
+  1690	    async fn handle_ledger_create_company(
+  1691	        &self,
+  1692	        request_id: RequestId,
+  1693	        params: LedgerCreateCompanyParams,
+  1694	    ) {
+  1695	        let Some(service) = self.ledger_service.as_ref() else {
+  1696	            let error = JSONRPCErrorError {
+  1697	                code: INVALID_REQUEST_ERROR_CODE,
+  1698	                message: "ledger service not configured".to_string(),
+  1699	                data: None,
+  1700	            };
+  1701	            self.outgoing.send_error(request_id, error).await;
+  1702	            return;
+  1703	        };
+  1704	
+  1705	        let request = LedgerCreateCompanyRequest {
+  1706	            name: params.name,
+  1707	            base_currency: to_ledger_currency(params.base_currency),
+  1708	            fiscal_calendar: to_ledger_fiscal_calendar(params.fiscal_calendar),
+  1709	            tenant: default_ledger_tenant_context(),
+  1710	        };
+  1711	
+  1712	        match service.create_company(request).await {
+  1713	            Ok(company) => {
+  1714	                let response = LedgerCreateCompanyResponse {
+  1715	                    company: from_ledger_company(company),
+  1716	                };
+  1717	                self.outgoing.send_response(request_id, response).await;
+  1718	            }
+  1719	            Err(err) => {
+  1720	                let error = ledger_error_to_jsonrpc(err);
+  1721	                self.outgoing.send_error(request_id, error).await;
+  1722	            }
+  1723	        }
+  1724	    }
+  1725	
+  1726	    async fn handle_ledger_upsert_account(
+  1727	        &self,
+  1728	        request_id: RequestId,
+  1729	        params: LedgerUpsertAccountParams,
+  1730	    ) {
+  1731	        let Some(service) = self.ledger_service.as_ref() else {
+  1732	            let error = JSONRPCErrorError {
+  1733	                code: INVALID_REQUEST_ERROR_CODE,
+  1734	                message: "ledger service not configured".to_string(),
+  1735	                data: None,
+  1736	            };
+  1737	            self.outgoing.send_error(request_id, error).await;
+  1738	            return;
+  1739	        };
+  1740	
+  1741	        let request = LedgerUpsertAccountRequest {
+  1742	            account: to_ledger_account(params.account),
+  1743	            tenant: default_ledger_tenant_context(),
+  1744	        };
+  1745	
+  1746	        match service.upsert_account(request).await {
+  1747	            Ok(account) => {
+  1748	                let response = LedgerUpsertAccountResponse {
+  1749	                    account: from_ledger_account(account),
+  1750	                };
+  1751	                self.outgoing.send_response(request_id, response).await;
+  1752	            }
+  1753	            Err(err) => {
+  1754	                let error = ledger_error_to_jsonrpc(err);
+  1755	                self.outgoing.send_error(request_id, error).await;
+  1756	            }
+  1757	        }
+  1758	    }
+  1759	
+  1760	    async fn handle_ledger_post_entry(&self, request_id: RequestId, params: LedgerPostEntryParams) {
+  1761	        let Some(service) = self.ledger_service.as_ref() else {
+  1762	            let error = JSONRPCErrorError {
+  1763	                code: INVALID_REQUEST_ERROR_CODE,
+  1764	                message: "ledger service not configured".to_string(),
+  1765	                data: None,
+  1766	            };
+  1767	            self.outgoing.send_error(request_id, error).await;
+  1768	            return;
+  1769	        };
+  1770	
+  1771	        let LedgerPostEntryParams { entry, mode } = params;
+  1772	        let request = LedgerPostEntryRequest {
+  1773	            entry: to_ledger_journal_entry(entry),
+  1774	            tenant: default_ledger_tenant_context(),
+  1775	            mode: to_ledger_posting_mode(mode),
+  1776	        };
+  1777	
+  1778	        match service.post_entry(request).await {
+  1779	            Ok(entry) => {
+  1780	                let response = LedgerPostEntryResponse {
+  1781	                    entry: from_ledger_journal_entry(entry),
+  1782	                };
+  1783	                self.outgoing.send_response(request_id, response).await;
+  1784	            }
+  1785	            Err(err) => {
+  1786	                let error = ledger_error_to_jsonrpc(err);
+  1787	                self.outgoing.send_error(request_id, error).await;
+  1788	            }
+  1789	        }
+  1790	    }
+  1791	
+  1792	    async fn handle_ledger_reverse_entry(
+  1793	        &self,
+  1794	        request_id: RequestId,
+  1795	        params: LedgerReverseEntryParams,
+  1796	    ) {
+  1797	        let Some(service) = self.ledger_service.as_ref() else {
+  1798	            let error = JSONRPCErrorError {
+  1799	                code: INVALID_REQUEST_ERROR_CODE,
+  1800	                message: "ledger service not configured".to_string(),
+  1801	                data: None,
+  1802	            };
+  1803	            self.outgoing.send_error(request_id, error).await;
+  1804	            return;
+  1805	        };
+  1806	
+  1807	        let request = LedgerReverseEntryRequest {
+  1808	            entry_id: params.entry_id,
+  1809	            reason: params.reason,
+  1810	            tenant: default_ledger_tenant_context(),
+  1811	        };
+  1812	
+  1813	        match service.reverse_entry(request).await {
+  1814	            Ok(entry) => {
+  1815	                let response = LedgerReverseEntryResponse {
+  1816	                    entry: from_ledger_journal_entry(entry),
+  1817	                };
+  1818	                self.outgoing.send_response(request_id, response).await;
+  1819	            }
+  1820	            Err(err) => {
+  1821	                let error = ledger_error_to_jsonrpc(err);
+  1822	                self.outgoing.send_error(request_id, error).await;
+  1823	            }
+  1824	        }
+  1825	    }
+  1826	
+  1827	    async fn handle_ledger_lock_period(
+  1828	        &self,
+  1829	        request_id: RequestId,
+  1830	        params: LedgerLockPeriodParams,
+  1831	    ) {
+  1832	        let Some(service) = self.ledger_service.as_ref() else {
+  1833	            let error = JSONRPCErrorError {
+  1834	                code: INVALID_REQUEST_ERROR_CODE,
+  1835	                message: "ledger service not configured".to_string(),
+  1836	                data: None,
+  1837	            };
+  1838	            self.outgoing.send_error(request_id, error).await;
+  1839	            return;
+  1840	        };
+  1841	
+  1842	        let request = LedgerLockPeriodRequest {
+  1843	            journal_id: params.journal_id,
+  1844	            period: to_ledger_period_ref(params.period),
+  1845	            action: to_ledger_period_action(params.action),
+  1846	            tenant: default_ledger_tenant_context(),
+  1847	        };
+  1848	
+  1849	        match service.lock_period(request).await {
+  1850	            Ok(journal) => {
+  1851	                let response = LedgerLockPeriodResponse {
+  1852	                    journal: from_ledger_journal(journal),
+  1853	                };
+  1854	                self.outgoing.send_response(request_id, response).await;
+  1855	            }
+  1856	            Err(err) => {
+  1857	                let error = ledger_error_to_jsonrpc(err);
+  1858	                self.outgoing.send_error(request_id, error).await;
+  1859	            }
+  1860	        }
+  1861	    }
+  1862	}
+  1863	
+  1864	#[cfg(feature = "ledger")]
+  1865	fn default_ledger_tenant_context() -> LedgerTenantContext {
+  1866	    LedgerTenantContext {
+  1867	        tenant_id: "ledger-admin".to_string(),
+  1868	        user_id: "codex-app-server".to_string(),
+  1869	        roles: vec![LedgerRole::ServiceAccount],
+  1870	        locale: Some("en-US".to_string()),
+  1871	    }
+  1872	}
+  1873	
+  1874	#[cfg(feature = "ledger")]
+  1875	fn to_ledger_currency(currency: LedgerCurrency) -> LedgerCurrencyModel {
+  1876	    LedgerCurrencyModel {
+  1877	        code: currency.code,
+  1878	        precision: currency.precision,
+  1879	    }
+  1880	}
+  1881	
+  1882	#[cfg(feature = "ledger")]
+  1883	fn to_ledger_fiscal_calendar(calendar: LedgerFiscalCalendar) -> LedgerFiscalCalendarModel {
+  1884	    LedgerFiscalCalendarModel {
+  1885	        periods_per_year: calendar.periods_per_year,
+  1886	        opening_month: calendar.opening_month,
+  1887	    }
+  1888	}
+  1889	
+  1890	#[cfg(feature = "ledger")]
+  1891	fn from_ledger_company(company: codex_ledger::Company) -> LedgerCompany {
+  1892	    LedgerCompany {
+  1893	        id: company.id,
+  1894	        name: company.name,
+  1895	        base_currency: LedgerCurrency {
+  1896	            code: company.base_currency.code,
+  1897	            precision: company.base_currency.precision,
+  1898	        },
+  1899	        fiscal_calendar: LedgerFiscalCalendar {
+  1900	            periods_per_year: company.fiscal_calendar.periods_per_year,
+  1901	            opening_month: company.fiscal_calendar.opening_month,
+  1902	        },
+  1903	        metadata: company.metadata,
+  1904	    }
+  1905	}
+  1906	
+  1907	#[cfg(feature = "ledger")]
+  1908	fn to_ledger_account_type(account_type: LedgerAccountType) -> LedgerAccountTypeModel {
+  1909	    match account_type {
+  1910	        LedgerAccountType::Asset => LedgerAccountTypeModel::Asset,
+  1911	        LedgerAccountType::Liability => LedgerAccountTypeModel::Liability,
+  1912	        LedgerAccountType::Equity => LedgerAccountTypeModel::Equity,
+  1913	        LedgerAccountType::Revenue => LedgerAccountTypeModel::Revenue,
+  1914	        LedgerAccountType::Expense => LedgerAccountTypeModel::Expense,
+  1915	        LedgerAccountType::OffBalance => LedgerAccountTypeModel::OffBalance,
+  1916	    }
+  1917	}
+  1918	
+  1919	#[cfg(feature = "ledger")]
+  1920	fn from_ledger_account_type(account_type: LedgerAccountTypeModel) -> LedgerAccountType {
+  1921	    match account_type {
+  1922	        LedgerAccountTypeModel::Asset => LedgerAccountType::Asset,
+  1923	        LedgerAccountTypeModel::Liability => LedgerAccountType::Liability,
+  1924	        LedgerAccountTypeModel::Equity => LedgerAccountType::Equity,
+  1925	        LedgerAccountTypeModel::Revenue => LedgerAccountType::Revenue,
+  1926	        LedgerAccountTypeModel::Expense => LedgerAccountType::Expense,
+  1927	        LedgerAccountTypeModel::OffBalance => LedgerAccountType::OffBalance,
+  1928	    }
+  1929	}
+  1930	
+  1931	#[cfg(feature = "ledger")]
+  1932	fn to_ledger_currency_mode(mode: LedgerCurrencyMode) -> LedgerCurrencyModeModel {
+  1933	    match mode {
+  1934	        LedgerCurrencyMode::FunctionalOnly => LedgerCurrencyModeModel::FunctionalOnly,
+  1935	        LedgerCurrencyMode::Transactional => LedgerCurrencyModeModel::Transactional,
+  1936	        LedgerCurrencyMode::MultiCurrency => LedgerCurrencyModeModel::MultiCurrency,
+  1937	    }
+  1938	}
+  1939	
+  1940	#[cfg(feature = "ledger")]
+  1941	fn from_ledger_currency_mode(mode: LedgerCurrencyModeModel) -> LedgerCurrencyMode {
+  1942	    match mode {
+  1943	        LedgerCurrencyModeModel::FunctionalOnly => LedgerCurrencyMode::FunctionalOnly,
+  1944	        LedgerCurrencyModeModel::Transactional => LedgerCurrencyMode::Transactional,
+  1945	        LedgerCurrencyModeModel::MultiCurrency => LedgerCurrencyMode::MultiCurrency,
+  1946	    }
+  1947	}
+  1948	
+  1949	#[cfg(feature = "ledger")]
+  1950	fn to_ledger_tax_code(tax: LedgerTaxCode) -> LedgerTaxCodeModel {
+  1951	    LedgerTaxCodeModel {
+  1952	        code: tax.code,
+  1953	        description: tax.description,
+  1954	        rate_percent: tax.rate_percent,
+  1955	    }
+  1956	}
+  1957	
+  1958	#[cfg(feature = "ledger")]
+  1959	fn from_ledger_tax_code(tax: LedgerTaxCodeModel) -> LedgerTaxCode {
+  1960	    LedgerTaxCode {
+  1961	        code: tax.code,
+  1962	        description: tax.description,
+  1963	        rate_percent: tax.rate_percent,
+  1964	    }
+  1965	}
+  1966	
+  1967	#[cfg(feature = "ledger")]
+  1968	fn to_ledger_account(account: LedgerAccount) -> LedgerAccountModel {
+  1969	    LedgerAccountModel {
+  1970	        id: account.id,
+  1971	        company_id: account.company_id,
+  1972	        code: account.code,
+  1973	        name: account.name,
+  1974	        account_type: to_ledger_account_type(account.account_type),
+  1975	        parent_account_id: account.parent_account_id,
+  1976	        currency_mode: to_ledger_currency_mode(account.currency_mode),
+  1977	        tax_code: account.tax_code.map(to_ledger_tax_code),
+  1978	        is_summary: account.is_summary,
+  1979	        is_active: account.is_active,
+  1980	    }
+  1981	}
+  1982	
+  1983	#[cfg(feature = "ledger")]
+  1984	fn from_ledger_account(account: LedgerAccountModel) -> LedgerAccount {
+  1985	    LedgerAccount {
+  1986	        id: account.id,
+  1987	        company_id: account.company_id,
+  1988	        code: account.code,
+  1989	        name: account.name,
+  1990	        account_type: from_ledger_account_type(account.account_type),
+  1991	        parent_account_id: account.parent_account_id,
+  1992	        currency_mode: from_ledger_currency_mode(account.currency_mode),
+  1993	        tax_code: account.tax_code.map(from_ledger_tax_code),
+  1994	        is_summary: account.is_summary,
+  1995	        is_active: account.is_active,
+  1996	    }
+  1997	}
+  1998	
+  1999	#[cfg(feature = "ledger")]
+  2000	fn to_ledger_posting_side(side: LedgerPostingSide) -> LedgerPostingSideModel {
+  2001	    match side {
+  2002	        LedgerPostingSide::Debit => LedgerPostingSideModel::Debit,
+  2003	        LedgerPostingSide::Credit => LedgerPostingSideModel::Credit,
+  2004	    }
+  2005	}
+  2006	
+  2007	#[cfg(feature = "ledger")]
+  2008	fn from_ledger_posting_side(side: LedgerPostingSideModel) -> LedgerPostingSide {
+  2009	    match side {
+  2010	        LedgerPostingSideModel::Debit => LedgerPostingSide::Debit,
+  2011	        LedgerPostingSideModel::Credit => LedgerPostingSide::Credit,
+  2012	    }
+  2013	}
+  2014	
+  2015	#[cfg(feature = "ledger")]
+  2016	fn to_ledger_currency_rate(rate: LedgerCurrencyRate) -> LedgerCurrencyRateModel {
+  2017	    LedgerCurrencyRateModel {
+  2018	        base: to_ledger_currency(rate.base),
+  2019	        quote: to_ledger_currency(rate.quote),
+  2020	        rate: rate.rate,
+  2021	        source: rate.source,
+  2022	        observed_at: SystemTime::now(),
+  2023	    }
+  2024	}
+  2025	
+  2026	#[cfg(feature = "ledger")]
+  2027	fn from_ledger_currency_rate(rate: LedgerCurrencyRateModel) -> LedgerCurrencyRate {
+  2028	    LedgerCurrencyRate {
+  2029	        base: LedgerCurrency {
+  2030	            code: rate.base.code,
+  2031	            precision: rate.base.precision,
+  2032	        },
+  2033	        quote: LedgerCurrency {
+  2034	            code: rate.quote.code,
+  2035	            precision: rate.quote.precision,
+  2036	        },
+  2037	        rate: rate.rate,
+  2038	        source: rate.source,
+  2039	    }
+  2040	}
+  2041	
+  2042	#[cfg(feature = "ledger")]
+  2043	fn to_ledger_journal_line(line: LedgerJournalLine) -> LedgerJournalLineModel {
+  2044	    LedgerJournalLineModel {
+  2045	        id: line.id,
+  2046	        account_id: line.account_id,
+  2047	        side: to_ledger_posting_side(line.side),
+  2048	        amount_minor: line.amount_minor,
+  2049	        currency: to_ledger_currency(line.currency),
+  2050	        functional_amount_minor: line.functional_amount_minor,
+  2051	        functional_currency: to_ledger_currency(line.functional_currency),
+  2052	        exchange_rate: line.exchange_rate.map(to_ledger_currency_rate),
+  2053	        tax_code: line.tax_code.map(to_ledger_tax_code),
+  2054	        memo: line.memo,
+  2055	    }
+  2056	}
+  2057	
+  2058	#[cfg(feature = "ledger")]
+  2059	fn from_ledger_journal_line(line: LedgerJournalLineModel) -> LedgerJournalLine {
+  2060	    LedgerJournalLine {
+  2061	        id: line.id,
+  2062	        account_id: line.account_id,
+  2063	        side: from_ledger_posting_side(line.side),
+  2064	        amount_minor: line.amount_minor,
+  2065	        currency: LedgerCurrency {
+  2066	            code: line.currency.code,
+  2067	            precision: line.currency.precision,
+  2068	        },
+  2069	        functional_amount_minor: line.functional_amount_minor,
+  2070	        functional_currency: LedgerCurrency {
+  2071	            code: line.functional_currency.code,
+  2072	            precision: line.functional_currency.precision,
+  2073	        },
+  2074	        exchange_rate: line.exchange_rate.map(from_ledger_currency_rate),
+  2075	        tax_code: line.tax_code.map(from_ledger_tax_code),
+  2076	        memo: line.memo,
+  2077	    }
+  2078	}
+  2079	
+  2080	#[cfg(feature = "ledger")]
+  2081	fn to_ledger_entry_status(status: LedgerEntryStatus) -> LedgerEntryStatusModel {
+  2082	    match status {
+  2083	        LedgerEntryStatus::Draft => LedgerEntryStatusModel::Draft,
+  2084	        LedgerEntryStatus::Proposed => LedgerEntryStatusModel::Proposed,
+  2085	        LedgerEntryStatus::Posted => LedgerEntryStatusModel::Posted,
+  2086	        LedgerEntryStatus::Reversed => LedgerEntryStatusModel::Reversed,
+  2087	    }
+  2088	}
+  2089	
+  2090	#[cfg(feature = "ledger")]
+  2091	fn from_ledger_entry_status(status: LedgerEntryStatusModel) -> LedgerEntryStatus {
+  2092	    match status {
+  2093	        LedgerEntryStatusModel::Draft => LedgerEntryStatus::Draft,
+  2094	        LedgerEntryStatusModel::Proposed => LedgerEntryStatus::Proposed,
+  2095	        LedgerEntryStatusModel::Posted => LedgerEntryStatus::Posted,
+  2096	        LedgerEntryStatusModel::Reversed => LedgerEntryStatus::Reversed,
+  2097	    }
+  2098	}
+  2099	
+  2100	#[cfg(feature = "ledger")]
+  2101	fn to_ledger_entry_origin(origin: LedgerEntryOrigin) -> LedgerEntryOriginModel {
+  2102	    match origin {
+  2103	        LedgerEntryOrigin::Manual => LedgerEntryOriginModel::Manual,
+  2104	        LedgerEntryOrigin::Ingestion => LedgerEntryOriginModel::Ingestion,
+  2105	        LedgerEntryOrigin::AiSuggested => LedgerEntryOriginModel::AiSuggested,
+  2106	        LedgerEntryOrigin::Adjustment => LedgerEntryOriginModel::Adjustment,
+  2107	    }
+  2108	}
+  2109	
+  2110	#[cfg(feature = "ledger")]
+  2111	fn from_ledger_entry_origin(origin: LedgerEntryOriginModel) -> LedgerEntryOrigin {
+  2112	    match origin {
+  2113	        LedgerEntryOriginModel::Manual => LedgerEntryOrigin::Manual,
+  2114	        LedgerEntryOriginModel::Ingestion => LedgerEntryOrigin::Ingestion,
+  2115	        LedgerEntryOriginModel::AiSuggested => LedgerEntryOrigin::AiSuggested,
+  2116	        LedgerEntryOriginModel::Adjustment => LedgerEntryOrigin::Adjustment,
+  2117	    }
+  2118	}
+  2119	
+  2120	#[cfg(feature = "ledger")]
+  2121	fn to_ledger_journal_entry(entry: LedgerJournalEntry) -> LedgerJournalEntryModel {
+  2122	    LedgerJournalEntryModel {
+  2123	        id: entry.id,
+  2124	        journal_id: entry.journal_id,
+  2125	        status: to_ledger_entry_status(entry.status),
+  2126	        lines: entry
+  2127	            .lines
+  2128	            .into_iter()
+  2129	            .map(to_ledger_journal_line)
+  2130	            .collect(),
+  2131	        origin: to_ledger_entry_origin(entry.origin),
+  2132	        memo: entry.memo,
+  2133	        reverses_entry_id: entry.reverses_entry_id,
+  2134	        reversed_by_entry_id: entry.reversed_by_entry_id,
+  2135	    }
+  2136	}
+  2137	
+  2138	#[cfg(feature = "ledger")]
+  2139	fn from_ledger_journal_entry(entry: LedgerJournalEntryModel) -> LedgerJournalEntry {
+  2140	    LedgerJournalEntry {
+  2141	        id: entry.id,
+  2142	        journal_id: entry.journal_id,
+  2143	        status: from_ledger_entry_status(entry.status),
+  2144	        lines: entry
+  2145	            .lines
+  2146	            .into_iter()
+  2147	            .map(from_ledger_journal_line)
+  2148	            .collect(),
+  2149	        origin: from_ledger_entry_origin(entry.origin),
+  2150	        memo: entry.memo,
+  2151	        reverses_entry_id: entry.reverses_entry_id,
+  2152	        reversed_by_entry_id: entry.reversed_by_entry_id,
+  2153	    }
+  2154	}
+  2155	
+  2156	#[cfg(feature = "ledger")]
+  2157	fn to_ledger_posting_mode(mode: LedgerPostingMode) -> LedgerPostingModeModel {
+  2158	    match mode {
+  2159	        LedgerPostingMode::DryRun => LedgerPostingModeModel::DryRun,
+  2160	        LedgerPostingMode::Commit => LedgerPostingModeModel::Commit,
+  2161	    }
+  2162	}
+  2163	
+  2164	#[cfg(feature = "ledger")]
+  2165	fn to_ledger_period_action(action: LedgerPeriodAction) -> LedgerPeriodActionModel {
+  2166	    match action {
+  2167	        LedgerPeriodAction::SoftClose => LedgerPeriodActionModel::SoftClose,
+  2168	        LedgerPeriodAction::Close => LedgerPeriodActionModel::Close,
+  2169	        LedgerPeriodAction::ReopenSoft => LedgerPeriodActionModel::ReopenSoft,
+  2170	        LedgerPeriodAction::ReopenFull => LedgerPeriodActionModel::ReopenFull,
+  2171	    }
+  2172	}
+  2173	
+  2174	#[cfg(feature = "ledger")]
+  2175	fn to_ledger_period_ref(period: LedgerPeriodRef) -> LedgerPeriodRefModel {
+  2176	    LedgerPeriodRefModel {
+  2177	        fiscal_year: period.fiscal_year,
+  2178	        period: period.period,
+  2179	    }
+  2180	}
+  2181	
+  2182	#[cfg(feature = "ledger")]
+  2183	fn from_ledger_journal_type(journal_type: LedgerJournalTypeModel) -> LedgerJournalType {
+  2184	    match journal_type {
+  2185	        LedgerJournalTypeModel::General => LedgerJournalType::General,
+  2186	        LedgerJournalTypeModel::AccountsPayable => LedgerJournalType::AccountsPayable,
+  2187	        LedgerJournalTypeModel::AccountsReceivable => LedgerJournalType::AccountsReceivable,
+  2188	        LedgerJournalTypeModel::Cash => LedgerJournalType::Cash,
+  2189	        LedgerJournalTypeModel::SubLedger => LedgerJournalType::SubLedger,
+  2190	    }
+  2191	}
+  2192	
+  2193	#[cfg(feature = "ledger")]
+  2194	fn from_ledger_period_state(state: LedgerPeriodStateModel) -> LedgerPeriodState {
+  2195	    match state {
+  2196	        LedgerPeriodStateModel::Open => LedgerPeriodState::Open,
+  2197	        LedgerPeriodStateModel::SoftClosed => LedgerPeriodState::SoftClosed,
+  2198	        LedgerPeriodStateModel::Closed => LedgerPeriodState::Closed,
+  2199	    }
+  2200	}
+  2201	
+  2202	#[cfg(feature = "ledger")]
+  2203	fn from_ledger_journal(journal: LedgerJournalModel) -> LedgerJournal {
+  2204	    LedgerJournal {
+  2205	        id: journal.id,
+  2206	        company_id: journal.company_id,
+  2207	        ledger_type: from_ledger_journal_type(journal.ledger_type),
+  2208	        period_state: from_ledger_period_state(journal.period_state),
+  2209	    }
+  2210	}
+  2211	
+  2212	#[cfg(feature = "ledger")]
+  2213	fn ledger_error_to_jsonrpc(error: LedgerError) -> JSONRPCErrorError {
+  2214	    match error {
+  2215	        LedgerError::Internal(message) => JSONRPCErrorError {
+  2216	            code: INTERNAL_ERROR_CODE,
+  2217	            message,
+  2218	            data: None,
+  2219	        },
+  2220	        LedgerError::NotFound(message)
+  2221	        | LedgerError::Rejected(message)
+  2222	        | LedgerError::Validation(message) => JSONRPCErrorError {
+  2223	            code: INVALID_REQUEST_ERROR_CODE,
+  2224	            message,
+  2225	            data: None,
+  2226	        },
+  2227	    }
+  2228	}
+  2229	
+  2230	#[cfg(test)]
+  2231	mod tests {
+  2232	    use super::*;
+  2233	    use anyhow::Result;
+  2234	    use pretty_assertions::assert_eq;
+  2235	    use serde_json::json;
+  2236	
+  2237	    #[test]
+  2238	    fn extract_conversation_summary_prefers_plain_user_messages() -> Result<()> {
+  2239	        let conversation_id = ConversationId::from_string("3f941c35-29b3-493b-b0a4-e25800d9aeb0")?;
+  2240	        let timestamp = Some("2025-09-05T16:53:11.850Z".to_string());
+  2241	        let path = PathBuf::from("rollout.jsonl");
+  2242	
+  2243	        let head = vec![
+  2244	            json!({
+  2245	                "id": conversation_id.to_string(),
+  2246	                "timestamp": timestamp,
+  2247	                "cwd": "/",
+  2248	                "originator": "codex",
+  2249	                "cli_version": "0.0.0",
+  2250	                "instructions": null
+  2251	            }),
+  2252	            json!({
+  2253	                "type": "message",
+  2254	                "role": "user",
+  2255	                "content": [{
+  2256	                    "type": "input_text",
+  2257	                    "text": "<user_instructions>\n<AGENTS.md contents>\n</user_instructions>".to_string(),
+  2258	                }],
+  2259	            }),
+  2260	            json!({
+  2261	                "type": "message",
+  2262	                "role": "user",
+  2263	                "content": [{
+  2264	                    "type": "input_text",
+  2265	                    "text": format!("<prior context> {USER_MESSAGE_BEGIN}Count to 5"),
+  2266	                }],
+  2267	            }),
+  2268	        ];
+  2269	
+  2270	        let summary = extract_conversation_summary(path.clone(), &head).expect("summary");
+  2271	
+  2272	        assert_eq!(summary.conversation_id, conversation_id);
+  2273	        assert_eq!(
+  2274	            summary.timestamp,
+  2275	            Some("2025-09-05T16:53:11.850Z".to_string())
+  2276	        );
+  2277	        assert_eq!(summary.path, path);
+  2278	        assert_eq!(summary.preview, "Count to 5");
+  2279	        Ok(())
+  2280	    }
+  2281	}

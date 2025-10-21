@@ -2,6 +2,23 @@
 
 We provide Codex CLI as a standalone, native executable to ensure a zero-dependency install.
 
+## Prerequisites
+
+Before running the development workflows in this repository, confirm the following tools are installed and on your `PATH`:
+
+- Latest Rust toolchain via [`rustup`](https://rustup.rs/)
+- [`just`](https://github.com/casey/just) task runner
+- [`rg`](https://github.com/BurntSushi/ripgrep) (`ripgrep`) for fast search
+- [`cargo-insta`](https://insta.rs/docs/quickstart/) for snapshot management
+
+Typical install commands (feel free to swap in your preferred package manager):
+
+```bash
+rustup update
+cargo install just cargo-insta
+cargo install ripgrep        # or: brew install ripgrep / apt install ripgrep
+```
+
 ## Installing Codex
 
 Today, the easiest way to install Codex is via `npm`:
@@ -50,6 +67,65 @@ To run Codex non-interactively, run `codex exec PROMPT` (you can also pass the p
 ### Use `@` for file search
 
 Typing `@` triggers a fuzzy-filename search over the workspace root. Use up/down to select among the results and Tab or Enter to replace the `@` with the selected path. You can use Esc to cancel the search.
+
+### Accounting preview commands
+
+Codex ships an experimental ledger sandbox that demonstrates the accounting workflow:
+
+- `codex ledger demo` seeds an in-memory ledger, configures starter accounts, and posts the first journal entry.
+- Read-only helpers such as `codex ledger companies`, `codex ledger accounts`, and `codex ledger entries` expose the seeded data for quick inspection.
+
+See the [Accounting CLI reference](../docs/accounting/cli.md) for JSON schemas, sanitized examples, and streaming samples that match the commands below.
+
+#### `codex ledger list-locks`
+- Preview lock history, approval references, and telemetry counters for the demo ledger.
+
+```shell
+codex ledger list-locks
+codex ledger list-locks --format json
+```
+
+`Telemetry file:` lines indicate where counters persist (set `CODEX_HOME` to capture them).
+
+#### `codex ledger set-lock`
+- Update the journal lock state with an explicit approval reference; JSON output mirrors the most recent lock snapshot.
+
+```shell
+codex ledger set-lock --journal-id jnl-gl --fiscal-year 2024 --period 5 --action close --approval-ref CLI-APR
+codex ledger set-lock --journal-id jnl-gl --fiscal-year 2024 --period 5 --action close --approval-ref CLI-APR --format json
+```
+
+#### `codex ledger reconciliation summary`
+- Surface ingest dedupe metrics, approval backlog, transaction duplicates, and persisted telemetry counters.
+
+```shell
+codex ledger reconciliation summary
+codex ledger reconciliation summary --format json
+```
+
+#### `codex ledger go-live checklist`
+- Run the readiness checklist covering locks, reconciliation coverage, approvals backlog, monitoring stubs, and telemetry hygiene reminders.
+
+```shell
+codex ledger go-live-checklist
+```
+
+- The checklist now points to `codex ledger entries --format json` for export validation, calls out monitoring TODOs (wire metrics dashboards and pager alerts), and prints a telemetry reset reminder keyed to `<CODEX_HOME>/accounting/telemetry.json`.
+
+#### `codex tenancy list --stream-reconciliation`
+- Stream three reconciliation ticks (or view company roster) and monitor the persisted telemetry path.
+
+```shell
+codex tenancy list --stream-reconciliation
+codex tenancy list --stream-reconciliation --json
+```
+
+`--json` streams two newline-delimited JSON snapshots suitable for automation; each tick surfaces coverage, backlog counts, ingest dedupe stats, telemetry counters, and the resolved telemetry path.
+
+Counters persist under `<CODEX_HOME>/accounting/telemetry.json`. Delete that file to reset demo metrics before another run; the CLI recreates it automatically and logs a warning if existing data is corrupt.
+
+- Inside the TUI, press <kbd>F6</kbd> to open a ledger overlay or <kbd>F7</kbd> for the reconciliation dashboard with live status bars.
+
 
 ### Esc–Esc to edit a previous message
 

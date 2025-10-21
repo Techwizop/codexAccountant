@@ -3,6 +3,8 @@ use crate::error_code::INVALID_REQUEST_ERROR_CODE;
 use crate::fuzzy_file_search::run_fuzzy_file_search;
 use crate::outgoing_message::OutgoingMessageSender;
 use crate::outgoing_message::OutgoingNotification;
+#[cfg(feature = "ledger")]
+use codex_accounting_api::LedgerFacade;
 use codex_app_server_protocol::AddConversationListenerParams;
 use codex_app_server_protocol::AddConversationSubscriptionResponse;
 use codex_app_server_protocol::ApplyPatchApprovalParams;
@@ -25,6 +27,30 @@ use codex_app_server_protocol::InputItem as WireInputItem;
 use codex_app_server_protocol::InterruptConversationParams;
 use codex_app_server_protocol::InterruptConversationResponse;
 use codex_app_server_protocol::JSONRPCErrorError;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerCreateCompanyParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerGetCompanyContextParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerListAccountsParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerListAuditTrailParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerListCompaniesParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerListEntriesParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerLockPeriodParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerPostEntryParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerProcessDocumentParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerRevalueCurrencyParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerReverseEntryParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerUpsertAccountParams;
 use codex_app_server_protocol::ListConversationsParams;
 use codex_app_server_protocol::ListConversationsResponse;
 use codex_app_server_protocol::LoginApiKeyParams;
@@ -80,6 +106,12 @@ use codex_core::protocol::ExecApprovalRequestEvent;
 use codex_core::protocol::InputItem as CoreInputItem;
 use codex_core::protocol::Op;
 use codex_core::protocol::ReviewDecision;
+#[cfg(feature = "ledger")]
+use codex_ledger::LedgerError;
+#[cfg(feature = "ledger")]
+use codex_ledger::Role as LedgerRole;
+#[cfg(feature = "ledger")]
+use codex_ledger::TenantContext as LedgerTenantContext;
 use codex_login::ServerOptions as LoginServerOptions;
 use codex_login::ShutdownHandle;
 use codex_login::run_login_server;
@@ -130,6 +162,10 @@ pub(crate) struct CodexMessageProcessor {
     // Queue of pending interrupt requests per conversation. We reply when TurnAborted arrives.
     pending_interrupts: Arc<Mutex<HashMap<ConversationId, Vec<RequestId>>>>,
     pending_fuzzy_searches: Arc<Mutex<HashMap<String, Arc<AtomicBool>>>>,
+    #[cfg(feature = "ledger")]
+    ledger: Option<LedgerFacade>,
+    #[cfg(feature = "ledger")]
+    accounting_handlers: Option<Arc<crate::accounting_handlers::AccountingHandlers>>,
 }
 
 impl CodexMessageProcessor {
@@ -139,7 +175,18 @@ impl CodexMessageProcessor {
         outgoing: Arc<OutgoingMessageSender>,
         codex_linux_sandbox_exe: Option<PathBuf>,
         config: Arc<Config>,
+        #[cfg(feature = "ledger")] ledger: Option<LedgerFacade>,
     ) -> Self {
+        #[cfg(feature = "ledger")]
+        let accounting_handlers = ledger.as_ref().map(|facade| {
+            use codex_core::accounting::DocumentAgent;
+            let document_agent = Arc::new(DocumentAgent::new());
+            Arc::new(crate::accounting_handlers::AccountingHandlers::new(
+                Arc::new(facade.clone()),
+                document_agent,
+            ))
+        });
+
         Self {
             auth_manager,
             conversation_manager,
@@ -150,6 +197,10 @@ impl CodexMessageProcessor {
             active_login: Arc::new(Mutex::new(None)),
             pending_interrupts: Arc::new(Mutex::new(HashMap::new())),
             pending_fuzzy_searches: Arc::new(Mutex::new(HashMap::new())),
+            #[cfg(feature = "ledger")]
+            ledger,
+            #[cfg(feature = "ledger")]
+            accounting_handlers,
         }
     }
 
@@ -226,6 +277,202 @@ impl CodexMessageProcessor {
                 params: _,
             } => {
                 self.get_user_agent(request_id).await;
+            }
+            ClientRequest::LedgerCreateCompany { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_create_company(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerUpsertAccount { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_upsert_account(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerPostEntry { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_post_entry(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerReverseEntry { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_reverse_entry(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerLockPeriod { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_lock_period(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerRevalueCurrency { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_revalue_currency(request_id, params)
+                        .await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerListAuditTrail { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_list_audit_trail(request_id, params)
+                        .await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerListCompanies { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_list_companies(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerListAccounts { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_list_accounts(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerListEntries { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_list_entries(request_id, params).await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerGetCompanyContext { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_get_company_context(request_id, params)
+                        .await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
+            }
+            ClientRequest::LedgerProcessDocument { request_id, params } => {
+                #[cfg(feature = "ledger")]
+                {
+                    self.handle_ledger_process_document(request_id, params)
+                        .await;
+                }
+                #[cfg(not(feature = "ledger"))]
+                {
+                    let _ = params;
+                    let error = JSONRPCErrorError {
+                        code: INVALID_REQUEST_ERROR_CODE,
+                        message: "ledger feature not enabled".to_string(),
+                        data: None,
+                    };
+                    self.outgoing.send_error(request_id, error).await;
+                }
             }
             ClientRequest::UserInfo {
                 request_id,
@@ -1484,6 +1731,391 @@ fn extract_conversation_summary(
         path,
         preview: preview.to_string(),
     })
+}
+
+#[cfg(feature = "ledger")]
+impl CodexMessageProcessor {
+    async fn handle_ledger_create_company(
+        &self,
+        request_id: RequestId,
+        params: LedgerCreateCompanyParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match ledger
+            .create_company(params, default_ledger_tenant_context())
+            .await
+        {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_upsert_account(
+        &self,
+        request_id: RequestId,
+        params: LedgerUpsertAccountParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match ledger
+            .upsert_account(params, default_ledger_tenant_context())
+            .await
+        {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_post_entry(&self, request_id: RequestId, params: LedgerPostEntryParams) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match ledger
+            .post_entry(params, default_ledger_tenant_context())
+            .await
+        {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_reverse_entry(
+        &self,
+        request_id: RequestId,
+        params: LedgerReverseEntryParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match ledger
+            .reverse_entry(params, default_ledger_tenant_context())
+            .await
+        {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_lock_period(
+        &self,
+        request_id: RequestId,
+        params: LedgerLockPeriodParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        let tenant = ledger_tenant_context_for_company(params.company_id.clone());
+
+        match ledger.lock_period(params, tenant).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_revalue_currency(
+        &self,
+        request_id: RequestId,
+        params: LedgerRevalueCurrencyParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        let tenant = ledger_tenant_context_for_company(params.company_id.clone());
+
+        match ledger.revalue_currency(params, tenant).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_list_audit_trail(
+        &self,
+        request_id: RequestId,
+        params: LedgerListAuditTrailParams,
+    ) {
+        let Some(ledger) = self.ledger.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "ledger service not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        let tenant = ledger_tenant_context_for_company(params.company_id.clone());
+
+        match ledger.list_audit_trail(params, tenant).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = ledger_error_to_jsonrpc(err);
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_list_companies(
+        &self,
+        request_id: RequestId,
+        params: LedgerListCompaniesParams,
+    ) {
+        let Some(handlers) = self.accounting_handlers.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "accounting handlers not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match handlers.list_companies(params).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = JSONRPCErrorError {
+                    code: INTERNAL_ERROR_CODE,
+                    message: err,
+                    data: None,
+                };
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_list_accounts(
+        &self,
+        request_id: RequestId,
+        params: LedgerListAccountsParams,
+    ) {
+        let Some(handlers) = self.accounting_handlers.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "accounting handlers not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match handlers.list_accounts(params).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = JSONRPCErrorError {
+                    code: INTERNAL_ERROR_CODE,
+                    message: err,
+                    data: None,
+                };
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_list_entries(
+        &self,
+        request_id: RequestId,
+        params: LedgerListEntriesParams,
+    ) {
+        let Some(handlers) = self.accounting_handlers.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "accounting handlers not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match handlers.list_entries(params).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = JSONRPCErrorError {
+                    code: INTERNAL_ERROR_CODE,
+                    message: err,
+                    data: None,
+                };
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_get_company_context(
+        &self,
+        request_id: RequestId,
+        params: LedgerGetCompanyContextParams,
+    ) {
+        let Some(handlers) = self.accounting_handlers.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "accounting handlers not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match handlers.get_company_context(params).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = JSONRPCErrorError {
+                    code: INTERNAL_ERROR_CODE,
+                    message: err,
+                    data: None,
+                };
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+
+    async fn handle_ledger_process_document(
+        &self,
+        request_id: RequestId,
+        params: LedgerProcessDocumentParams,
+    ) {
+        let Some(handlers) = self.accounting_handlers.as_ref() else {
+            let error = JSONRPCErrorError {
+                code: INVALID_REQUEST_ERROR_CODE,
+                message: "accounting handlers not configured".to_string(),
+                data: None,
+            };
+            self.outgoing.send_error(request_id, error).await;
+            return;
+        };
+
+        match handlers.process_document(params).await {
+            Ok(response) => {
+                self.outgoing.send_response(request_id, response).await;
+            }
+            Err(err) => {
+                let error = JSONRPCErrorError {
+                    code: INTERNAL_ERROR_CODE,
+                    message: err,
+                    data: None,
+                };
+                self.outgoing.send_error(request_id, error).await;
+            }
+        }
+    }
+}
+
+#[cfg(feature = "ledger")]
+fn default_ledger_tenant_context() -> LedgerTenantContext {
+    LedgerTenantContext {
+        tenant_id: "ledger-admin".to_string(),
+        user_id: "codex-app-server".to_string(),
+        roles: vec![LedgerRole::ServiceAccount],
+        locale: Some("en-US".to_string()),
+    }
+}
+
+#[cfg(feature = "ledger")]
+fn ledger_tenant_context_for_company(company_id: String) -> LedgerTenantContext {
+    LedgerTenantContext {
+        tenant_id: company_id,
+        ..default_ledger_tenant_context()
+    }
+}
+
+#[cfg(feature = "ledger")]
+fn ledger_error_to_jsonrpc(error: LedgerError) -> JSONRPCErrorError {
+    match error {
+        LedgerError::Internal(message) => JSONRPCErrorError {
+            code: INTERNAL_ERROR_CODE,
+            message,
+            data: None,
+        },
+        LedgerError::NotFound(message)
+        | LedgerError::Rejected(message)
+        | LedgerError::Validation(message) => JSONRPCErrorError {
+            code: INVALID_REQUEST_ERROR_CODE,
+            message,
+            data: None,
+        },
+    }
 }
 
 #[cfg(test)]

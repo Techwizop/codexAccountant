@@ -7,7 +7,9 @@ use crate::diff_render::DiffSummary;
 use crate::exec_command::strip_bash_lc_and_escape;
 use crate::file_search::FileSearchManager;
 use crate::history_cell::HistoryCell;
+use crate::ledger_preview;
 use crate::pager_overlay::Overlay;
+use crate::reconciliation_preview;
 use crate::render::highlight::highlight_bash_to_lines;
 use crate::resume_picker::ResumeSelection;
 use crate::tui;
@@ -24,6 +26,7 @@ use codex_core::protocol_config_types::ReasoningEffort as ReasoningEffortConfig;
 use codex_protocol::ConversationId;
 use color_eyre::eyre::Result;
 use color_eyre::eyre::WrapErr;
+use color_eyre::eyre::eyre;
 use crossterm::event::KeyCode;
 use crossterm::event::KeyEvent;
 use crossterm::event::KeyEventKind;
@@ -416,6 +419,24 @@ impl App {
     async fn handle_key_event(&mut self, tui: &mut tui::Tui, key_event: KeyEvent) {
         match key_event {
             KeyEvent {
+                code: KeyCode::F(6),
+                kind: KeyEventKind::Press,
+                ..
+            } => {
+                if let Err(err) = self.open_ledger_summary_overlay(tui).await {
+                    self.open_ledger_summary_error_overlay(tui, err.to_string());
+                }
+            }
+            KeyEvent {
+                code: KeyCode::F(7),
+                kind: KeyEventKind::Press,
+                ..
+            } => {
+                if let Err(err) = self.open_reconciliation_overview_overlay(tui).await {
+                    self.open_reconciliation_overview_error_overlay(tui, err.to_string());
+                }
+            }
+            KeyEvent {
                 code: KeyCode::Char('t'),
                 modifiers: crossterm::event::KeyModifiers::CONTROL,
                 kind: KeyEventKind::Press,
@@ -470,6 +491,43 @@ impl App {
                 // Ignore Release key events.
             }
         };
+    }
+
+    async fn open_ledger_summary_overlay(&mut self, tui: &mut tui::Tui) -> Result<()> {
+        let lines = ledger_preview::ledger_summary_lines()
+            .await
+            .map_err(|err| eyre!(err))?;
+        self.render_ledger_overlay(tui, lines, "Ledger Snapshot");
+        Ok(())
+    }
+
+    fn open_ledger_summary_error_overlay(&mut self, tui: &mut tui::Tui, message: String) {
+        let lines = ledger_preview::error_lines(&message);
+        self.render_ledger_overlay(tui, lines, "Ledger Snapshot");
+    }
+
+    async fn open_reconciliation_overview_overlay(&mut self, tui: &mut tui::Tui) -> Result<()> {
+        let lines = reconciliation_preview::reconciliation_overview_lines()
+            .await
+            .map_err(|err| eyre!(err))?;
+        self.render_ledger_overlay(tui, lines, "Reconciliation Dashboard");
+        Ok(())
+    }
+
+    fn open_reconciliation_overview_error_overlay(&mut self, tui: &mut tui::Tui, message: String) {
+        let lines = reconciliation_preview::error_lines(&message);
+        self.render_ledger_overlay(tui, lines, "Reconciliation Dashboard");
+    }
+
+    fn render_ledger_overlay(
+        &mut self,
+        tui: &mut tui::Tui,
+        lines: Vec<Line<'static>>,
+        title: &str,
+    ) {
+        let _ = tui.enter_alt_screen();
+        self.overlay = Some(Overlay::new_static_with_lines(lines, title.to_string()));
+        tui.frame_requester().schedule_frame();
     }
 }
 

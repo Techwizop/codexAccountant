@@ -42,6 +42,9 @@ install:
 test:
     cargo nextest run --no-fail-fast
 
+lint-command-log:
+    ./scripts/append-command-log.sh --check
+
 # Run the MCP server
 mcp-server-run *args:
     cargo run -p codex-mcp-server -- "$@"

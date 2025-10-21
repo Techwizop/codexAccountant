@@ -20,6 +20,20 @@ use codex_app_server_protocol::ClientNotification;
 use codex_app_server_protocol::GetAuthStatusParams;
 use codex_app_server_protocol::InitializeParams;
 use codex_app_server_protocol::InterruptConversationParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerCreateCompanyParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerLockPeriodParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerPeriodAction;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerPeriodRef;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerPostEntryParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerReverseEntryParams;
+#[cfg(feature = "ledger")]
+use codex_app_server_protocol::LedgerUpsertAccountParams;
 use codex_app_server_protocol::ListConversationsParams;
 use codex_app_server_protocol::LoginApiKeyParams;
 use codex_app_server_protocol::NewConversationParams;
@@ -311,6 +325,61 @@ impl McpProcess {
             params["cancellationToken"] = serde_json::json!(token);
         }
         self.send_request("fuzzyFileSearch", Some(params)).await
+    }
+
+    #[cfg(feature = "ledger")]
+    pub async fn send_ledger_create_company_request(
+        &mut self,
+        params: LedgerCreateCompanyParams,
+    ) -> anyhow::Result<i64> {
+        let params = Some(serde_json::to_value(params)?);
+        self.send_request("ledgerCreateCompany", params).await
+    }
+
+    #[cfg(feature = "ledger")]
+    pub async fn send_ledger_upsert_account_request(
+        &mut self,
+        params: LedgerUpsertAccountParams,
+    ) -> anyhow::Result<i64> {
+        let params = Some(serde_json::to_value(params)?);
+        self.send_request("ledgerUpsertAccount", params).await
+    }
+
+    #[cfg(feature = "ledger")]
+    pub async fn send_ledger_post_entry_request(
+        &mut self,
+        params: LedgerPostEntryParams,
+    ) -> anyhow::Result<i64> {
+        let params = Some(serde_json::to_value(params)?);
+        self.send_request("ledgerPostEntry", params).await
+    }
+
+    #[cfg(feature = "ledger")]
+    pub async fn send_ledger_reverse_entry_request(
+        &mut self,
+        params: LedgerReverseEntryParams,
+    ) -> anyhow::Result<i64> {
+        let params = Some(serde_json::to_value(params)?);
+        self.send_request("ledgerReverseEntry", params).await
+    }
+
+    #[cfg(feature = "ledger")]
+    pub async fn send_ledger_lock_period_request(
+        &mut self,
+        company_id: String,
+        journal_id: String,
+        period: LedgerPeriodRef,
+        action: LedgerPeriodAction,
+    ) -> anyhow::Result<i64> {
+        let params = LedgerLockPeriodParams {
+            company_id,
+            journal_id,
+            period,
+            action,
+            approval_reference: None,
+        };
+        let params = Some(serde_json::to_value(params)?);
+        self.send_request("ledgerLockPeriod", params).await
     }
 
     async fn send_request(

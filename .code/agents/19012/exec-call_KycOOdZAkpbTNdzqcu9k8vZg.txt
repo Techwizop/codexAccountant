@@ -1,0 +1,1195 @@
+diff --git a/codex-rs/app-server-protocol/src/protocol.rs b/codex-rs/app-server-protocol/src/protocol.rs
+index 845a2431..ad1b410e 100644
+--- a/codex-rs/app-server-protocol/src/protocol.rs
++++ b/codex-rs/app-server-protocol/src/protocol.rs
+@@ -171,6 +171,26 @@ client_request_definitions! {
+         params: ExecOneOffCommandParams,
+         response: ExecOneOffCommandResponse,
+     },
++    LedgerCreateCompany {
++        params: LedgerCreateCompanyParams,
++        response: LedgerCreateCompanyResponse,
++    },
++    LedgerUpsertAccount {
++        params: LedgerUpsertAccountParams,
++        response: LedgerUpsertAccountResponse,
++    },
++    LedgerPostEntry {
++        params: LedgerPostEntryParams,
++        response: LedgerPostEntryResponse,
++    },
++    LedgerReverseEntry {
++        params: LedgerReverseEntryParams,
++        response: LedgerReverseEntryResponse,
++    },
++    LedgerLockPeriod {
++        params: LedgerLockPeriodParams,
++        response: LedgerLockPeriodResponse,
++    },
+ }
+ 
+ #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
+@@ -194,6 +214,261 @@ pub struct InitializeResponse {
+     pub user_agent: String,
+ }
+ 
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerCurrency {
++    pub code: String,
++    pub precision: u8,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerFiscalCalendar {
++    pub periods_per_year: u8,
++    pub opening_month: u8,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerCompany {
++    pub id: String,
++    pub name: String,
++    pub base_currency: LedgerCurrency,
++    pub fiscal_calendar: LedgerFiscalCalendar,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub metadata: Option<String>,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerCreateCompanyParams {
++    pub name: String,
++    pub base_currency: LedgerCurrency,
++    pub fiscal_calendar: LedgerFiscalCalendar,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerCreateCompanyResponse {
++    pub company: LedgerCompany,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerAccountType {
++    Asset,
++    Liability,
++    Equity,
++    Revenue,
++    Expense,
++    OffBalance,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerCurrencyMode {
++    FunctionalOnly,
++    Transactional,
++    MultiCurrency,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerTaxCode {
++    pub code: String,
++    pub description: String,
++    pub rate_percent: f32,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerAccount {
++    pub id: String,
++    pub company_id: String,
++    pub code: String,
++    pub name: String,
++    pub account_type: LedgerAccountType,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub parent_account_id: Option<String>,
++    pub currency_mode: LedgerCurrencyMode,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub tax_code: Option<LedgerTaxCode>,
++    pub is_summary: bool,
++    pub is_active: bool,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerUpsertAccountParams {
++    pub account: LedgerAccount,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerUpsertAccountResponse {
++    pub account: LedgerAccount,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerCurrencyRate {
++    pub base: LedgerCurrency,
++    pub quote: LedgerCurrency,
++    pub rate: f64,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub source: Option<String>,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerPostingSide {
++    Debit,
++    Credit,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerJournalLine {
++    pub id: String,
++    pub account_id: String,
++    pub side: LedgerPostingSide,
++    pub amount_minor: i64,
++    pub currency: LedgerCurrency,
++    pub functional_amount_minor: i64,
++    pub functional_currency: LedgerCurrency,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub exchange_rate: Option<LedgerCurrencyRate>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub tax_code: Option<LedgerTaxCode>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub memo: Option<String>,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerEntryStatus {
++    Draft,
++    Proposed,
++    Posted,
++    Reversed,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerEntryOrigin {
++    Manual,
++    Ingestion,
++    AiSuggested,
++    Adjustment,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerJournalEntry {
++    pub id: String,
++    pub journal_id: String,
++    pub status: LedgerEntryStatus,
++    pub lines: Vec<LedgerJournalLine>,
++    pub origin: LedgerEntryOrigin,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub memo: Option<String>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub reverses_entry_id: Option<String>,
++    #[serde(skip_serializing_if = "Option::is_none")]
++    pub reversed_by_entry_id: Option<String>,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerPostingMode {
++    DryRun,
++    Commit,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerPostEntryParams {
++    pub entry: LedgerJournalEntry,
++    pub mode: LedgerPostingMode,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerPostEntryResponse {
++    pub entry: LedgerJournalEntry,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerReverseEntryParams {
++    pub entry_id: String,
++    pub reason: String,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerReverseEntryResponse {
++    pub entry: LedgerJournalEntry,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerPeriodRef {
++    pub fiscal_year: i32,
++    pub period: u8,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerPeriodAction {
++    SoftClose,
++    Close,
++    ReopenSoft,
++    ReopenFull,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerJournalType {
++    General,
++    AccountsPayable,
++    AccountsReceivable,
++    Cash,
++    SubLedger,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
++#[serde(rename_all = "camelCase")]
++pub enum LedgerPeriodState {
++    Open,
++    SoftClosed,
++    Closed,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerJournal {
++    pub id: String,
++    pub company_id: String,
++    pub ledger_type: LedgerJournalType,
++    pub period_state: LedgerPeriodState,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerLockPeriodParams {
++    pub company_id: String,
++    pub journal_id: String,
++    pub period: LedgerPeriodRef,
++    pub action: LedgerPeriodAction,
++}
++
++#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
++#[serde(rename_all = "camelCase")]
++pub struct LedgerLockPeriodResponse {
++    pub journal: LedgerJournal,
++}
++
+ #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
+ #[serde(rename_all = "camelCase")]
+ pub struct NewConversationParams {
+diff --git a/codex-rs/app-server/src/codex_message_processor.rs b/codex-rs/app-server/src/codex_message_processor.rs
+index cb894a51..e22a0f70 100644
+--- a/codex-rs/app-server/src/codex_message_processor.rs
++++ b/codex-rs/app-server/src/codex_message_processor.rs
+@@ -25,6 +25,64 @@ use codex_app_server_protocol::InputItem as WireInputItem;
+ use codex_app_server_protocol::InterruptConversationParams;
+ use codex_app_server_protocol::InterruptConversationResponse;
+ use codex_app_server_protocol::JSONRPCErrorError;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerAccount;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerAccountType;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCompany;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCreateCompanyParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCreateCompanyResponse;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCurrency;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCurrencyMode;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCurrencyRate;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerEntryOrigin;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerEntryStatus;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerFiscalCalendar;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerJournal;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerJournalEntry;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerJournalLine;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerJournalType;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerLockPeriodParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerLockPeriodResponse;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodAction;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodRef;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodState;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPostEntryParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPostEntryResponse;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPostingMode;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPostingSide;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerReverseEntryParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerReverseEntryResponse;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerTaxCode;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerUpsertAccountParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerUpsertAccountResponse;
+ use codex_app_server_protocol::ListConversationsParams;
+ use codex_app_server_protocol::ListConversationsResponse;
+ use codex_app_server_protocol::LoginApiKeyParams;
+@@ -80,6 +138,60 @@ use codex_core::protocol::ExecApprovalRequestEvent;
+ use codex_core::protocol::InputItem as CoreInputItem;
+ use codex_core::protocol::Op;
+ use codex_core::protocol::ReviewDecision;
++#[cfg(feature = "ledger")]
++use codex_ledger::Account as LedgerAccountModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::AccountType as LedgerAccountTypeModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::CreateCompanyRequest as LedgerCreateCompanyRequest;
++#[cfg(feature = "ledger")]
++use codex_ledger::Currency as LedgerCurrencyModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::CurrencyMode as LedgerCurrencyModeModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::CurrencyRate as LedgerCurrencyRateModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::EntryOrigin as LedgerEntryOriginModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::EntryStatus as LedgerEntryStatusModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::FiscalCalendar as LedgerFiscalCalendarModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::InMemoryLedgerService;
++#[cfg(feature = "ledger")]
++use codex_ledger::Journal as LedgerJournalModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::JournalEntry as LedgerJournalEntryModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::JournalLine as LedgerJournalLineModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::LedgerError;
++#[cfg(feature = "ledger")]
++use codex_ledger::LedgerType as LedgerJournalTypeModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::LockPeriodRequest as LedgerLockPeriodRequest;
++#[cfg(feature = "ledger")]
++use codex_ledger::PeriodAction as LedgerPeriodActionModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::PeriodRef as LedgerPeriodRefModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::PeriodState as LedgerPeriodStateModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::PostEntryRequest as LedgerPostEntryRequest;
++#[cfg(feature = "ledger")]
++use codex_ledger::PostingMode as LedgerPostingModeModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::PostingSide as LedgerPostingSideModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::ReverseEntryRequest as LedgerReverseEntryRequest;
++#[cfg(feature = "ledger")]
++use codex_ledger::Role as LedgerRole;
++#[cfg(feature = "ledger")]
++use codex_ledger::TaxCode as LedgerTaxCodeModel;
++#[cfg(feature = "ledger")]
++use codex_ledger::TenantContext as LedgerTenantContext;
++#[cfg(feature = "ledger")]
++use codex_ledger::UpsertAccountRequest as LedgerUpsertAccountRequest;
+ use codex_login::ServerOptions as LoginServerOptions;
+ use codex_login::ShutdownHandle;
+ use codex_login::run_login_server;
+@@ -96,6 +208,8 @@ use std::sync::Arc;
+ use std::sync::atomic::AtomicBool;
+ use std::sync::atomic::Ordering;
+ use std::time::Duration;
++#[cfg(feature = "ledger")]
++use std::time::SystemTime;
+ use tokio::select;
+ use tokio::sync::Mutex;
+ use tokio::sync::oneshot;
+@@ -130,6 +244,8 @@ pub(crate) struct CodexMessageProcessor {
+     // Queue of pending interrupt requests per conversation. We reply when TurnAborted arrives.
+     pending_interrupts: Arc<Mutex<HashMap<ConversationId, Vec<RequestId>>>>,
+     pending_fuzzy_searches: Arc<Mutex<HashMap<String, Arc<AtomicBool>>>>,
++    #[cfg(feature = "ledger")]
++    ledger_service: Option<Arc<InMemoryLedgerService>>,
+ }
+ 
+ impl CodexMessageProcessor {
+@@ -139,6 +255,7 @@ impl CodexMessageProcessor {
+         outgoing: Arc<OutgoingMessageSender>,
+         codex_linux_sandbox_exe: Option<PathBuf>,
+         config: Arc<Config>,
++        #[cfg(feature = "ledger")] ledger_service: Option<Arc<InMemoryLedgerService>>,
+     ) -> Self {
+         Self {
+             auth_manager,
+@@ -150,6 +267,8 @@ impl CodexMessageProcessor {
+             active_login: Arc::new(Mutex::new(None)),
+             pending_interrupts: Arc::new(Mutex::new(HashMap::new())),
+             pending_fuzzy_searches: Arc::new(Mutex::new(HashMap::new())),
++            #[cfg(feature = "ledger")]
++            ledger_service,
+         }
+     }
+ 
+@@ -227,6 +346,86 @@ impl CodexMessageProcessor {
+             } => {
+                 self.get_user_agent(request_id).await;
+             }
++            ClientRequest::LedgerCreateCompany { request_id, params } => {
++                #[cfg(feature = "ledger")]
++                {
++                    self.handle_ledger_create_company(request_id, params).await;
++                }
++                #[cfg(not(feature = "ledger"))]
++                {
++                    let _ = params;
++                    let error = JSONRPCErrorError {
++                        code: INVALID_REQUEST_ERROR_CODE,
++                        message: "ledger feature not enabled".to_string(),
++                        data: None,
++                    };
++                    self.outgoing.send_error(request_id, error).await;
++                }
++            }
++            ClientRequest::LedgerUpsertAccount { request_id, params } => {
++                #[cfg(feature = "ledger")]
++                {
++                    self.handle_ledger_upsert_account(request_id, params).await;
++                }
++                #[cfg(not(feature = "ledger"))]
++                {
++                    let _ = params;
++                    let error = JSONRPCErrorError {
++                        code: INVALID_REQUEST_ERROR_CODE,
++                        message: "ledger feature not enabled".to_string(),
++                        data: None,
++                    };
++                    self.outgoing.send_error(request_id, error).await;
++                }
++            }
++            ClientRequest::LedgerPostEntry { request_id, params } => {
++                #[cfg(feature = "ledger")]
++                {
++                    self.handle_ledger_post_entry(request_id, params).await;
++                }
++                #[cfg(not(feature = "ledger"))]
++                {
++                    let _ = params;
++                    let error = JSONRPCErrorError {
++                        code: INVALID_REQUEST_ERROR_CODE,
++                        message: "ledger feature not enabled".to_string(),
++                        data: None,
++                    };
++                    self.outgoing.send_error(request_id, error).await;
++                }
++            }
++            ClientRequest::LedgerReverseEntry { request_id, params } => {
++                #[cfg(feature = "ledger")]
++                {
++                    self.handle_ledger_reverse_entry(request_id, params).await;
++                }
++                #[cfg(not(feature = "ledger"))]
++                {
++                    let _ = params;
++                    let error = JSONRPCErrorError {
++                        code: INVALID_REQUEST_ERROR_CODE,
++                        message: "ledger feature not enabled".to_string(),
++                        data: None,
++                    };
++                    self.outgoing.send_error(request_id, error).await;
++                }
++            }
++            ClientRequest::LedgerLockPeriod { request_id, params } => {
++                #[cfg(feature = "ledger")]
++                {
++                    self.handle_ledger_lock_period(request_id, params).await;
++                }
++                #[cfg(not(feature = "ledger"))]
++                {
++                    let _ = params;
++                    let error = JSONRPCErrorError {
++                        code: INVALID_REQUEST_ERROR_CODE,
++                        message: "ledger feature not enabled".to_string(),
++                        data: None,
++                    };
++                    self.outgoing.send_error(request_id, error).await;
++                }
++            }
+             ClientRequest::UserInfo {
+                 request_id,
+                 params: _,
+@@ -1486,6 +1685,563 @@ fn extract_conversation_summary(
+     })
+ }
+ 
++#[cfg(feature = "ledger")]
++impl CodexMessageProcessor {
++    async fn handle_ledger_create_company(
++        &self,
++        request_id: RequestId,
++        params: LedgerCreateCompanyParams,
++    ) {
++        let Some(service) = self.ledger_service.as_ref() else {
++            let error = JSONRPCErrorError {
++                code: INVALID_REQUEST_ERROR_CODE,
++                message: "ledger service not configured".to_string(),
++                data: None,
++            };
++            self.outgoing.send_error(request_id, error).await;
++            return;
++        };
++
++        let request = LedgerCreateCompanyRequest {
++            name: params.name,
++            base_currency: to_ledger_currency(params.base_currency),
++            fiscal_calendar: to_ledger_fiscal_calendar(params.fiscal_calendar),
++            tenant: default_ledger_tenant_context(),
++        };
++
++        match service.create_company(request).await {
++            Ok(company) => {
++                let response = LedgerCreateCompanyResponse {
++                    company: from_ledger_company(company),
++                };
++                self.outgoing.send_response(request_id, response).await;
++            }
++            Err(err) => {
++                let error = ledger_error_to_jsonrpc(err);
++                self.outgoing.send_error(request_id, error).await;
++            }
++        }
++    }
++
++    async fn handle_ledger_upsert_account(
++        &self,
++        request_id: RequestId,
++        params: LedgerUpsertAccountParams,
++    ) {
++        let Some(service) = self.ledger_service.as_ref() else {
++            let error = JSONRPCErrorError {
++                code: INVALID_REQUEST_ERROR_CODE,
++                message: "ledger service not configured".to_string(),
++                data: None,
++            };
++            self.outgoing.send_error(request_id, error).await;
++            return;
++        };
++
++        let request = LedgerUpsertAccountRequest {
++            account: to_ledger_account(params.account),
++            tenant: default_ledger_tenant_context(),
++        };
++
++        match service.upsert_account(request).await {
++            Ok(account) => {
++                let response = LedgerUpsertAccountResponse {
++                    account: from_ledger_account(account),
++                };
++                self.outgoing.send_response(request_id, response).await;
++            }
++            Err(err) => {
++                let error = ledger_error_to_jsonrpc(err);
++                self.outgoing.send_error(request_id, error).await;
++            }
++        }
++    }
++
++    async fn handle_ledger_post_entry(&self, request_id: RequestId, params: LedgerPostEntryParams) {
++        let Some(service) = self.ledger_service.as_ref() else {
++            let error = JSONRPCErrorError {
++                code: INVALID_REQUEST_ERROR_CODE,
++                message: "ledger service not configured".to_string(),
++                data: None,
++            };
++            self.outgoing.send_error(request_id, error).await;
++            return;
++        };
++
++        let LedgerPostEntryParams { entry, mode } = params;
++        let request = LedgerPostEntryRequest {
++            entry: to_ledger_journal_entry(entry),
++            tenant: default_ledger_tenant_context(),
++            mode: to_ledger_posting_mode(mode),
++        };
++
++        match service.post_entry(request).await {
++            Ok(entry) => {
++                let response = LedgerPostEntryResponse {
++                    entry: from_ledger_journal_entry(entry),
++                };
++                self.outgoing.send_response(request_id, response).await;
++            }
++            Err(err) => {
++                let error = ledger_error_to_jsonrpc(err);
++                self.outgoing.send_error(request_id, error).await;
++            }
++        }
++    }
++
++    async fn handle_ledger_reverse_entry(
++        &self,
++        request_id: RequestId,
++        params: LedgerReverseEntryParams,
++    ) {
++        let Some(service) = self.ledger_service.as_ref() else {
++            let error = JSONRPCErrorError {
++                code: INVALID_REQUEST_ERROR_CODE,
++                message: "ledger service not configured".to_string(),
++                data: None,
++            };
++            self.outgoing.send_error(request_id, error).await;
++            return;
++        };
++
++        let request = LedgerReverseEntryRequest {
++            entry_id: params.entry_id,
++            reason: params.reason,
++            tenant: default_ledger_tenant_context(),
++        };
++
++        match service.reverse_entry(request).await {
++            Ok(entry) => {
++                let response = LedgerReverseEntryResponse {
++                    entry: from_ledger_journal_entry(entry),
++                };
++                self.outgoing.send_response(request_id, response).await;
++            }
++            Err(err) => {
++                let error = ledger_error_to_jsonrpc(err);
++                self.outgoing.send_error(request_id, error).await;
++            }
++        }
++    }
++
++    async fn handle_ledger_lock_period(
++        &self,
++        request_id: RequestId,
++        params: LedgerLockPeriodParams,
++    ) {
++        let Some(service) = self.ledger_service.as_ref() else {
++            let error = JSONRPCErrorError {
++                code: INVALID_REQUEST_ERROR_CODE,
++                message: "ledger service not configured".to_string(),
++                data: None,
++            };
++            self.outgoing.send_error(request_id, error).await;
++            return;
++        };
++
++        let LedgerLockPeriodParams {
++            company_id,
++            journal_id,
++            period,
++            action,
++        } = params;
++
++        let request = LedgerLockPeriodRequest {
++            journal_id,
++            period: to_ledger_period_ref(period),
++            action: to_ledger_period_action(action),
++            tenant: ledger_tenant_context_for_company(company_id),
++        };
++
++        match service.lock_period(request).await {
++            Ok(journal) => {
++                let response = LedgerLockPeriodResponse {
++                    journal: from_ledger_journal(journal),
++                };
++                self.outgoing.send_response(request_id, response).await;
++            }
++            Err(err) => {
++                let error = ledger_error_to_jsonrpc(err);
++                self.outgoing.send_error(request_id, error).await;
++            }
++        }
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn default_ledger_tenant_context() -> LedgerTenantContext {
++    LedgerTenantContext {
++        tenant_id: "ledger-admin".to_string(),
++        user_id: "codex-app-server".to_string(),
++        roles: vec![LedgerRole::ServiceAccount],
++        locale: Some("en-US".to_string()),
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn ledger_tenant_context_for_company(company_id: String) -> LedgerTenantContext {
++    LedgerTenantContext {
++        tenant_id: company_id,
++        ..default_ledger_tenant_context()
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_currency(currency: LedgerCurrency) -> LedgerCurrencyModel {
++    LedgerCurrencyModel {
++        code: currency.code,
++        precision: currency.precision,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_fiscal_calendar(calendar: LedgerFiscalCalendar) -> LedgerFiscalCalendarModel {
++    LedgerFiscalCalendarModel {
++        periods_per_year: calendar.periods_per_year,
++        opening_month: calendar.opening_month,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_company(company: codex_ledger::Company) -> LedgerCompany {
++    LedgerCompany {
++        id: company.id,
++        name: company.name,
++        base_currency: LedgerCurrency {
++            code: company.base_currency.code,
++            precision: company.base_currency.precision,
++        },
++        fiscal_calendar: LedgerFiscalCalendar {
++            periods_per_year: company.fiscal_calendar.periods_per_year,
++            opening_month: company.fiscal_calendar.opening_month,
++        },
++        metadata: company.metadata,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_account_type(account_type: LedgerAccountType) -> LedgerAccountTypeModel {
++    match account_type {
++        LedgerAccountType::Asset => LedgerAccountTypeModel::Asset,
++        LedgerAccountType::Liability => LedgerAccountTypeModel::Liability,
++        LedgerAccountType::Equity => LedgerAccountTypeModel::Equity,
++        LedgerAccountType::Revenue => LedgerAccountTypeModel::Revenue,
++        LedgerAccountType::Expense => LedgerAccountTypeModel::Expense,
++        LedgerAccountType::OffBalance => LedgerAccountTypeModel::OffBalance,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_account_type(account_type: LedgerAccountTypeModel) -> LedgerAccountType {
++    match account_type {
++        LedgerAccountTypeModel::Asset => LedgerAccountType::Asset,
++        LedgerAccountTypeModel::Liability => LedgerAccountType::Liability,
++        LedgerAccountTypeModel::Equity => LedgerAccountType::Equity,
++        LedgerAccountTypeModel::Revenue => LedgerAccountType::Revenue,
++        LedgerAccountTypeModel::Expense => LedgerAccountType::Expense,
++        LedgerAccountTypeModel::OffBalance => LedgerAccountType::OffBalance,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_currency_mode(mode: LedgerCurrencyMode) -> LedgerCurrencyModeModel {
++    match mode {
++        LedgerCurrencyMode::FunctionalOnly => LedgerCurrencyModeModel::FunctionalOnly,
++        LedgerCurrencyMode::Transactional => LedgerCurrencyModeModel::Transactional,
++        LedgerCurrencyMode::MultiCurrency => LedgerCurrencyModeModel::MultiCurrency,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_currency_mode(mode: LedgerCurrencyModeModel) -> LedgerCurrencyMode {
++    match mode {
++        LedgerCurrencyModeModel::FunctionalOnly => LedgerCurrencyMode::FunctionalOnly,
++        LedgerCurrencyModeModel::Transactional => LedgerCurrencyMode::Transactional,
++        LedgerCurrencyModeModel::MultiCurrency => LedgerCurrencyMode::MultiCurrency,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_tax_code(tax: LedgerTaxCode) -> LedgerTaxCodeModel {
++    LedgerTaxCodeModel {
++        code: tax.code,
++        description: tax.description,
++        rate_percent: tax.rate_percent,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_tax_code(tax: LedgerTaxCodeModel) -> LedgerTaxCode {
++    LedgerTaxCode {
++        code: tax.code,
++        description: tax.description,
++        rate_percent: tax.rate_percent,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_account(account: LedgerAccount) -> LedgerAccountModel {
++    LedgerAccountModel {
++        id: account.id,
++        company_id: account.company_id,
++        code: account.code,
++        name: account.name,
++        account_type: to_ledger_account_type(account.account_type),
++        parent_account_id: account.parent_account_id,
++        currency_mode: to_ledger_currency_mode(account.currency_mode),
++        tax_code: account.tax_code.map(to_ledger_tax_code),
++        is_summary: account.is_summary,
++        is_active: account.is_active,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_account(account: LedgerAccountModel) -> LedgerAccount {
++    LedgerAccount {
++        id: account.id,
++        company_id: account.company_id,
++        code: account.code,
++        name: account.name,
++        account_type: from_ledger_account_type(account.account_type),
++        parent_account_id: account.parent_account_id,
++        currency_mode: from_ledger_currency_mode(account.currency_mode),
++        tax_code: account.tax_code.map(from_ledger_tax_code),
++        is_summary: account.is_summary,
++        is_active: account.is_active,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_posting_side(side: LedgerPostingSide) -> LedgerPostingSideModel {
++    match side {
++        LedgerPostingSide::Debit => LedgerPostingSideModel::Debit,
++        LedgerPostingSide::Credit => LedgerPostingSideModel::Credit,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_posting_side(side: LedgerPostingSideModel) -> LedgerPostingSide {
++    match side {
++        LedgerPostingSideModel::Debit => LedgerPostingSide::Debit,
++        LedgerPostingSideModel::Credit => LedgerPostingSide::Credit,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_currency_rate(rate: LedgerCurrencyRate) -> LedgerCurrencyRateModel {
++    LedgerCurrencyRateModel {
++        base: to_ledger_currency(rate.base),
++        quote: to_ledger_currency(rate.quote),
++        rate: rate.rate,
++        source: rate.source,
++        observed_at: SystemTime::now(),
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_currency_rate(rate: LedgerCurrencyRateModel) -> LedgerCurrencyRate {
++    LedgerCurrencyRate {
++        base: LedgerCurrency {
++            code: rate.base.code,
++            precision: rate.base.precision,
++        },
++        quote: LedgerCurrency {
++            code: rate.quote.code,
++            precision: rate.quote.precision,
++        },
++        rate: rate.rate,
++        source: rate.source,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_journal_line(line: LedgerJournalLine) -> LedgerJournalLineModel {
++    LedgerJournalLineModel {
++        id: line.id,
++        account_id: line.account_id,
++        side: to_ledger_posting_side(line.side),
++        amount_minor: line.amount_minor,
++        currency: to_ledger_currency(line.currency),
++        functional_amount_minor: line.functional_amount_minor,
++        functional_currency: to_ledger_currency(line.functional_currency),
++        exchange_rate: line.exchange_rate.map(to_ledger_currency_rate),
++        tax_code: line.tax_code.map(to_ledger_tax_code),
++        memo: line.memo,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_journal_line(line: LedgerJournalLineModel) -> LedgerJournalLine {
++    LedgerJournalLine {
++        id: line.id,
++        account_id: line.account_id,
++        side: from_ledger_posting_side(line.side),
++        amount_minor: line.amount_minor,
++        currency: LedgerCurrency {
++            code: line.currency.code,
++            precision: line.currency.precision,
++        },
++        functional_amount_minor: line.functional_amount_minor,
++        functional_currency: LedgerCurrency {
++            code: line.functional_currency.code,
++            precision: line.functional_currency.precision,
++        },
++        exchange_rate: line.exchange_rate.map(from_ledger_currency_rate),
++        tax_code: line.tax_code.map(from_ledger_tax_code),
++        memo: line.memo,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_entry_status(status: LedgerEntryStatus) -> LedgerEntryStatusModel {
++    match status {
++        LedgerEntryStatus::Draft => LedgerEntryStatusModel::Draft,
++        LedgerEntryStatus::Proposed => LedgerEntryStatusModel::Proposed,
++        LedgerEntryStatus::Posted => LedgerEntryStatusModel::Posted,
++        LedgerEntryStatus::Reversed => LedgerEntryStatusModel::Reversed,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_entry_status(status: LedgerEntryStatusModel) -> LedgerEntryStatus {
++    match status {
++        LedgerEntryStatusModel::Draft => LedgerEntryStatus::Draft,
++        LedgerEntryStatusModel::Proposed => LedgerEntryStatus::Proposed,
++        LedgerEntryStatusModel::Posted => LedgerEntryStatus::Posted,
++        LedgerEntryStatusModel::Reversed => LedgerEntryStatus::Reversed,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_entry_origin(origin: LedgerEntryOrigin) -> LedgerEntryOriginModel {
++    match origin {
++        LedgerEntryOrigin::Manual => LedgerEntryOriginModel::Manual,
++        LedgerEntryOrigin::Ingestion => LedgerEntryOriginModel::Ingestion,
++        LedgerEntryOrigin::AiSuggested => LedgerEntryOriginModel::AiSuggested,
++        LedgerEntryOrigin::Adjustment => LedgerEntryOriginModel::Adjustment,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_entry_origin(origin: LedgerEntryOriginModel) -> LedgerEntryOrigin {
++    match origin {
++        LedgerEntryOriginModel::Manual => LedgerEntryOrigin::Manual,
++        LedgerEntryOriginModel::Ingestion => LedgerEntryOrigin::Ingestion,
++        LedgerEntryOriginModel::AiSuggested => LedgerEntryOrigin::AiSuggested,
++        LedgerEntryOriginModel::Adjustment => LedgerEntryOrigin::Adjustment,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_journal_entry(entry: LedgerJournalEntry) -> LedgerJournalEntryModel {
++    LedgerJournalEntryModel {
++        id: entry.id,
++        journal_id: entry.journal_id,
++        status: to_ledger_entry_status(entry.status),
++        lines: entry
++            .lines
++            .into_iter()
++            .map(to_ledger_journal_line)
++            .collect(),
++        origin: to_ledger_entry_origin(entry.origin),
++        memo: entry.memo,
++        reverses_entry_id: entry.reverses_entry_id,
++        reversed_by_entry_id: entry.reversed_by_entry_id,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_journal_entry(entry: LedgerJournalEntryModel) -> LedgerJournalEntry {
++    LedgerJournalEntry {
++        id: entry.id,
++        journal_id: entry.journal_id,
++        status: from_ledger_entry_status(entry.status),
++        lines: entry
++            .lines
++            .into_iter()
++            .map(from_ledger_journal_line)
++            .collect(),
++        origin: from_ledger_entry_origin(entry.origin),
++        memo: entry.memo,
++        reverses_entry_id: entry.reverses_entry_id,
++        reversed_by_entry_id: entry.reversed_by_entry_id,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_posting_mode(mode: LedgerPostingMode) -> LedgerPostingModeModel {
++    match mode {
++        LedgerPostingMode::DryRun => LedgerPostingModeModel::DryRun,
++        LedgerPostingMode::Commit => LedgerPostingModeModel::Commit,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_period_action(action: LedgerPeriodAction) -> LedgerPeriodActionModel {
++    match action {
++        LedgerPeriodAction::SoftClose => LedgerPeriodActionModel::SoftClose,
++        LedgerPeriodAction::Close => LedgerPeriodActionModel::Close,
++        LedgerPeriodAction::ReopenSoft => LedgerPeriodActionModel::ReopenSoft,
++        LedgerPeriodAction::ReopenFull => LedgerPeriodActionModel::ReopenFull,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn to_ledger_period_ref(period: LedgerPeriodRef) -> LedgerPeriodRefModel {
++    LedgerPeriodRefModel {
++        fiscal_year: period.fiscal_year,
++        period: period.period,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_journal_type(journal_type: LedgerJournalTypeModel) -> LedgerJournalType {
++    match journal_type {
++        LedgerJournalTypeModel::General => LedgerJournalType::General,
++        LedgerJournalTypeModel::AccountsPayable => LedgerJournalType::AccountsPayable,
++        LedgerJournalTypeModel::AccountsReceivable => LedgerJournalType::AccountsReceivable,
++        LedgerJournalTypeModel::Cash => LedgerJournalType::Cash,
++        LedgerJournalTypeModel::SubLedger => LedgerJournalType::SubLedger,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_period_state(state: LedgerPeriodStateModel) -> LedgerPeriodState {
++    match state {
++        LedgerPeriodStateModel::Open => LedgerPeriodState::Open,
++        LedgerPeriodStateModel::SoftClosed => LedgerPeriodState::SoftClosed,
++        LedgerPeriodStateModel::Closed => LedgerPeriodState::Closed,
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn from_ledger_journal(journal: LedgerJournalModel) -> LedgerJournal {
++    LedgerJournal {
++        id: journal.id,
++        company_id: journal.company_id,
++        ledger_type: from_ledger_journal_type(journal.ledger_type),
++        period_state: from_ledger_period_state(journal.period_state),
++    }
++}
++
++#[cfg(feature = "ledger")]
++fn ledger_error_to_jsonrpc(error: LedgerError) -> JSONRPCErrorError {
++    match error {
++        LedgerError::Internal(message) => JSONRPCErrorError {
++            code: INTERNAL_ERROR_CODE,
++            message,
++            data: None,
++        },
++        LedgerError::NotFound(message)
++        | LedgerError::Rejected(message)
++        | LedgerError::Validation(message) => JSONRPCErrorError {
++            code: INVALID_REQUEST_ERROR_CODE,
++            message,
++            data: None,
++        },
++    }
++}
++
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+diff --git a/codex-rs/app-server/tests/common/mcp_process.rs b/codex-rs/app-server/tests/common/mcp_process.rs
+index 29768df8..1460508e 100644
+--- a/codex-rs/app-server/tests/common/mcp_process.rs
++++ b/codex-rs/app-server/tests/common/mcp_process.rs
+@@ -20,6 +20,20 @@ use codex_app_server_protocol::ClientNotification;
+ use codex_app_server_protocol::GetAuthStatusParams;
+ use codex_app_server_protocol::InitializeParams;
+ use codex_app_server_protocol::InterruptConversationParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerCreateCompanyParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerLockPeriodParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodAction;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPeriodRef;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerPostEntryParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerReverseEntryParams;
++#[cfg(feature = "ledger")]
++use codex_app_server_protocol::LedgerUpsertAccountParams;
+ use codex_app_server_protocol::ListConversationsParams;
+ use codex_app_server_protocol::LoginApiKeyParams;
+ use codex_app_server_protocol::NewConversationParams;
+@@ -313,6 +327,60 @@ impl McpProcess {
+         self.send_request("fuzzyFileSearch", Some(params)).await
+     }
+ 
++    #[cfg(feature = "ledger")]
++    pub async fn send_ledger_create_company_request(
++        &mut self,
++        params: LedgerCreateCompanyParams,
++    ) -> anyhow::Result<i64> {
++        let params = Some(serde_json::to_value(params)?);
++        self.send_request("ledgerCreateCompany", params).await
++    }
++
++    #[cfg(feature = "ledger")]
++    pub async fn send_ledger_upsert_account_request(
++        &mut self,
++        params: LedgerUpsertAccountParams,
++    ) -> anyhow::Result<i64> {
++        let params = Some(serde_json::to_value(params)?);
++        self.send_request("ledgerUpsertAccount", params).await
++    }
++
++    #[cfg(feature = "ledger")]
++    pub async fn send_ledger_post_entry_request(
++        &mut self,
++        params: LedgerPostEntryParams,
++    ) -> anyhow::Result<i64> {
++        let params = Some(serde_json::to_value(params)?);
++        self.send_request("ledgerPostEntry", params).await
++    }
++
++    #[cfg(feature = "ledger")]
++    pub async fn send_ledger_reverse_entry_request(
++        &mut self,
++        params: LedgerReverseEntryParams,
++    ) -> anyhow::Result<i64> {
++        let params = Some(serde_json::to_value(params)?);
++        self.send_request("ledgerReverseEntry", params).await
++    }
++
++    #[cfg(feature = "ledger")]
++    pub async fn send_ledger_lock_period_request(
++        &mut self,
++        company_id: String,
++        journal_id: String,
++        period: LedgerPeriodRef,
++        action: LedgerPeriodAction,
++    ) -> anyhow::Result<i64> {
++        let params = LedgerLockPeriodParams {
++            company_id,
++            journal_id,
++            period,
++            action,
++        };
++        let params = Some(serde_json::to_value(params)?);
++        self.send_request("ledgerLockPeriod", params).await
++    }
++
+     async fn send_request(
+         &mut self,
+         method: &str,

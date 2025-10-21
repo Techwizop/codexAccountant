@@ -1,0 +1,18 @@
+[package]
+name = "codex-tenancy"
+version = { workspace = true }
+edition = "2024"
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait = { workspace = true }
+chrono = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["sync"] }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

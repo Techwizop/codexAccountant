@@ -71,6 +71,12 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 which = { workspace = true }
 wildmatch = { workspace = true }
 
+# Optional accounting dependencies
+codex-accounting-api = { path = "../codex-accounting-api", optional = true }
+codex-ledger = { path = "../codex-ledger", optional = true }
+codex-policy = { path = "../codex-policy", optional = true }
+codex-approvals = { path = "../codex-approvals", optional = true }
+
 
 [target.'cfg(target_os = "linux")'.dependencies]
 landlock = { workspace = true }
@@ -101,6 +107,10 @@ tokio-test = { workspace = true }
 tracing-test = { workspace = true, features = ["no-env-filter"] }
 walkdir = { workspace = true }
 wiremock = { workspace = true }
+
+[features]
+default = []
+ledger = ["codex-accounting-api", "codex-ledger", "codex-policy", "codex-approvals"]
 
 [package.metadata.cargo-shear]
 ignored = ["openssl-sys"]

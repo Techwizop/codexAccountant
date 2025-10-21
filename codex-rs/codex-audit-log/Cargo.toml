@@ -1,0 +1,25 @@
+[package]
+edition = "2024"
+name = "codex-audit-log"
+version = { workspace = true }
+
+[lib]
+name = "codex_audit_log"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true, features = ["serde"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "sync"] }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }

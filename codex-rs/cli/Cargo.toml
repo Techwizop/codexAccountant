@@ -22,6 +22,7 @@ codex-app-server = { workspace = true }
 codex-arg0 = { workspace = true }
 codex-chatgpt = { workspace = true }
 codex-common = { workspace = true, features = ["cli"] }
+codex-accounting-api = { workspace = true }
 codex-core = { workspace = true }
 codex-exec = { workspace = true }
 codex-login = { workspace = true }
@@ -33,9 +34,16 @@ codex-protocol-ts = { workspace = true }
 codex-responses-api-proxy = { workspace = true }
 codex-tui = { workspace = true }
 codex-rmcp-client = { workspace = true }
+codex-ledger = { workspace = true }
+codex-policy = { workspace = true }
+codex-approvals = { workspace = true }
 codex-cloud-tasks = { path = "../cloud-tasks" }
+codex-tenancy = { workspace = true }
+dirs = { workspace = true }
 ctor = { workspace = true }
 owo-colors = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 supports-color = { workspace = true }
 tokio = { workspace = true, features = [
@@ -45,6 +53,8 @@ tokio = { workspace = true, features = [
     "rt-multi-thread",
     "signal",
 ] }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter", "fmt"] }
 
 [dev-dependencies]
 assert_matches = { workspace = true }

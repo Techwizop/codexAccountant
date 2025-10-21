@@ -1,0 +1,24 @@
+[package]
+edition = "2024"
+name = "codex-reconcile"
+version = { workspace = true }
+
+[lib]
+name = "codex_reconcile"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[features]
+default = []
+postgres-store = []
+
+[dependencies]
+chrono = { workspace = true, features = ["serde"] }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }

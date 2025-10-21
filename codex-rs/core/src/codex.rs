@@ -2200,6 +2200,32 @@ async fn try_run_turn(
                             response: Some(response),
                         });
                     }
+                    Err(FunctionCallError::InvalidArgs(message)) => {
+                        let response = ResponseInputItem::FunctionCallOutput {
+                            call_id: String::new(),
+                            output: FunctionCallOutputPayload {
+                                content: message,
+                                success: None,
+                            },
+                        };
+                        add_completed(ProcessedResponseItem {
+                            item,
+                            response: Some(response),
+                        });
+                    }
+                    Err(FunctionCallError::SerializationError(message)) => {
+                        let response = ResponseInputItem::FunctionCallOutput {
+                            call_id: String::new(),
+                            output: FunctionCallOutputPayload {
+                                content: message,
+                                success: None,
+                            },
+                        };
+                        add_completed(ProcessedResponseItem {
+                            item,
+                            response: Some(response),
+                        });
+                    }
                     Err(FunctionCallError::Fatal(message)) => {
                         return Err(CodexErr::Fatal(message));
                     }

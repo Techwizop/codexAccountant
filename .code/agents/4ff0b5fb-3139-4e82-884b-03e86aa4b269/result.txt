@@ -1,0 +1,53 @@
+
+Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
+OS Version:       Windows_NT x64 10.0.26100
+CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
+Memory (System):  31.16GB (7.10GB free)
+VM:               33%
+Screen Reader:    no
+Process Argv:     --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
+GPU Status:       2d_canvas:                              enabled
+                  direct_rendering_display_compositor:    disabled_off_ok
+                  gpu_compositing:                        enabled
+                  multiple_raster_threads:                enabled_on
+                  opengl:                                 enabled_on
+                  rasterization:                          enabled
+                  raw_draw:                               disabled_off_ok
+                  skia_graphite:                          disabled_off
+                  trees_in_viz:                           disabled_off
+                  video_decode:                           enabled
+                  video_encode:                           enabled
+                  vulkan:                                 disabled_off
+                  webgl:                                  enabled
+                  webgl2:                                 enabled
+                  webgpu:                                 enabled
+                  webnn:                                  disabled_off
+
+CPU %	Mem MB	   PID	Process
+    0	   140	 45548	code
+    0	   231	  8452	window [1] (Welcome - CodexAccountant - Visual Studio Code)
+    0	    33	  8632	   crashpad-handler
+    0	   107	 28380	   gpu-process
+    0	   140	 31192	shared-process
+    0	   106	 49412	file-watcher [1]
+    0	   729	 49936	extension-host [1]
+    0	    51	  5672	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
+    0	     8	 60680	       C:\windows\system32\conhost.exe 0x4
+    0	    12	 21108	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
+    0	     8	 55768	       C:\windows\system32\conhost.exe 0x4
+    0	   149	 27264	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
+    0	   105	 45724	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=49936
+    0	    96	 52652	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
+    0	     8	 63096	       C:\windows\system32\conhost.exe 0x4
+    0	    97	 60844	     electron-nodejs (eslintServer.js )
+    0	    51	 64160	   utility-network-service
+
+Workspace Stats: 
+|  Window (Welcome - CodexAccountant - Visual Studio Code)
+|    Folder (CodexAccountant): 1299 files
+|      File types: rs(454) txt(363) snap(107) md(56) toml(44) ts(19) json(18)
+|                  yml(12) py(7) png(3)
+|      Conf files: github-actions(8) package.json(4) dockerfile(2)
+|                  devcontainer.json(1) launch.json(1) settings.json(1)
+|                  agents.md(1) tsconfig.json(1)
+|      Launch Configs: lldb(2)

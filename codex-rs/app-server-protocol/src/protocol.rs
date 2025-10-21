@@ -171,6 +171,54 @@ client_request_definitions! {
         params: ExecOneOffCommandParams,
         response: ExecOneOffCommandResponse,
     },
+    LedgerCreateCompany {
+        params: LedgerCreateCompanyParams,
+        response: LedgerCreateCompanyResponse,
+    },
+    LedgerUpsertAccount {
+        params: LedgerUpsertAccountParams,
+        response: LedgerUpsertAccountResponse,
+    },
+    LedgerPostEntry {
+        params: LedgerPostEntryParams,
+        response: LedgerPostEntryResponse,
+    },
+    LedgerReverseEntry {
+        params: LedgerReverseEntryParams,
+        response: LedgerReverseEntryResponse,
+    },
+    LedgerLockPeriod {
+        params: LedgerLockPeriodParams,
+        response: LedgerLockPeriodResponse,
+    },
+    LedgerRevalueCurrency {
+        params: LedgerRevalueCurrencyParams,
+        response: LedgerRevalueCurrencyResponse,
+    },
+    LedgerListAuditTrail {
+        params: LedgerListAuditTrailParams,
+        response: LedgerListAuditTrailResponse,
+    },
+    LedgerListCompanies {
+        params: LedgerListCompaniesParams,
+        response: LedgerListCompaniesResponse,
+    },
+    LedgerListAccounts {
+        params: LedgerListAccountsParams,
+        response: LedgerListAccountsResponse,
+    },
+    LedgerListEntries {
+        params: LedgerListEntriesParams,
+        response: LedgerListEntriesResponse,
+    },
+    LedgerGetCompanyContext {
+        params: LedgerGetCompanyContextParams,
+        response: LedgerGetCompanyContextResponse,
+    },
+    LedgerProcessDocument {
+        params: LedgerProcessDocumentParams,
+        response: LedgerProcessDocumentResponse,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
@@ -192,6 +240,455 @@ pub struct ClientInfo {
 #[serde(rename_all = "camelCase")]
 pub struct InitializeResponse {
     pub user_agent: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerCurrency {
+    pub code: String,
+    pub precision: u8,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerFiscalCalendar {
+    pub periods_per_year: u8,
+    pub opening_month: u8,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerCompany {
+    pub id: String,
+    pub name: String,
+    pub base_currency: LedgerCurrency,
+    pub fiscal_calendar: LedgerFiscalCalendar,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerCreateCompanyParams {
+    pub name: String,
+    pub base_currency: LedgerCurrency,
+    pub fiscal_calendar: LedgerFiscalCalendar,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerCreateCompanyResponse {
+    pub company: LedgerCompany,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerAccountType {
+    Asset,
+    Liability,
+    Equity,
+    Revenue,
+    Expense,
+    OffBalance,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerCurrencyMode {
+    FunctionalOnly,
+    Transactional,
+    MultiCurrency,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerTaxCode {
+    pub code: String,
+    pub description: String,
+    pub rate_percent: f32,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerAccount {
+    pub id: String,
+    pub company_id: String,
+    pub code: String,
+    pub name: String,
+    pub account_type: LedgerAccountType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parent_account_id: Option<String>,
+    pub currency_mode: LedgerCurrencyMode,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_code: Option<LedgerTaxCode>,
+    pub is_summary: bool,
+    pub is_active: bool,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerUpsertAccountParams {
+    pub account: LedgerAccount,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerUpsertAccountResponse {
+    pub account: LedgerAccount,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerCurrencyRate {
+    pub base: LedgerCurrency,
+    pub quote: LedgerCurrency,
+    pub rate: f64,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub source: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerPostingSide {
+    Debit,
+    Credit,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerJournalLine {
+    pub id: String,
+    pub account_id: String,
+    pub side: LedgerPostingSide,
+    pub amount_minor: i64,
+    pub currency: LedgerCurrency,
+    pub functional_amount_minor: i64,
+    pub functional_currency: LedgerCurrency,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub exchange_rate: Option<LedgerCurrencyRate>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tax_code: Option<LedgerTaxCode>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memo: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerEntryStatus {
+    Draft,
+    Proposed,
+    Posted,
+    Reversed,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerEntryOrigin {
+    Manual,
+    Ingestion,
+    AiSuggested,
+    Adjustment,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerJournalEntry {
+    pub id: String,
+    pub journal_id: String,
+    pub status: LedgerEntryStatus,
+    pub reconciliation_status: LedgerReconciliationStatus,
+    pub lines: Vec<LedgerJournalLine>,
+    pub origin: LedgerEntryOrigin,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub memo: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reverses_entry_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reversed_by_entry_id: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerReconciliationStatus {
+    Unreconciled,
+    Pending { session_id: String },
+    Reconciled { session_id: String },
+    WriteOff { approval_reference: String },
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerPostingMode {
+    DryRun,
+    Commit,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerPostEntryParams {
+    pub entry: LedgerJournalEntry,
+    pub mode: LedgerPostingMode,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerPostEntryResponse {
+    pub entry: LedgerJournalEntry,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerReverseEntryParams {
+    pub entry_id: String,
+    pub reason: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerReverseEntryResponse {
+    pub entry: LedgerJournalEntry,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerPeriodRef {
+    pub fiscal_year: i32,
+    pub period: u8,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerPeriodAction {
+    SoftClose,
+    Close,
+    ReopenSoft,
+    ReopenFull,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerJournalType {
+    General,
+    AccountsPayable,
+    AccountsReceivable,
+    Cash,
+    SubLedger,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq, Eq, TS)]
+#[serde(rename_all = "camelCase")]
+pub enum LedgerPeriodState {
+    Open,
+    SoftClosed,
+    Closed,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerJournal {
+    pub id: String,
+    pub company_id: String,
+    pub ledger_type: LedgerJournalType,
+    pub period_state: LedgerPeriodState,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub latest_lock: Option<LedgerPeriodLock>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub lock_history: Vec<LedgerPeriodLock>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerPeriodLock {
+    pub period: LedgerPeriodRef,
+    pub action: LedgerPeriodAction,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub approval_reference: Option<String>,
+    pub locked_at: String,
+    pub locked_by: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerLockPeriodParams {
+    pub company_id: String,
+    pub journal_id: String,
+    pub period: LedgerPeriodRef,
+    pub action: LedgerPeriodAction,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub approval_reference: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerLockPeriodResponse {
+    pub journal: LedgerJournal,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerAuditEvent {
+    pub id: String,
+    pub company_id: String,
+    pub entity_id: String,
+    pub actor: String,
+    pub occurred_at: String,
+    pub description: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerRevalueCurrencyParams {
+    pub company_id: String,
+    pub journal_id: String,
+    pub period: LedgerPeriodRef,
+    pub currencies: Vec<LedgerCurrency>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerRevalueCurrencyResponse {
+    pub entries: Vec<LedgerJournalEntry>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_cursor: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListAuditTrailParams {
+    pub company_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub entity_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub limit: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cursor: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListAuditTrailResponse {
+    pub events: Vec<LedgerAuditEvent>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub next_cursor: Option<String>,
+}
+
+// List Companies
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListCompaniesParams {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub search: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListCompaniesResponse {
+    pub companies: Vec<LedgerCompany>,
+}
+
+// List Accounts
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListAccountsParams {
+    pub company_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub account_type: Option<LedgerAccountType>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListAccountsResponse {
+    pub accounts: Vec<LedgerAccount>,
+}
+
+// List Entries
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListEntriesParams {
+    pub company_id: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub end_date: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub account_code: Option<String>,
+    #[serde(default = "default_limit")]
+    pub limit: usize,
+    #[serde(default)]
+    pub offset: usize,
+}
+
+fn default_limit() -> usize {
+    50
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerListEntriesResponse {
+    pub entries: Vec<LedgerJournalEntry>,
+    pub total_count: usize,
+}
+
+// Get Company Context
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerGetCompanyContextParams {
+    pub company_id: String,
+    #[serde(default = "default_context_limit")]
+    pub limit: usize,
+}
+
+fn default_context_limit() -> usize {
+    50
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerGetCompanyContextResponse {
+    pub chart_of_accounts: Vec<LedgerAccount>,
+    pub recent_transactions: Vec<LedgerJournalEntry>,
+    pub vendor_mappings: HashMap<String, String>,
+    pub policy_rules: LedgerPolicyRules,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerPolicyRules {
+    pub auto_post_enabled: bool,
+    pub auto_post_limit_minor: i64,
+    pub confidence_floor: f32,
+}
+
+// Process Document
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerProcessDocumentParams {
+    pub upload_id: String,
+    pub company_id: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerProcessDocumentResponse {
+    pub suggestion: LedgerJournalEntrySuggestion,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerJournalEntrySuggestion {
+    pub lines: Vec<LedgerSuggestedLine>,
+    pub memo: String,
+    pub confidence: f32,
+    pub reasoning: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq, TS)]
+#[serde(rename_all = "camelCase")]
+pub struct LedgerSuggestedLine {
+    pub account_code: String,
+    pub account_name: String,
+    pub debit_minor: i64,
+    pub credit_minor: i64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq, Default, TS)]

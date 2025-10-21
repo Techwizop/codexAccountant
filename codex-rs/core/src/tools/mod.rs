@@ -5,6 +5,9 @@ pub mod registry;
 pub mod router;
 pub mod spec;
 
+#[cfg(feature = "ledger")]
+pub mod accounting;
+
 use crate::apply_patch;
 use crate::apply_patch::ApplyPatchExec;
 use crate::apply_patch::InternalApplyPatchInvocation;

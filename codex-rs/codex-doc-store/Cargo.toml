@@ -1,0 +1,23 @@
+[package]
+edition = "2024"
+name = "codex-doc-store"
+version = { workspace = true }
+
+[lib]
+name = "codex_doc_store"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "sync"] }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }

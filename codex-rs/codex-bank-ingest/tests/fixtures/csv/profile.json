@@ -1,0 +1,13 @@
+{
+  "transaction_id": "transaction_id",
+  "account_id": "account_id",
+  "posted_date": "posted_date",
+  "amount": "amount",
+  "currency": "currency",
+  "description": "description",
+  "source_reference": "source_reference",
+  "source_checksum": "checksum",
+  "voided": "voided",
+  "date_format": "%Y-%m-%d",
+  "amount_minor_factor": 100
+}

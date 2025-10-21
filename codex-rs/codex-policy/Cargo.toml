@@ -1,0 +1,26 @@
+[package]
+edition = "2024"
+name = "codex-policy"
+version = { workspace = true }
+
+[lib]
+name = "codex_policy"
+path = "src/lib.rs"
+
+[features]
+default = []
+postgres-store = []
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "sync"] }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }

@@ -5,6 +5,8 @@ mod config;
 mod create_conversation;
 mod fuzzy_file_search;
 mod interrupt;
+#[cfg(feature = "ledger")]
+mod ledger_create_company;
 mod list_resume;
 mod login;
 mod send_message;

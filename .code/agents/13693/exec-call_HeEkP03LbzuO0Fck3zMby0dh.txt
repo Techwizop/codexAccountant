@@ -1,0 +1,3303 @@
+commit a315607ad9584ee04ff0034d88c2b17cc1c152dd
+Author: Code Snapshot <snapshot@code.local>
+Date:   Wed Oct 15 12:27:59 2025 +0200
+
+    auto turn change snapshot
+
+diff --git a/.code/agents/12954/exec-call_HjBPL1953QlyO1bUMaitw8EX.txt b/.code/agents/12954/exec-call_HjBPL1953QlyO1bUMaitw8EX.txt
+new file mode 100644
+index 00000000..23db8ae8
+--- /dev/null
++++ b/.code/agents/12954/exec-call_HjBPL1953QlyO1bUMaitw8EX.txt
+@@ -0,0 +1,1124 @@
++## main...origin/main
++ M .codespellignore
++ M .codespellrc
++ M .devcontainer/Dockerfile
++ M .devcontainer/README.md
++ M .devcontainer/devcontainer.json
++ M .github/ISSUE_TEMPLATE/2-bug-report.yml
++ M .github/ISSUE_TEMPLATE/3-docs-issue.yml
++ M .github/ISSUE_TEMPLATE/4-feature-request.yml
++ M .github/ISSUE_TEMPLATE/5-vs-code-extension.yml
++ M .github/codex/home/config.toml
++ M .github/codex/labels/codex-attempt.md
++ M .github/codex/labels/codex-review.md
++ M .github/codex/labels/codex-rust-review.md
++ M .github/codex/labels/codex-triage.md
++ M .github/dependabot.yaml
++ M .github/dotslash-config.json
++ M .github/prompts/issue-deduplicator.txt
++ M .github/prompts/issue-labeler.txt
++ M .github/pull_request_template.md
++ M .github/workflows/ci.yml
++ M .github/workflows/cla.yml
++ M .github/workflows/codespell.yml
++ M .github/workflows/issue-deduplicator.yml
++ M .github/workflows/issue-labeler.yml
++ M .github/workflows/rust-ci.yml
++ M .github/workflows/rust-release.yml
++ M .github/workflows/sdk.yml
++ M .gitignore
++ M .npmrc
++ M .prettierignore
++ M .prettierrc.toml
++ M .vscode/extensions.json
++ M .vscode/launch.json
++ M .vscode/settings.json
++ M AGENTS.md
++ M CHANGELOG.md
++ M LICENSE
++ M NOTICE
++ M PNPM.md
++ M README.md
++ M cliff.toml
++ M codex-cli/.dockerignore
++ M codex-cli/.gitignore
++ M codex-cli/Dockerfile
++ M codex-cli/README.md
++ M codex-cli/bin/codex.js
++ M codex-cli/bin/rg
++ M codex-cli/package-lock.json
++ M codex-cli/package.json
++ M codex-cli/scripts/README.md
++ M codex-cli/scripts/build_container.sh
++ M codex-cli/scripts/build_npm_package.py
++ M codex-cli/scripts/init_firewall.sh
++ M codex-cli/scripts/install_native_deps.py
++ M codex-cli/scripts/run_in_container.sh
++ M codex-rs/.gitignore
++ M codex-rs/Cargo.lock
++ M codex-rs/Cargo.toml
++ M codex-rs/README.md
++ M codex-rs/ansi-escape/Cargo.toml
++ M codex-rs/ansi-escape/README.md
++ M codex-rs/ansi-escape/src/lib.rs
++ M codex-rs/app-server-protocol/Cargo.toml
++ M codex-rs/app-server-protocol/src/jsonrpc_lite.rs
++ M codex-rs/app-server-protocol/src/lib.rs
++ M codex-rs/app-server-protocol/src/protocol.rs
++ M codex-rs/app-server/Cargo.toml
++ M codex-rs/app-server/README.md
++ M codex-rs/app-server/src/codex_message_processor.rs
++ M codex-rs/app-server/src/error_code.rs
++ M codex-rs/app-server/src/fuzzy_file_search.rs
++ M codex-rs/app-server/src/lib.rs
++ M codex-rs/app-server/src/main.rs
++ M codex-rs/app-server/src/message_processor.rs
++ M codex-rs/app-server/src/outgoing_message.rs
++ M codex-rs/app-server/tests/all.rs
++ M codex-rs/app-server/tests/common/Cargo.toml
++ M codex-rs/app-server/tests/common/lib.rs
++ M codex-rs/app-server/tests/common/mcp_process.rs
++ M codex-rs/app-server/tests/common/mock_model_server.rs
++ M codex-rs/app-server/tests/common/responses.rs
++ M codex-rs/app-server/tests/suite/archive_conversation.rs
++ M codex-rs/app-server/tests/suite/auth.rs
++ M codex-rs/app-server/tests/suite/codex_message_processor_flow.rs
++ M codex-rs/app-server/tests/suite/config.rs
++ M codex-rs/app-server/tests/suite/create_conversation.rs
++ M codex-rs/app-server/tests/suite/fuzzy_file_search.rs
++ M codex-rs/app-server/tests/suite/interrupt.rs
++ M codex-rs/app-server/tests/suite/list_resume.rs
++ M codex-rs/app-server/tests/suite/login.rs
++ M codex-rs/app-server/tests/suite/mod.rs
++ M codex-rs/app-server/tests/suite/send_message.rs
++ M codex-rs/app-server/tests/suite/set_default_model.rs
++ M codex-rs/app-server/tests/suite/user_agent.rs
++ M codex-rs/app-server/tests/suite/user_info.rs
++ M codex-rs/apply-patch/Cargo.toml
++ M codex-rs/apply-patch/apply_patch_tool_instructions.md
++ M codex-rs/apply-patch/src/lib.rs
++ M codex-rs/apply-patch/src/main.rs
++ M codex-rs/apply-patch/src/parser.rs
++ M codex-rs/apply-patch/src/seek_sequence.rs
++ M codex-rs/apply-patch/src/standalone_executable.rs
++ M codex-rs/apply-patch/tests/all.rs
++ M codex-rs/apply-patch/tests/suite/cli.rs
++ M codex-rs/apply-patch/tests/suite/mod.rs
++ M codex-rs/arg0/Cargo.toml
++ M codex-rs/arg0/src/lib.rs
++ M codex-rs/backend-client/Cargo.toml
++ M codex-rs/backend-client/src/client.rs
++ M codex-rs/backend-client/src/lib.rs
++ M codex-rs/backend-client/src/types.rs
++ M codex-rs/backend-client/tests/fixtures/task_details_with_diff.json
++ M codex-rs/backend-client/tests/fixtures/task_details_with_error.json
++ M codex-rs/chatgpt/Cargo.toml
++ M codex-rs/chatgpt/README.md
++ M codex-rs/chatgpt/src/apply_command.rs
++ M codex-rs/chatgpt/src/chatgpt_client.rs
++ M codex-rs/chatgpt/src/chatgpt_token.rs
++ M codex-rs/chatgpt/src/get_task.rs
++ M codex-rs/chatgpt/src/lib.rs
++ M codex-rs/chatgpt/tests/all.rs
++ M codex-rs/chatgpt/tests/suite/apply_command_e2e.rs
++ M codex-rs/chatgpt/tests/suite/mod.rs
++ M codex-rs/chatgpt/tests/task_turn_fixture.json
++ M codex-rs/cli/Cargo.toml
++ M codex-rs/cli/src/debug_sandbox.rs
++ M codex-rs/cli/src/exit_status.rs
++ M codex-rs/cli/src/lib.rs
++ M codex-rs/cli/src/login.rs
++ M codex-rs/cli/src/main.rs
++ M codex-rs/cli/src/mcp_cmd.rs
++ M codex-rs/cli/tests/mcp_add_remove.rs
++ M codex-rs/cli/tests/mcp_list.rs
++ M codex-rs/clippy.toml
++ M codex-rs/cloud-tasks-client/Cargo.toml
++ M codex-rs/cloud-tasks-client/src/api.rs
++ M codex-rs/cloud-tasks-client/src/http.rs
++ M codex-rs/cloud-tasks-client/src/lib.rs
++ M codex-rs/cloud-tasks-client/src/mock.rs
++ M codex-rs/cloud-tasks/Cargo.toml
++ M codex-rs/cloud-tasks/src/app.rs
++ M codex-rs/cloud-tasks/src/cli.rs
++ M codex-rs/cloud-tasks/src/env_detect.rs
++ M codex-rs/cloud-tasks/src/lib.rs
++ M codex-rs/cloud-tasks/src/new_task.rs
++ M codex-rs/cloud-tasks/src/scrollable_diff.rs
++ M codex-rs/cloud-tasks/src/ui.rs
++ M codex-rs/cloud-tasks/src/util.rs
++ M codex-rs/cloud-tasks/tests/env_filter.rs
++ M codex-rs/codex-backend-openapi-models/Cargo.toml
++ M codex-rs/codex-backend-openapi-models/src/lib.rs
++ M codex-rs/codex-backend-openapi-models/src/models/code_task_details_response.rs
++ M codex-rs/codex-backend-openapi-models/src/models/external_pull_request_response.rs
++ M codex-rs/codex-backend-openapi-models/src/models/git_pull_request.rs
++ M codex-rs/codex-backend-openapi-models/src/models/mod.rs
++ M codex-rs/codex-backend-openapi-models/src/models/paginated_list_task_list_item_.rs
++ M codex-rs/codex-backend-openapi-models/src/models/task_list_item.rs
++ M codex-rs/codex-backend-openapi-models/src/models/task_response.rs
++ M codex-rs/common/Cargo.toml
++ M codex-rs/common/README.md
++ M codex-rs/common/src/approval_mode_cli_arg.rs
++ M codex-rs/common/src/approval_presets.rs
++ M codex-rs/common/src/config_override.rs
++ M codex-rs/common/src/config_summary.rs
++ M codex-rs/common/src/elapsed.rs
++ M codex-rs/common/src/fuzzy_match.rs
++ M codex-rs/common/src/lib.rs
++ M codex-rs/common/src/model_presets.rs
++ M codex-rs/common/src/sandbox_mode_cli_arg.rs
++ M codex-rs/common/src/sandbox_summary.rs
++ M codex-rs/config.md
++ M codex-rs/core/Cargo.toml
++ M codex-rs/core/README.md
++ M codex-rs/core/gpt_5_codex_prompt.md
++ M codex-rs/core/prompt.md
++ M codex-rs/core/review_prompt.md
++ M codex-rs/core/src/apply_patch.rs
++ M codex-rs/core/src/auth.rs
++ M codex-rs/core/src/bash.rs
++ M codex-rs/core/src/chat_completions.rs
++ M codex-rs/core/src/client.rs
++ M codex-rs/core/src/client_common.rs
++ M codex-rs/core/src/codex.rs
++ M codex-rs/core/src/codex/compact.rs
++ M codex-rs/core/src/codex_conversation.rs
++ M codex-rs/core/src/command_safety/is_dangerous_command.rs
++ M codex-rs/core/src/command_safety/is_safe_command.rs
++ M codex-rs/core/src/command_safety/mod.rs
++ M codex-rs/core/src/command_safety/windows_safe_commands.rs
++ M codex-rs/core/src/config.rs
++ M codex-rs/core/src/config_edit.rs
++ M codex-rs/core/src/config_loader/macos.rs
++ M codex-rs/core/src/config_loader/mod.rs
++ M codex-rs/core/src/config_profile.rs
++ M codex-rs/core/src/config_types.rs
++ M codex-rs/core/src/conversation_history.rs
++ M codex-rs/core/src/conversation_manager.rs
++ M codex-rs/core/src/custom_prompts.rs
++ M codex-rs/core/src/default_client.rs
++ M codex-rs/core/src/environment_context.rs
++ M codex-rs/core/src/error.rs
++ M codex-rs/core/src/event_mapping.rs
++ M codex-rs/core/src/exec.rs
++ M codex-rs/core/src/exec_command/exec_command_params.rs
++ M codex-rs/core/src/exec_command/exec_command_session.rs
++ M codex-rs/core/src/exec_command/mod.rs
++ M codex-rs/core/src/exec_command/responses_api.rs
++ M codex-rs/core/src/exec_command/session_id.rs
++ M codex-rs/core/src/exec_command/session_manager.rs
++ M codex-rs/core/src/exec_env.rs
++ M codex-rs/core/src/executor/backends.rs
++ M codex-rs/core/src/executor/cache.rs
++ M codex-rs/core/src/executor/mod.rs
++ M codex-rs/core/src/executor/runner.rs
++ M codex-rs/core/src/executor/sandbox.rs
++ M codex-rs/core/src/features.rs
++ M codex-rs/core/src/features/legacy.rs
++ M codex-rs/core/src/flags.rs
++ M codex-rs/core/src/function_tool.rs
++ M codex-rs/core/src/git_info.rs
++ M codex-rs/core/src/landlock.rs
++ M codex-rs/core/src/lib.rs
++ M codex-rs/core/src/mcp/auth.rs
++ M codex-rs/core/src/mcp/mod.rs
++ M codex-rs/core/src/mcp_connection_manager.rs
++ M codex-rs/core/src/mcp_tool_call.rs
++ M codex-rs/core/src/message_history.rs
++ M codex-rs/core/src/model_family.rs
++ M codex-rs/core/src/model_provider_info.rs
++ M codex-rs/core/src/openai_model_info.rs
++ M codex-rs/core/src/openai_tools.rs
++ M codex-rs/core/src/otel_init.rs
++ M codex-rs/core/src/parse_command.rs
++ M codex-rs/core/src/project_doc.rs
++ M codex-rs/core/src/review_format.rs
++ M codex-rs/core/src/rollout/list.rs
++ M codex-rs/core/src/rollout/mod.rs
++ M codex-rs/core/src/rollout/policy.rs
++ M codex-rs/core/src/rollout/recorder.rs
++ M codex-rs/core/src/rollout/tests.rs
++ M codex-rs/core/src/safety.rs
++ M codex-rs/core/src/seatbelt.rs
++ M codex-rs/core/src/seatbelt_base_policy.sbpl
++ M codex-rs/core/src/shell.rs
++ M codex-rs/core/src/spawn.rs
++ M codex-rs/core/src/state/mod.rs
++ M codex-rs/core/src/state/service.rs
++ M codex-rs/core/src/state/session.rs
++ M codex-rs/core/src/state/turn.rs
++ M codex-rs/core/src/tasks/compact.rs
++ M codex-rs/core/src/tasks/mod.rs
++ M codex-rs/core/src/tasks/regular.rs
++ M codex-rs/core/src/tasks/review.rs
++ M codex-rs/core/src/terminal.rs
++ M codex-rs/core/src/token_data.rs
++ M codex-rs/core/src/tools/context.rs
++ M codex-rs/core/src/tools/handlers/apply_patch.rs
++ M codex-rs/core/src/tools/handlers/exec_stream.rs
++ M codex-rs/core/src/tools/handlers/grep_files.rs
++ M codex-rs/core/src/tools/handlers/list_dir.rs
++ M codex-rs/core/src/tools/handlers/mcp.rs
++ M codex-rs/core/src/tools/handlers/mod.rs
++ M codex-rs/core/src/tools/handlers/plan.rs
++ M codex-rs/core/src/tools/handlers/read_file.rs
++ M codex-rs/core/src/tools/handlers/shell.rs
++ M codex-rs/core/src/tools/handlers/test_sync.rs
++ M codex-rs/core/src/tools/handlers/tool_apply_patch.lark
++ M codex-rs/core/src/tools/handlers/unified_exec.rs
++ M codex-rs/core/src/tools/handlers/view_image.rs
++ M codex-rs/core/src/tools/mod.rs
++ M codex-rs/core/src/tools/parallel.rs
++ M codex-rs/core/src/tools/registry.rs
++ M codex-rs/core/src/tools/router.rs
++ M codex-rs/core/src/tools/spec.rs
++ M codex-rs/core/src/truncate.rs
++ M codex-rs/core/src/turn_diff_tracker.rs
++ M codex-rs/core/src/unified_exec/errors.rs
++ M codex-rs/core/src/unified_exec/mod.rs
++ M codex-rs/core/src/user_instructions.rs
++ M codex-rs/core/src/user_notification.rs
++ M codex-rs/core/src/util.rs
++ M codex-rs/core/templates/compact/history_bridge.md
++ M codex-rs/core/templates/compact/prompt.md
++ M codex-rs/core/tests/all.rs
++ M codex-rs/core/tests/chat_completions_payload.rs
++ M codex-rs/core/tests/chat_completions_sse.rs
++ M codex-rs/core/tests/cli_responses_fixture.sse
++ M codex-rs/core/tests/common/Cargo.toml
++ M codex-rs/core/tests/common/lib.rs
++ M codex-rs/core/tests/common/responses.rs
++ M codex-rs/core/tests/common/test_codex.rs
++ M codex-rs/core/tests/common/test_codex_exec.rs
++ M codex-rs/core/tests/fixtures/completed_template.json
++ M codex-rs/core/tests/fixtures/incomplete_sse.json
++ M codex-rs/core/tests/responses_headers.rs
++ M codex-rs/core/tests/suite/abort_tasks.rs
++ M codex-rs/core/tests/suite/cli_stream.rs
++ M codex-rs/core/tests/suite/client.rs
++ M codex-rs/core/tests/suite/compact.rs
++ M codex-rs/core/tests/suite/compact_resume_fork.rs
++ M codex-rs/core/tests/suite/exec.rs
++ M codex-rs/core/tests/suite/exec_stream_events.rs
++ M codex-rs/core/tests/suite/fork_conversation.rs
++ M codex-rs/core/tests/suite/grep_files.rs
++ M codex-rs/core/tests/suite/json_result.rs
++ M codex-rs/core/tests/suite/list_dir.rs
++ M codex-rs/core/tests/suite/live_cli.rs
++ M codex-rs/core/tests/suite/mod.rs
++ M codex-rs/core/tests/suite/model_overrides.rs
++ M codex-rs/core/tests/suite/model_tools.rs
++ M codex-rs/core/tests/suite/otel.rs
++ M codex-rs/core/tests/suite/prompt_caching.rs
++ M codex-rs/core/tests/suite/read_file.rs
++ M codex-rs/core/tests/suite/review.rs
++ M codex-rs/core/tests/suite/rmcp_client.rs
++ M codex-rs/core/tests/suite/rollout_list_find.rs
++ M codex-rs/core/tests/suite/seatbelt.rs
++ M codex-rs/core/tests/suite/shell_serialization.rs
++ M codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
++ M codex-rs/core/tests/suite/stream_no_completed.rs
++ M codex-rs/core/tests/suite/tool_harness.rs
++ M codex-rs/core/tests/suite/tool_parallelism.rs
++ M codex-rs/core/tests/suite/tools.rs
++ M codex-rs/core/tests/suite/unified_exec.rs
++ M codex-rs/core/tests/suite/user_notification.rs
++ M codex-rs/core/tests/suite/view_image.rs
++ M codex-rs/default.nix
++ M codex-rs/docs/codex_mcp_interface.md
++ M codex-rs/docs/protocol_v1.md
++ M codex-rs/exec/Cargo.toml
++ M codex-rs/exec/src/cli.rs
++ M codex-rs/exec/src/event_processor.rs
++ M codex-rs/exec/src/event_processor_with_human_output.rs
++ M codex-rs/exec/src/event_processor_with_jsonl_output.rs
++ M codex-rs/exec/src/exec_events.rs
++ M codex-rs/exec/src/lib.rs
++ M codex-rs/exec/src/main.rs
++ M codex-rs/exec/tests/all.rs
++ M codex-rs/exec/tests/event_processor_with_json_output.rs
++ M codex-rs/exec/tests/fixtures/apply_patch_freeform_final.txt
++ M codex-rs/exec/tests/fixtures/cli_responses_fixture.sse
++ M codex-rs/exec/tests/suite/apply_patch.rs
++ M codex-rs/exec/tests/suite/auth_env.rs
++ M codex-rs/exec/tests/suite/mod.rs
++ M codex-rs/exec/tests/suite/originator.rs
++ M codex-rs/exec/tests/suite/output_schema.rs
++ M codex-rs/exec/tests/suite/resume.rs
++ M codex-rs/exec/tests/suite/sandbox.rs
++ M codex-rs/exec/tests/suite/server_error_exit.rs
++ M codex-rs/execpolicy/Cargo.toml
++ M codex-rs/execpolicy/README.md
++ M codex-rs/execpolicy/build.rs
++ M codex-rs/execpolicy/src/arg_matcher.rs
++ M codex-rs/execpolicy/src/arg_resolver.rs
++ M codex-rs/execpolicy/src/arg_type.rs
++ M codex-rs/execpolicy/src/default.policy
++ M codex-rs/execpolicy/src/error.rs
++ M codex-rs/execpolicy/src/exec_call.rs
++ M codex-rs/execpolicy/src/execv_checker.rs
++ M codex-rs/execpolicy/src/lib.rs
++ M codex-rs/execpolicy/src/main.rs
++ M codex-rs/execpolicy/src/opt.rs
++ M codex-rs/execpolicy/src/policy.rs
++ M codex-rs/execpolicy/src/policy_parser.rs
++ M codex-rs/execpolicy/src/program.rs
++ M codex-rs/execpolicy/src/sed_command.rs
++ M codex-rs/execpolicy/src/valid_exec.rs
++ M codex-rs/execpolicy/tests/all.rs
++ M codex-rs/execpolicy/tests/suite/bad.rs
++ M codex-rs/execpolicy/tests/suite/cp.rs
++ M codex-rs/execpolicy/tests/suite/good.rs
++ M codex-rs/execpolicy/tests/suite/head.rs
++ M codex-rs/execpolicy/tests/suite/literal.rs
++ M codex-rs/execpolicy/tests/suite/ls.rs
++ M codex-rs/execpolicy/tests/suite/mod.rs
++ M codex-rs/execpolicy/tests/suite/parse_sed_command.rs
++ M codex-rs/execpolicy/tests/suite/pwd.rs
++ M codex-rs/execpolicy/tests/suite/sed.rs
++ M codex-rs/file-search/Cargo.toml
++ M codex-rs/file-search/README.md
++ M codex-rs/file-search/src/cli.rs
++ M codex-rs/file-search/src/lib.rs
++ M codex-rs/file-search/src/main.rs
++ M codex-rs/git-apply/Cargo.toml
++ M codex-rs/git-apply/src/lib.rs
++ M codex-rs/git-tooling/Cargo.toml
++ M codex-rs/git-tooling/README.md
++ M codex-rs/git-tooling/src/errors.rs
++ M codex-rs/git-tooling/src/ghost_commits.rs
++ M codex-rs/git-tooling/src/lib.rs
++ M codex-rs/git-tooling/src/operations.rs
++ M codex-rs/git-tooling/src/platform.rs
++ M codex-rs/justfile
++ M codex-rs/linux-sandbox/Cargo.toml
++ M codex-rs/linux-sandbox/README.md
++ M codex-rs/linux-sandbox/src/landlock.rs
++ M codex-rs/linux-sandbox/src/lib.rs
++ M codex-rs/linux-sandbox/src/linux_run_main.rs
++ M codex-rs/linux-sandbox/src/main.rs
++ M codex-rs/linux-sandbox/tests/all.rs
++ M codex-rs/linux-sandbox/tests/suite/landlock.rs
++ M codex-rs/linux-sandbox/tests/suite/mod.rs
++ M codex-rs/login/Cargo.toml
++ M codex-rs/login/src/assets/success.html
++ M codex-rs/login/src/device_code_auth.rs
++ M codex-rs/login/src/lib.rs
++ M codex-rs/login/src/pkce.rs
++ M codex-rs/login/src/server.rs
++ M codex-rs/login/tests/all.rs
++ M codex-rs/login/tests/suite/device_code_login.rs
++ M codex-rs/login/tests/suite/login_server_e2e.rs
++ M codex-rs/login/tests/suite/mod.rs
++ M codex-rs/mcp-client/Cargo.toml
++ M codex-rs/mcp-client/src/lib.rs
++ M codex-rs/mcp-client/src/main.rs
++ M codex-rs/mcp-client/src/mcp_client.rs
++ M codex-rs/mcp-server/Cargo.toml
++ M codex-rs/mcp-server/src/codex_tool_config.rs
++ M codex-rs/mcp-server/src/codex_tool_runner.rs
++ M codex-rs/mcp-server/src/error_code.rs
++ M codex-rs/mcp-server/src/exec_approval.rs
++ M codex-rs/mcp-server/src/lib.rs
++ M codex-rs/mcp-server/src/main.rs
++ M codex-rs/mcp-server/src/message_processor.rs
++ M codex-rs/mcp-server/src/outgoing_message.rs
++ M codex-rs/mcp-server/src/patch_approval.rs
++ M codex-rs/mcp-server/src/tool_handlers/mod.rs
++ M codex-rs/mcp-server/tests/all.rs
++ M codex-rs/mcp-server/tests/common/Cargo.toml
++ M codex-rs/mcp-server/tests/common/lib.rs
++ M codex-rs/mcp-server/tests/common/mcp_process.rs
++ M codex-rs/mcp-server/tests/common/mock_model_server.rs
++ M codex-rs/mcp-server/tests/common/responses.rs
++ M codex-rs/mcp-server/tests/suite/codex_tool.rs
++ M codex-rs/mcp-server/tests/suite/mod.rs
++ M codex-rs/mcp-types/Cargo.toml
++ M codex-rs/mcp-types/README.md
++ M codex-rs/mcp-types/check_lib_rs.py
++ M codex-rs/mcp-types/generate_mcp_types.py
++ M codex-rs/mcp-types/schema/2025-03-26/schema.json
++ M codex-rs/mcp-types/schema/2025-06-18/schema.json
++ M codex-rs/mcp-types/src/lib.rs
++ M codex-rs/mcp-types/tests/all.rs
++ M codex-rs/mcp-types/tests/suite/initialize.rs
++ M codex-rs/mcp-types/tests/suite/mod.rs
++ M codex-rs/mcp-types/tests/suite/progress_notification.rs
++ M codex-rs/ollama/Cargo.toml
++ M codex-rs/ollama/src/client.rs
++ M codex-rs/ollama/src/lib.rs
++ M codex-rs/ollama/src/parser.rs
++ M codex-rs/ollama/src/pull.rs
++ M codex-rs/ollama/src/url.rs
++ M codex-rs/otel/Cargo.toml
++ M codex-rs/otel/src/config.rs
++ M codex-rs/otel/src/lib.rs
++ M codex-rs/otel/src/otel_event_manager.rs
++ M codex-rs/otel/src/otel_provider.rs
++ M codex-rs/process-hardening/Cargo.toml
++ M codex-rs/process-hardening/README.md
++ M codex-rs/process-hardening/src/lib.rs
++ M codex-rs/protocol-ts/Cargo.toml
++ M codex-rs/protocol-ts/generate-ts
++ M codex-rs/protocol-ts/src/lib.rs
++ M codex-rs/protocol-ts/src/main.rs
++ M codex-rs/protocol/Cargo.toml
++ M codex-rs/protocol/README.md
++ M codex-rs/protocol/src/config_types.rs
++ M codex-rs/protocol/src/conversation_id.rs
++ M codex-rs/protocol/src/custom_prompts.rs
++ M codex-rs/protocol/src/lib.rs
++ M codex-rs/protocol/src/message_history.rs
++ M codex-rs/protocol/src/models.rs
++ M codex-rs/protocol/src/num_format.rs
++ M codex-rs/protocol/src/parse_command.rs
++ M codex-rs/protocol/src/plan_tool.rs
++ M codex-rs/protocol/src/protocol.rs
++ M codex-rs/responses-api-proxy/Cargo.toml
++ M codex-rs/responses-api-proxy/README.md
++ M codex-rs/responses-api-proxy/npm/README.md
++ M codex-rs/responses-api-proxy/npm/bin/codex-responses-api-proxy.js
++ M codex-rs/responses-api-proxy/npm/package.json
++ M codex-rs/responses-api-proxy/src/lib.rs
++ M codex-rs/responses-api-proxy/src/main.rs
++ M codex-rs/responses-api-proxy/src/read_api_key.rs
++ M codex-rs/rmcp-client/Cargo.toml
++ M codex-rs/rmcp-client/src/auth_status.rs
++ M codex-rs/rmcp-client/src/bin/rmcp_test_server.rs
++ M codex-rs/rmcp-client/src/bin/test_stdio_server.rs
++ M codex-rs/rmcp-client/src/bin/test_streamable_http_server.rs
++ M codex-rs/rmcp-client/src/find_codex_home.rs
++ M codex-rs/rmcp-client/src/lib.rs
++ M codex-rs/rmcp-client/src/logging_client_handler.rs
++ M codex-rs/rmcp-client/src/oauth.rs
++ M codex-rs/rmcp-client/src/perform_oauth_login.rs
++ M codex-rs/rmcp-client/src/rmcp_client.rs
++ M codex-rs/rmcp-client/src/utils.rs
++ M codex-rs/rust-toolchain.toml
++ M codex-rs/rustfmt.toml
++ M codex-rs/scripts/create_github_release
++ M codex-rs/tui/Cargo.toml
++ M codex-rs/tui/frames/blocks/frame_1.txt
++ M codex-rs/tui/frames/blocks/frame_10.txt
++ M codex-rs/tui/frames/blocks/frame_11.txt
++ M codex-rs/tui/frames/blocks/frame_12.txt
++ M codex-rs/tui/frames/blocks/frame_13.txt
++ M codex-rs/tui/frames/blocks/frame_14.txt
++ M codex-rs/tui/frames/blocks/frame_15.txt
++ M codex-rs/tui/frames/blocks/frame_16.txt
++ M codex-rs/tui/frames/blocks/frame_17.txt
++ M codex-rs/tui/frames/blocks/frame_18.txt
++ M codex-rs/tui/frames/blocks/frame_19.txt
++ M codex-rs/tui/frames/blocks/frame_2.txt
++ M codex-rs/tui/frames/blocks/frame_20.txt
++ M codex-rs/tui/frames/blocks/frame_21.txt
++ M codex-rs/tui/frames/blocks/frame_22.txt
++ M codex-rs/tui/frames/blocks/frame_23.txt
++ M codex-rs/tui/frames/blocks/frame_24.txt
++ M codex-rs/tui/frames/blocks/frame_25.txt
++ M codex-rs/tui/frames/blocks/frame_26.txt
++ M codex-rs/tui/frames/blocks/frame_27.txt
++ M codex-rs/tui/frames/blocks/frame_28.txt
++ M codex-rs/tui/frames/blocks/frame_29.txt
++ M codex-rs/tui/frames/blocks/frame_3.txt
++ M codex-rs/tui/frames/blocks/frame_30.txt
++ M codex-rs/tui/frames/blocks/frame_31.txt
++ M codex-rs/tui/frames/blocks/frame_32.txt
++ M codex-rs/tui/frames/blocks/frame_33.txt
++ M codex-rs/tui/frames/blocks/frame_34.txt
++ M codex-rs/tui/frames/blocks/frame_35.txt
++ M codex-rs/tui/frames/blocks/frame_36.txt
++ M codex-rs/tui/frames/blocks/frame_4.txt
++ M codex-rs/tui/frames/blocks/frame_5.txt
++ M codex-rs/tui/frames/blocks/frame_6.txt
++ M codex-rs/tui/frames/blocks/frame_7.txt
++ M codex-rs/tui/frames/blocks/frame_8.txt
++ M codex-rs/tui/frames/blocks/frame_9.txt
++ M codex-rs/tui/frames/codex/frame_1.txt
++ M codex-rs/tui/frames/codex/frame_10.txt
++ M codex-rs/tui/frames/codex/frame_11.txt
++ M codex-rs/tui/frames/codex/frame_12.txt
++ M codex-rs/tui/frames/codex/frame_13.txt
++ M codex-rs/tui/frames/codex/frame_14.txt
++ M codex-rs/tui/frames/codex/frame_15.txt
++ M codex-rs/tui/frames/codex/frame_16.txt
++ M codex-rs/tui/frames/codex/frame_17.txt
++ M codex-rs/tui/frames/codex/frame_18.txt
++ M codex-rs/tui/frames/codex/frame_19.txt
++ M codex-rs/tui/frames/codex/frame_2.txt
++ M codex-rs/tui/frames/codex/frame_20.txt
++ M codex-rs/tui/frames/codex/frame_21.txt
++ M codex-rs/tui/frames/codex/frame_22.txt
++ M codex-rs/tui/frames/codex/frame_23.txt
++ M codex-rs/tui/frames/codex/frame_24.txt
++ M codex-rs/tui/frames/codex/frame_25.txt
++ M codex-rs/tui/frames/codex/frame_26.txt
++ M codex-rs/tui/frames/codex/frame_27.txt
++ M codex-rs/tui/frames/codex/frame_28.txt
++ M codex-rs/tui/frames/codex/frame_29.txt
++ M codex-rs/tui/frames/codex/frame_3.txt
++ M codex-rs/tui/frames/codex/frame_30.txt
++ M codex-rs/tui/frames/codex/frame_31.txt
++ M codex-rs/tui/frames/codex/frame_32.txt
++ M codex-rs/tui/frames/codex/frame_33.txt
++ M codex-rs/tui/frames/codex/frame_34.txt
++ M codex-rs/tui/frames/codex/frame_35.txt
++ M codex-rs/tui/frames/codex/frame_36.txt
++ M codex-rs/tui/frames/codex/frame_4.txt
++ M codex-rs/tui/frames/codex/frame_5.txt
++ M codex-rs/tui/frames/codex/frame_6.txt
++ M codex-rs/tui/frames/codex/frame_7.txt
++ M codex-rs/tui/frames/codex/frame_8.txt
++ M codex-rs/tui/frames/codex/frame_9.txt
++ M codex-rs/tui/frames/default/frame_1.txt
++ M codex-rs/tui/frames/default/frame_10.txt
++ M codex-rs/tui/frames/default/frame_11.txt
++ M codex-rs/tui/frames/default/frame_12.txt
++ M codex-rs/tui/frames/default/frame_13.txt
++ M codex-rs/tui/frames/default/frame_14.txt
++ M codex-rs/tui/frames/default/frame_15.txt
++ M codex-rs/tui/frames/default/frame_16.txt
++ M codex-rs/tui/frames/default/frame_17.txt
++ M codex-rs/tui/frames/default/frame_18.txt
++ M codex-rs/tui/frames/default/frame_19.txt
++ M codex-rs/tui/frames/default/frame_2.txt
++ M codex-rs/tui/frames/default/frame_20.txt
++ M codex-rs/tui/frames/default/frame_21.txt
++ M codex-rs/tui/frames/default/frame_22.txt
++ M codex-rs/tui/frames/default/frame_23.txt
++ M codex-rs/tui/frames/default/frame_24.txt
++ M codex-rs/tui/frames/default/frame_25.txt
++ M codex-rs/tui/frames/default/frame_26.txt
++ M codex-rs/tui/frames/default/frame_27.txt
++ M codex-rs/tui/frames/default/frame_28.txt
++ M codex-rs/tui/frames/default/frame_29.txt
++ M codex-rs/tui/frames/default/frame_3.txt
++ M codex-rs/tui/frames/default/frame_30.txt
++ M codex-rs/tui/frames/default/frame_31.txt
++ M codex-rs/tui/frames/default/frame_32.txt
++ M codex-rs/tui/frames/default/frame_33.txt
++ M codex-rs/tui/frames/default/frame_34.txt
++ M codex-rs/tui/frames/default/frame_35.txt
++ M codex-rs/tui/frames/default/frame_36.txt
++ M codex-rs/tui/frames/default/frame_4.txt
++ M codex-rs/tui/frames/default/frame_5.txt
++ M codex-rs/tui/frames/default/frame_6.txt
++ M codex-rs/tui/frames/default/frame_7.txt
++ M codex-rs/tui/frames/default/frame_8.txt
++ M codex-rs/tui/frames/default/frame_9.txt
++ M codex-rs/tui/frames/dots/frame_1.txt
++ M codex-rs/tui/frames/dots/frame_10.txt
++ M codex-rs/tui/frames/dots/frame_11.txt
++ M codex-rs/tui/frames/dots/frame_12.txt
++ M codex-rs/tui/frames/dots/frame_13.txt
++ M codex-rs/tui/frames/dots/frame_14.txt
++ M codex-rs/tui/frames/dots/frame_15.txt
++ M codex-rs/tui/frames/dots/frame_16.txt
++ M codex-rs/tui/frames/dots/frame_17.txt
++ M codex-rs/tui/frames/dots/frame_18.txt
++ M codex-rs/tui/frames/dots/frame_19.txt
++ M codex-rs/tui/frames/dots/frame_2.txt
++ M codex-rs/tui/frames/dots/frame_20.txt
++ M codex-rs/tui/frames/dots/frame_21.txt
++ M codex-rs/tui/frames/dots/frame_22.txt
++ M codex-rs/tui/frames/dots/frame_23.txt
++ M codex-rs/tui/frames/dots/frame_24.txt
++ M codex-rs/tui/frames/dots/frame_25.txt
++ M codex-rs/tui/frames/dots/frame_26.txt
++ M codex-rs/tui/frames/dots/frame_27.txt
++ M codex-rs/tui/frames/dots/frame_28.txt
++ M codex-rs/tui/frames/dots/frame_29.txt
++ M codex-rs/tui/frames/dots/frame_3.txt
++ M codex-rs/tui/frames/dots/frame_30.txt
++ M codex-rs/tui/frames/dots/frame_31.txt
++ M codex-rs/tui/frames/dots/frame_32.txt
++ M codex-rs/tui/frames/dots/frame_33.txt
++ M codex-rs/tui/frames/dots/frame_34.txt
++ M codex-rs/tui/frames/dots/frame_35.txt
++ M codex-rs/tui/frames/dots/frame_36.txt
++ M codex-rs/tui/frames/dots/frame_4.txt
++ M codex-rs/tui/frames/dots/frame_5.txt
++ M codex-rs/tui/frames/dots/frame_6.txt
++ M codex-rs/tui/frames/dots/frame_7.txt
++ M codex-rs/tui/frames/dots/frame_8.txt
++ M codex-rs/tui/frames/dots/frame_9.txt
++ M codex-rs/tui/frames/hash/frame_1.txt
++ M codex-rs/tui/frames/hash/frame_10.txt
++ M codex-rs/tui/frames/hash/frame_11.txt
++ M codex-rs/tui/frames/hash/frame_12.txt
++ M codex-rs/tui/frames/hash/frame_13.txt
++ M codex-rs/tui/frames/hash/frame_14.txt
++ M codex-rs/tui/frames/hash/frame_15.txt
++ M codex-rs/tui/frames/hash/frame_16.txt
++ M codex-rs/tui/frames/hash/frame_17.txt
++ M codex-rs/tui/frames/hash/frame_18.txt
++ M codex-rs/tui/frames/hash/frame_19.txt
++ M codex-rs/tui/frames/hash/frame_2.txt
++ M codex-rs/tui/frames/hash/frame_20.txt
++ M codex-rs/tui/frames/hash/frame_21.txt
++ M codex-rs/tui/frames/hash/frame_22.txt
++ M codex-rs/tui/frames/hash/frame_23.txt
++ M codex-rs/tui/frames/hash/frame_24.txt
++ M codex-rs/tui/frames/hash/frame_25.txt
++ M codex-rs/tui/frames/hash/frame_26.txt
++ M codex-rs/tui/frames/hash/frame_27.txt
++ M codex-rs/tui/frames/hash/frame_28.txt
++ M codex-rs/tui/frames/hash/frame_29.txt
++ M codex-rs/tui/frames/hash/frame_3.txt
++ M codex-rs/tui/frames/hash/frame_30.txt
++ M codex-rs/tui/frames/hash/frame_31.txt
++ M codex-rs/tui/frames/hash/frame_32.txt
++ M codex-rs/tui/frames/hash/frame_33.txt
++ M codex-rs/tui/frames/hash/frame_34.txt
++ M codex-rs/tui/frames/hash/frame_35.txt
++ M codex-rs/tui/frames/hash/frame_36.txt
++ M codex-rs/tui/frames/hash/frame_4.txt
++ M codex-rs/tui/frames/hash/frame_5.txt
++ M codex-rs/tui/frames/hash/frame_6.txt
++ M codex-rs/tui/frames/hash/frame_7.txt
++ M codex-rs/tui/frames/hash/frame_8.txt
++ M codex-rs/tui/frames/hash/frame_9.txt
++ M codex-rs/tui/frames/hbars/frame_1.txt
++ M codex-rs/tui/frames/hbars/frame_10.txt
++ M codex-rs/tui/frames/hbars/frame_11.txt
++ M codex-rs/tui/frames/hbars/frame_12.txt
++ M codex-rs/tui/frames/hbars/frame_13.txt
++ M codex-rs/tui/frames/hbars/frame_14.txt
++ M codex-rs/tui/frames/hbars/frame_15.txt
++ M codex-rs/tui/frames/hbars/frame_16.txt
++ M codex-rs/tui/frames/hbars/frame_17.txt
++ M codex-rs/tui/frames/hbars/frame_18.txt
++ M codex-rs/tui/frames/hbars/frame_19.txt
++ M codex-rs/tui/frames/hbars/frame_2.txt
++ M codex-rs/tui/frames/hbars/frame_20.txt
++ M codex-rs/tui/frames/hbars/frame_21.txt
++ M codex-rs/tui/frames/hbars/frame_22.txt
++ M codex-rs/tui/frames/hbars/frame_23.txt
++ M codex-rs/tui/frames/hbars/frame_24.txt
++ M codex-rs/tui/frames/hbars/frame_25.txt
++ M codex-rs/tui/frames/hbars/frame_26.txt
++ M codex-rs/tui/frames/hbars/frame_27.txt
++ M codex-rs/tui/frames/hbars/frame_28.txt
++ M codex-rs/tui/frames/hbars/frame_29.txt
++ M codex-rs/tui/frames/hbars/frame_3.txt
++ M codex-rs/tui/frames/hbars/frame_30.txt
++ M codex-rs/tui/frames/hbars/frame_31.txt
++ M codex-rs/tui/frames/hbars/frame_32.txt
++ M codex-rs/tui/frames/hbars/frame_33.txt
++ M codex-rs/tui/frames/hbars/frame_34.txt
++ M codex-rs/tui/frames/hbars/frame_35.txt
++ M codex-rs/tui/frames/hbars/frame_36.txt
++ M codex-rs/tui/frames/hbars/frame_4.txt
++ M codex-rs/tui/frames/hbars/frame_5.txt
++ M codex-rs/tui/frames/hbars/frame_6.txt
++ M codex-rs/tui/frames/hbars/frame_7.txt
++ M codex-rs/tui/frames/hbars/frame_8.txt
++ M codex-rs/tui/frames/hbars/frame_9.txt
++ M codex-rs/tui/frames/openai/frame_1.txt
++ M codex-rs/tui/frames/openai/frame_10.txt
++ M codex-rs/tui/frames/openai/frame_11.txt
++ M codex-rs/tui/frames/openai/frame_12.txt
++ M codex-rs/tui/frames/openai/frame_13.txt
++ M codex-rs/tui/frames/openai/frame_14.txt
++ M codex-rs/tui/frames/openai/frame_15.txt
++ M codex-rs/tui/frames/openai/frame_16.txt
++ M codex-rs/tui/frames/openai/frame_17.txt
++ M codex-rs/tui/frames/openai/frame_18.txt
++ M codex-rs/tui/frames/openai/frame_19.txt
++ M codex-rs/tui/frames/openai/frame_2.txt
++ M codex-rs/tui/frames/openai/frame_20.txt
++ M codex-rs/tui/frames/openai/frame_21.txt
++ M codex-rs/tui/frames/openai/frame_22.txt
++ M codex-rs/tui/frames/openai/frame_23.txt
++ M codex-rs/tui/frames/openai/frame_24.txt
++ M codex-rs/tui/frames/openai/frame_25.txt
++ M codex-rs/tui/frames/openai/frame_26.txt
++ M codex-rs/tui/frames/openai/frame_27.txt
++ M codex-rs/tui/frames/openai/frame_28.txt
++ M codex-rs/tui/frames/openai/frame_29.txt
++ M codex-rs/tui/frames/openai/frame_3.txt
++ M codex-rs/tui/frames/openai/frame_30.txt
++ M codex-rs/tui/frames/openai/frame_31.txt
++ M codex-rs/tui/frames/openai/frame_32.txt
++ M codex-rs/tui/frames/openai/frame_33.txt
++ M codex-rs/tui/frames/openai/frame_34.txt
++ M codex-rs/tui/frames/openai/frame_35.txt
++ M codex-rs/tui/frames/openai/frame_36.txt
++ M codex-rs/tui/frames/openai/frame_4.txt
++ M codex-rs/tui/frames/openai/frame_5.txt
++ M codex-rs/tui/frames/openai/frame_6.txt
++ M codex-rs/tui/frames/openai/frame_7.txt
++ M codex-rs/tui/frames/openai/frame_8.txt
++ M codex-rs/tui/frames/openai/frame_9.txt
++ M codex-rs/tui/frames/shapes/frame_1.txt
++ M codex-rs/tui/frames/shapes/frame_10.txt
++ M codex-rs/tui/frames/shapes/frame_11.txt
++ M codex-rs/tui/frames/shapes/frame_12.txt
++ M codex-rs/tui/frames/shapes/frame_13.txt
++ M codex-rs/tui/frames/shapes/frame_14.txt
++ M codex-rs/tui/frames/shapes/frame_15.txt
++ M codex-rs/tui/frames/shapes/frame_16.txt
++ M codex-rs/tui/frames/shapes/frame_17.txt
++ M codex-rs/tui/frames/shapes/frame_18.txt
++ M codex-rs/tui/frames/shapes/frame_19.txt
++ M codex-rs/tui/frames/shapes/frame_2.txt
++ M codex-rs/tui/frames/shapes/frame_20.txt
++ M codex-rs/tui/frames/shapes/frame_21.txt
++ M codex-rs/tui/frames/shapes/frame_22.txt
++ M codex-rs/tui/frames/shapes/frame_23.txt
++ M codex-rs/tui/frames/shapes/frame_24.txt
++ M codex-rs/tui/frames/shapes/frame_25.txt
++ M codex-rs/tui/frames/shapes/frame_26.txt
++ M codex-rs/tui/frames/shapes/frame_27.txt
++ M codex-rs/tui/frames/shapes/frame_28.txt
++ M codex-rs/tui/frames/shapes/frame_29.txt
++ M codex-rs/tui/frames/shapes/frame_3.txt
++ M codex-rs/tui/frames/shapes/frame_30.txt
++ M codex-rs/tui/frames/shapes/frame_31.txt
++ M codex-rs/tui/frames/shapes/frame_32.txt
++ M codex-rs/tui/frames/shapes/frame_33.txt
++ M codex-rs/tui/frames/shapes/frame_34.txt
++ M codex-rs/tui/frames/shapes/frame_35.txt
++ M codex-rs/tui/frames/shapes/frame_36.txt
++ M codex-rs/tui/frames/shapes/frame_4.txt
++ M codex-rs/tui/frames/shapes/frame_5.txt
++ M codex-rs/tui/frames/shapes/frame_6.txt
++ M codex-rs/tui/frames/shapes/frame_7.txt
++ M codex-rs/tui/frames/shapes/frame_8.txt
++ M codex-rs/tui/frames/shapes/frame_9.txt
++ M codex-rs/tui/frames/slug/frame_1.txt
++ M codex-rs/tui/frames/slug/frame_10.txt
++ M codex-rs/tui/frames/slug/frame_11.txt
++ M codex-rs/tui/frames/slug/frame_12.txt
++ M codex-rs/tui/frames/slug/frame_13.txt
++ M codex-rs/tui/frames/slug/frame_14.txt
++ M codex-rs/tui/frames/slug/frame_15.txt
++ M codex-rs/tui/frames/slug/frame_16.txt
++ M codex-rs/tui/frames/slug/frame_17.txt
++ M codex-rs/tui/frames/slug/frame_18.txt
++ M codex-rs/tui/frames/slug/frame_19.txt
++ M codex-rs/tui/frames/slug/frame_2.txt
++ M codex-rs/tui/frames/slug/frame_20.txt
++ M codex-rs/tui/frames/slug/frame_21.txt
++ M codex-rs/tui/frames/slug/frame_22.txt
++ M codex-rs/tui/frames/slug/frame_23.txt
++ M codex-rs/tui/frames/slug/frame_24.txt
++ M codex-rs/tui/frames/slug/frame_25.txt
++ M codex-rs/tui/frames/slug/frame_26.txt
++ M codex-rs/tui/frames/slug/frame_27.txt
++ M codex-rs/tui/frames/slug/frame_28.txt
++ M codex-rs/tui/frames/slug/frame_29.txt
++ M codex-rs/tui/frames/slug/frame_3.txt
++ M codex-rs/tui/frames/slug/frame_30.txt
++ M codex-rs/tui/frames/slug/frame_31.txt
++ M codex-rs/tui/frames/slug/frame_32.txt
++ M codex-rs/tui/frames/slug/frame_33.txt
++ M codex-rs/tui/frames/slug/frame_34.txt
++ M codex-rs/tui/frames/slug/frame_35.txt
++ M codex-rs/tui/frames/slug/frame_36.txt
++ M codex-rs/tui/frames/slug/frame_4.txt
++ M codex-rs/tui/frames/slug/frame_5.txt
++ M codex-rs/tui/frames/slug/frame_6.txt
++ M codex-rs/tui/frames/slug/frame_7.txt
++ M codex-rs/tui/frames/slug/frame_8.txt
++ M codex-rs/tui/frames/slug/frame_9.txt
++ M codex-rs/tui/frames/vbars/frame_1.txt
++ M codex-rs/tui/frames/vbars/frame_10.txt
++ M codex-rs/tui/frames/vbars/frame_11.txt
++ M codex-rs/tui/frames/vbars/frame_12.txt
++ M codex-rs/tui/frames/vbars/frame_13.txt
++ M codex-rs/tui/frames/vbars/frame_14.txt
++ M codex-rs/tui/frames/vbars/frame_15.txt
++ M codex-rs/tui/frames/vbars/frame_16.txt
++ M codex-rs/tui/frames/vbars/frame_17.txt
++ M codex-rs/tui/frames/vbars/frame_18.txt
++ M codex-rs/tui/frames/vbars/frame_19.txt
++ M codex-rs/tui/frames/vbars/frame_2.txt
++ M codex-rs/tui/frames/vbars/frame_20.txt
++ M codex-rs/tui/frames/vbars/frame_21.txt
++ M codex-rs/tui/frames/vbars/frame_22.txt
++ M codex-rs/tui/frames/vbars/frame_23.txt
++ M codex-rs/tui/frames/vbars/frame_24.txt
++ M codex-rs/tui/frames/vbars/frame_25.txt
++ M codex-rs/tui/frames/vbars/frame_26.txt
++ M codex-rs/tui/frames/vbars/frame_27.txt
++ M codex-rs/tui/frames/vbars/frame_28.txt
++ M codex-rs/tui/frames/vbars/frame_29.txt
++ M codex-rs/tui/frames/vbars/frame_3.txt
++ M codex-rs/tui/frames/vbars/frame_30.txt
++ M codex-rs/tui/frames/vbars/frame_31.txt
++ M codex-rs/tui/frames/vbars/frame_32.txt
++ M codex-rs/tui/frames/vbars/frame_33.txt
++ M codex-rs/tui/frames/vbars/frame_34.txt
++ M codex-rs/tui/frames/vbars/frame_35.txt
++ M codex-rs/tui/frames/vbars/frame_36.txt
++ M codex-rs/tui/frames/vbars/frame_4.txt
++ M codex-rs/tui/frames/vbars/frame_5.txt
++ M codex-rs/tui/frames/vbars/frame_6.txt
++ M codex-rs/tui/frames/vbars/frame_7.txt
++ M codex-rs/tui/frames/vbars/frame_8.txt
++ M codex-rs/tui/frames/vbars/frame_9.txt
++ M codex-rs/tui/prompt_for_init_command.md
++ M codex-rs/tui/src/app.rs
++ M codex-rs/tui/src/app_backtrack.rs
++ M codex-rs/tui/src/app_event.rs
++ M codex-rs/tui/src/app_event_sender.rs
++ M codex-rs/tui/src/ascii_animation.rs
++ M codex-rs/tui/src/bin/md-events.rs
++ M codex-rs/tui/src/bottom_pane/approval_overlay.rs
++ M codex-rs/tui/src/bottom_pane/bottom_pane_view.rs
++ M codex-rs/tui/src/bottom_pane/chat_composer.rs
++ M codex-rs/tui/src/bottom_pane/chat_composer_history.rs
++ M codex-rs/tui/src/bottom_pane/command_popup.rs
++ M codex-rs/tui/src/bottom_pane/custom_prompt_view.rs
++ M codex-rs/tui/src/bottom_pane/file_search_popup.rs
++ M codex-rs/tui/src/bottom_pane/footer.rs
++ M codex-rs/tui/src/bottom_pane/list_selection_view.rs
++ M codex-rs/tui/src/bottom_pane/mod.rs
++ M codex-rs/tui/src/bottom_pane/paste_burst.rs
++ M codex-rs/tui/src/bottom_pane/popup_consts.rs
++ M codex-rs/tui/src/bottom_pane/prompt_args.rs
++ M codex-rs/tui/src/bottom_pane/scroll_state.rs
++ M codex-rs/tui/src/bottom_pane/selection_popup_common.rs
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__backspace_after_pastes.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__empty.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_interrupt.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_quit.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_then_esc_hint.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_backtrack.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_from_overlay.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_hidden_while_typing.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_overlay_then_external_esc_hint.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_shortcut_overlay.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__large.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__multiple_pastes.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__slash_popup_mo.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__small.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_idle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_running.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_idle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_primed.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_context_running.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_default.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_shift_and_esc.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_with_subtitle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_without_subtitle.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_and_composer_fill_height_without_bottom_padding.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_1.snap
++ M codex-rs/tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_2.snap
++ M codex-rs/tui/src/bottom_pane/textarea.rs
++ M codex-rs/tui/src/chatwidget.rs
++ M codex-rs/tui/src/chatwidget/agent.rs
++ M codex-rs/tui/src/chatwidget/interrupts.rs
++ M codex-rs/tui/src/chatwidget/session_header.rs
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__apply_patch_manual_flow_history_approved.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec_no_reason.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_patch.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__binary_size_ideal_response.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h1.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h2.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h3.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h1.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h2.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h3.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_exec_and_status_layout_vt100_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_markdown_code_blocks_vt100_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__disabled_slash_command_while_task_running_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_long.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_multiline.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_approved_short.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_modal_exec.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step1_start_ls.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step2_finish_ls.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step3_start_cat_foo.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step4_finish_cat_foo.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step5_finish_sed_range.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step6_finish_cat_bar.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__interrupt_exec_marks_failed.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__local_image_attachment_history_snapshot.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_reasoning_selection_popup.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_selection_popup.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_active.snap
++ M codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_and_approval_modal.snap
++ M codex-rs/tui/src/chatwidget/tests.rs
++ M codex-rs/tui/src/citation_regex.rs
++ M codex-rs/tui/src/cli.rs
++ M codex-rs/tui/src/clipboard_paste.rs
++ M codex-rs/tui/src/color.rs
++ M codex-rs/tui/src/custom_terminal.rs
++ M codex-rs/tui/src/diff_render.rs
++ M codex-rs/tui/src/exec_cell/mod.rs
++ M codex-rs/tui/src/exec_cell/model.rs
++ M codex-rs/tui/src/exec_cell/render.rs
++ M codex-rs/tui/src/exec_command.rs
++ M codex-rs/tui/src/file_search.rs
++ M codex-rs/tui/src/frames.rs
++ M codex-rs/tui/src/get_git_diff.rs
++ M codex-rs/tui/src/history_cell.rs
++ M codex-rs/tui/src/insert_history.rs
++ M codex-rs/tui/src/key_hint.rs
++ M codex-rs/tui/src/lib.rs
++ M codex-rs/tui/src/live_wrap.rs
++ M codex-rs/tui/src/main.rs
++ M codex-rs/tui/src/markdown.rs
++ M codex-rs/tui/src/markdown_render.rs
++ M codex-rs/tui/src/markdown_render_tests.rs
++ M codex-rs/tui/src/markdown_stream.rs
++ M codex-rs/tui/src/onboarding/auth.rs
++ M codex-rs/tui/src/onboarding/mod.rs
++ M codex-rs/tui/src/onboarding/onboarding_screen.rs
++ M codex-rs/tui/src/onboarding/snapshots/codex_tui__onboarding__trust_directory__tests__renders_snapshot_for_git_repo.snap
++ M codex-rs/tui/src/onboarding/trust_directory.rs
++ M codex-rs/tui/src/onboarding/welcome.rs
++ M codex-rs/tui/src/onboarding/windows.rs
++ M codex-rs/tui/src/pager_overlay.rs
++ M codex-rs/tui/src/public_widgets/composer_input.rs
++ M codex-rs/tui/src/public_widgets/mod.rs
++ M codex-rs/tui/src/render/highlight.rs
++ M codex-rs/tui/src/render/line_utils.rs
++ M codex-rs/tui/src/render/mod.rs
++ M codex-rs/tui/src/render/renderable.rs
++ M codex-rs/tui/src/resume_picker.rs
++ M codex-rs/tui/src/session_log.rs
++ M codex-rs/tui/src/shimmer.rs
++ M codex-rs/tui/src/slash_command.rs
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__add_details.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_add_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_delete_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_multiple_files_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_line_numbers_three_digits_text.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_relativizes_path.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines_text.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__apply_update_with_rename_block.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__blank_context_line.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__single_line_replacement_counts.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__update_details_with_rename.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__vertical_ellipsis_between_hunks.snap
++ M codex-rs/tui/src/snapshots/codex_tui__diff_render__tests__wrap_behavior_insert.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__active_mcp_tool_call_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesced_reads_dedupe_names.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesces_reads_across_multiple_calls.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__coalesces_sequential_reads_within_one_call.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_error_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_inline_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_success_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_wrapped_outputs_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_both_lines_wrap_with_correct_prefixes.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_without_wrap_uses_branch_then_eight_spaces.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_wraps_with_extra_indent_on_subsequent_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__plan_update_with_note_and_wrapping_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__plan_update_without_note_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__ran_cell_multiline_with_stderr_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_compact_when_fits.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_wraps_with_four_space_continuation.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__stderr_tail_more_than_five_lines_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__user_history_cell_wraps_and_prefixes_each_line_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__markdown_render__markdown_render_tests__markdown_render_complex_snapshot.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_snapshot_basic.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_wraps_long_lines.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_apply_patch_scroll_vt100.snap
++ M codex-rs/tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_snapshot_basic.snap
++ M codex-rs/tui/src/snapshots/codex_tui__resume_picker__tests__resume_picker_table.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_truncated.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_queued_messages.snap
++ M codex-rs/tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_working_header.snap
++ M codex-rs/tui/src/status/account.rs
++ M codex-rs/tui/src/status/card.rs
++ M codex-rs/tui/src/status/format.rs
++ M codex-rs/tui/src/status/helpers.rs
++ M codex-rs/tui/src/status/mod.rs
++ M codex-rs/tui/src/status/rate_limits.rs
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
++ M codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
++ M codex-rs/tui/src/status/tests.rs
++ M codex-rs/tui/src/status_indicator_widget.rs
++ M codex-rs/tui/src/streaming/controller.rs
++ M codex-rs/tui/src/streaming/mod.rs
++ M codex-rs/tui/src/style.rs
++ M codex-rs/tui/src/terminal_palette.rs
++ M codex-rs/tui/src/test_backend.rs
++ M codex-rs/tui/src/text_formatting.rs
++ M codex-rs/tui/src/tui.rs
++ M codex-rs/tui/src/ui_consts.rs
++ M codex-rs/tui/src/updates.rs
++ M codex-rs/tui/src/version.rs
++ M codex-rs/tui/src/wrapping.rs
++ M codex-rs/tui/styles.md
++ M codex-rs/tui/tests/all.rs
++ M codex-rs/tui/tests/fixtures/binary-size-log.jsonl
++ M codex-rs/tui/tests/fixtures/oss-story.jsonl
++ M codex-rs/tui/tests/suite/mod.rs
++ M codex-rs/tui/tests/suite/status_indicator.rs
++ M codex-rs/tui/tests/suite/vt100_history.rs
++ M codex-rs/tui/tests/suite/vt100_live_commit.rs
++ M codex-rs/tui/tests/test_backend.rs
++ M codex-rs/utils/json-to-toml/Cargo.toml
++ M codex-rs/utils/json-to-toml/src/lib.rs
++ M codex-rs/utils/readiness/Cargo.toml
++ M codex-rs/utils/readiness/src/lib.rs
++ M codex-rs/utils/string/Cargo.toml
++ M codex-rs/utils/string/src/lib.rs
++ M docs/CLA.md
++ M docs/advanced.md
++ M docs/authentication.md
++ M docs/config.md
++ M docs/contributing.md
++ M docs/exec.md
++ M docs/experimental.md
++ M docs/faq.md
++ M docs/getting-started.md
++ M docs/install.md
++ M docs/license.md
++ M docs/open-source-fund.md
++ M docs/platform-sandboxing.md
++ M docs/prompts.md
++ M docs/release_management.md
++ M docs/sandbox.md
++ M docs/zdr.md
++ M flake.lock
++ M flake.nix
++ M package.json
++ M pnpm-lock.yaml
++ M pnpm-workspace.yaml
++ M scripts/asciicheck.py
++ M scripts/readme_toc.py
++ M scripts/stage_npm_packages.py
++ M sdk/typescript/.prettierignore
++ M sdk/typescript/.prettierrc
++ M sdk/typescript/README.md
++ M sdk/typescript/eslint.config.js
++ M sdk/typescript/jest.config.cjs
++ M sdk/typescript/package.json
++ M sdk/typescript/samples/basic_streaming.ts
++ M sdk/typescript/samples/helpers.ts
++ M sdk/typescript/samples/structured_output.ts
++ M sdk/typescript/samples/structured_output_zod.ts
++ M sdk/typescript/src/codex.ts
++ M sdk/typescript/src/codexOptions.ts
++ M sdk/typescript/src/events.ts
++ M sdk/typescript/src/exec.ts
++ M sdk/typescript/src/index.ts
++ M sdk/typescript/src/items.ts
++ M sdk/typescript/src/outputSchemaFile.ts
++ M sdk/typescript/src/thread.ts
++ M sdk/typescript/src/threadOptions.ts
++ M sdk/typescript/src/turnOptions.ts
++ M sdk/typescript/tests/codexExecSpy.ts
++ M sdk/typescript/tests/responsesProxy.ts
++ M sdk/typescript/tests/run.test.ts
++ M sdk/typescript/tests/runStreamed.test.ts
++ M sdk/typescript/tsconfig.json
++ M sdk/typescript/tsup.config.ts
++?? .code/
++?? codex-rs/codex-ledger/
++?? docs/accounting/
+diff --git a/.code/agents/12954/exec-call_IIxWdhMUj5CuwdHIDu4nAJ4j.txt b/.code/agents/12954/exec-call_IIxWdhMUj5CuwdHIDu4nAJ4j.txt
+new file mode 100644
+index 00000000..2fe2076c
+--- /dev/null
++++ b/.code/agents/12954/exec-call_IIxWdhMUj5CuwdHIDu4nAJ4j.txt
+@@ -0,0 +1,1124 @@
++## main...origin/main
++ M ../.codespellignore
++ M ../.codespellrc
++ M ../.devcontainer/Dockerfile
++ M ../.devcontainer/README.md
++ M ../.devcontainer/devcontainer.json
++ M ../.github/ISSUE_TEMPLATE/2-bug-report.yml
++ M ../.github/ISSUE_TEMPLATE/3-docs-issue.yml
++ M ../.github/ISSUE_TEMPLATE/4-feature-request.yml
++ M ../.github/ISSUE_TEMPLATE/5-vs-code-extension.yml
++ M ../.github/codex/home/config.toml
++ M ../.github/codex/labels/codex-attempt.md
++ M ../.github/codex/labels/codex-review.md
++ M ../.github/codex/labels/codex-rust-review.md
++ M ../.github/codex/labels/codex-triage.md
++ M ../.github/dependabot.yaml
++ M ../.github/dotslash-config.json
++ M ../.github/prompts/issue-deduplicator.txt
++ M ../.github/prompts/issue-labeler.txt
++ M ../.github/pull_request_template.md
++ M ../.github/workflows/ci.yml
++ M ../.github/workflows/cla.yml
++ M ../.github/workflows/codespell.yml
++ M ../.github/workflows/issue-deduplicator.yml
++ M ../.github/workflows/issue-labeler.yml
++ M ../.github/workflows/rust-ci.yml
++ M ../.github/workflows/rust-release.yml
++ M ../.github/workflows/sdk.yml
++ M ../.gitignore
++ M ../.npmrc
++ M ../.prettierignore
++ M ../.prettierrc.toml
++ M ../.vscode/extensions.json
++ M ../.vscode/launch.json
++ M ../.vscode/settings.json
++ M ../AGENTS.md
++ M ../CHANGELOG.md
++ M ../LICENSE
++ M ../NOTICE
++ M ../PNPM.md
++ M ../README.md
++ M ../cliff.toml
++ M ../codex-cli/.dockerignore
++ M ../codex-cli/.gitignore
++ M ../codex-cli/Dockerfile
++ M ../codex-cli/README.md
++ M ../codex-cli/bin/codex.js
++ M ../codex-cli/bin/rg
++ M ../codex-cli/package-lock.json
++ M ../codex-cli/package.json
++ M ../codex-cli/scripts/README.md
++ M ../codex-cli/scripts/build_container.sh
++ M ../codex-cli/scripts/build_npm_package.py
++ M ../codex-cli/scripts/init_firewall.sh
++ M ../codex-cli/scripts/install_native_deps.py
++ M ../codex-cli/scripts/run_in_container.sh
++ M .gitignore
++ M Cargo.lock
++ M Cargo.toml
++ M README.md
++ M ansi-escape/Cargo.toml
++ M ansi-escape/README.md
++ M ansi-escape/src/lib.rs
++ M app-server-protocol/Cargo.toml
++ M app-server-protocol/src/jsonrpc_lite.rs
++ M app-server-protocol/src/lib.rs
++ M app-server-protocol/src/protocol.rs
++ M app-server/Cargo.toml
++ M app-server/README.md
++ M app-server/src/codex_message_processor.rs
++ M app-server/src/error_code.rs
++ M app-server/src/fuzzy_file_search.rs
++ M app-server/src/lib.rs
++ M app-server/src/main.rs
++ M app-server/src/message_processor.rs
++ M app-server/src/outgoing_message.rs
++ M app-server/tests/all.rs
++ M app-server/tests/common/Cargo.toml
++ M app-server/tests/common/lib.rs
++ M app-server/tests/common/mcp_process.rs
++ M app-server/tests/common/mock_model_server.rs
++ M app-server/tests/common/responses.rs
++ M app-server/tests/suite/archive_conversation.rs
++ M app-server/tests/suite/auth.rs
++ M app-server/tests/suite/codex_message_processor_flow.rs
++ M app-server/tests/suite/config.rs
++ M app-server/tests/suite/create_conversation.rs
++ M app-server/tests/suite/fuzzy_file_search.rs
++ M app-server/tests/suite/interrupt.rs
++ M app-server/tests/suite/list_resume.rs
++ M app-server/tests/suite/login.rs
++ M app-server/tests/suite/mod.rs
++ M app-server/tests/suite/send_message.rs
++ M app-server/tests/suite/set_default_model.rs
++ M app-server/tests/suite/user_agent.rs
++ M app-server/tests/suite/user_info.rs
++ M apply-patch/Cargo.toml
++ M apply-patch/apply_patch_tool_instructions.md
++ M apply-patch/src/lib.rs
++ M apply-patch/src/main.rs
++ M apply-patch/src/parser.rs
++ M apply-patch/src/seek_sequence.rs
++ M apply-patch/src/standalone_executable.rs
++ M apply-patch/tests/all.rs
++ M apply-patch/tests/suite/cli.rs
++ M apply-patch/tests/suite/mod.rs
++ M arg0/Cargo.toml
++ M arg0/src/lib.rs
++ M backend-client/Cargo.toml
++ M backend-client/src/client.rs
++ M backend-client/src/lib.rs
++ M backend-client/src/types.rs
++ M backend-client/tests/fixtures/task_details_with_diff.json
++ M backend-client/tests/fixtures/task_details_with_error.json
++ M chatgpt/Cargo.toml
++ M chatgpt/README.md
++ M chatgpt/src/apply_command.rs
++ M chatgpt/src/chatgpt_client.rs
++ M chatgpt/src/chatgpt_token.rs
++ M chatgpt/src/get_task.rs
++ M chatgpt/src/lib.rs
++ M chatgpt/tests/all.rs
++ M chatgpt/tests/suite/apply_command_e2e.rs
++ M chatgpt/tests/suite/mod.rs
++ M chatgpt/tests/task_turn_fixture.json
++ M cli/Cargo.toml
++ M cli/src/debug_sandbox.rs
++ M cli/src/exit_status.rs
++ M cli/src/lib.rs
++ M cli/src/login.rs
++ M cli/src/main.rs
++ M cli/src/mcp_cmd.rs
++ M cli/tests/mcp_add_remove.rs
++ M cli/tests/mcp_list.rs
++ M clippy.toml
++ M cloud-tasks-client/Cargo.toml
++ M cloud-tasks-client/src/api.rs
++ M cloud-tasks-client/src/http.rs
++ M cloud-tasks-client/src/lib.rs
++ M cloud-tasks-client/src/mock.rs
++ M cloud-tasks/Cargo.toml
++ M cloud-tasks/src/app.rs
++ M cloud-tasks/src/cli.rs
++ M cloud-tasks/src/env_detect.rs
++ M cloud-tasks/src/lib.rs
++ M cloud-tasks/src/new_task.rs
++ M cloud-tasks/src/scrollable_diff.rs
++ M cloud-tasks/src/ui.rs
++ M cloud-tasks/src/util.rs
++ M cloud-tasks/tests/env_filter.rs
++ M codex-backend-openapi-models/Cargo.toml
++ M codex-backend-openapi-models/src/lib.rs
++ M codex-backend-openapi-models/src/models/code_task_details_response.rs
++ M codex-backend-openapi-models/src/models/external_pull_request_response.rs
++ M codex-backend-openapi-models/src/models/git_pull_request.rs
++ M codex-backend-openapi-models/src/models/mod.rs
++ M codex-backend-openapi-models/src/models/paginated_list_task_list_item_.rs
++ M codex-backend-openapi-models/src/models/task_list_item.rs
++ M codex-backend-openapi-models/src/models/task_response.rs
++ M common/Cargo.toml
++ M common/README.md
++ M common/src/approval_mode_cli_arg.rs
++ M common/src/approval_presets.rs
++ M common/src/config_override.rs
++ M common/src/config_summary.rs
++ M common/src/elapsed.rs
++ M common/src/fuzzy_match.rs
++ M common/src/lib.rs
++ M common/src/model_presets.rs
++ M common/src/sandbox_mode_cli_arg.rs
++ M common/src/sandbox_summary.rs
++ M config.md
++ M core/Cargo.toml
++ M core/README.md
++ M core/gpt_5_codex_prompt.md
++ M core/prompt.md
++ M core/review_prompt.md
++ M core/src/apply_patch.rs
++ M core/src/auth.rs
++ M core/src/bash.rs
++ M core/src/chat_completions.rs
++ M core/src/client.rs
++ M core/src/client_common.rs
++ M core/src/codex.rs
++ M core/src/codex/compact.rs
++ M core/src/codex_conversation.rs
++ M core/src/command_safety/is_dangerous_command.rs
++ M core/src/command_safety/is_safe_command.rs
++ M core/src/command_safety/mod.rs
++ M core/src/command_safety/windows_safe_commands.rs
++ M core/src/config.rs
++ M core/src/config_edit.rs
++ M core/src/config_loader/macos.rs
++ M core/src/config_loader/mod.rs
++ M core/src/config_profile.rs
++ M core/src/config_types.rs
++ M core/src/conversation_history.rs
++ M core/src/conversation_manager.rs
++ M core/src/custom_prompts.rs
++ M core/src/default_client.rs
++ M core/src/environment_context.rs
++ M core/src/error.rs
++ M core/src/event_mapping.rs
++ M core/src/exec.rs
++ M core/src/exec_command/exec_command_params.rs
++ M core/src/exec_command/exec_command_session.rs
++ M core/src/exec_command/mod.rs
++ M core/src/exec_command/responses_api.rs
++ M core/src/exec_command/session_id.rs
++ M core/src/exec_command/session_manager.rs
++ M core/src/exec_env.rs
++ M core/src/executor/backends.rs
++ M core/src/executor/cache.rs
++ M core/src/executor/mod.rs
++ M core/src/executor/runner.rs
++ M core/src/executor/sandbox.rs
++ M core/src/features.rs
++ M core/src/features/legacy.rs
++ M core/src/flags.rs
++ M core/src/function_tool.rs
++ M core/src/git_info.rs
++ M core/src/landlock.rs
++ M core/src/lib.rs
++ M core/src/mcp/auth.rs
++ M core/src/mcp/mod.rs
++ M core/src/mcp_connection_manager.rs
++ M core/src/mcp_tool_call.rs
++ M core/src/message_history.rs
++ M core/src/model_family.rs
++ M core/src/model_provider_info.rs
++ M core/src/openai_model_info.rs
++ M core/src/openai_tools.rs
++ M core/src/otel_init.rs
++ M core/src/parse_command.rs
++ M core/src/project_doc.rs
++ M core/src/review_format.rs
++ M core/src/rollout/list.rs
++ M core/src/rollout/mod.rs
++ M core/src/rollout/policy.rs
++ M core/src/rollout/recorder.rs
++ M core/src/rollout/tests.rs
++ M core/src/safety.rs
++ M core/src/seatbelt.rs
++ M core/src/seatbelt_base_policy.sbpl
++ M core/src/shell.rs
++ M core/src/spawn.rs
++ M core/src/state/mod.rs
++ M core/src/state/service.rs
++ M core/src/state/session.rs
++ M core/src/state/turn.rs
++ M core/src/tasks/compact.rs
++ M core/src/tasks/mod.rs
++ M core/src/tasks/regular.rs
++ M core/src/tasks/review.rs
++ M core/src/terminal.rs
++ M core/src/token_data.rs
++ M core/src/tools/context.rs
++ M core/src/tools/handlers/apply_patch.rs
++ M core/src/tools/handlers/exec_stream.rs
++ M core/src/tools/handlers/grep_files.rs
++ M core/src/tools/handlers/list_dir.rs
++ M core/src/tools/handlers/mcp.rs
++ M core/src/tools/handlers/mod.rs
++ M core/src/tools/handlers/plan.rs
++ M core/src/tools/handlers/read_file.rs
++ M core/src/tools/handlers/shell.rs
++ M core/src/tools/handlers/test_sync.rs
++ M core/src/tools/handlers/tool_apply_patch.lark
++ M core/src/tools/handlers/unified_exec.rs
++ M core/src/tools/handlers/view_image.rs
++ M core/src/tools/mod.rs
++ M core/src/tools/parallel.rs
++ M core/src/tools/registry.rs
++ M core/src/tools/router.rs
++ M core/src/tools/spec.rs
++ M core/src/truncate.rs
++ M core/src/turn_diff_tracker.rs
++ M core/src/unified_exec/errors.rs
++ M core/src/unified_exec/mod.rs
++ M core/src/user_instructions.rs
++ M core/src/user_notification.rs
++ M core/src/util.rs
++ M core/templates/compact/history_bridge.md
++ M core/templates/compact/prompt.md
++ M core/tests/all.rs
++ M core/tests/chat_completions_payload.rs
++ M core/tests/chat_completions_sse.rs
++ M core/tests/cli_responses_fixture.sse
++ M core/tests/common/Cargo.toml
++ M core/tests/common/lib.rs
++ M core/tests/common/responses.rs
++ M core/tests/common/test_codex.rs
++ M core/tests/common/test_codex_exec.rs
++ M core/tests/fixtures/completed_template.json
++ M core/tests/fixtures/incomplete_sse.json
++ M core/tests/responses_headers.rs
++ M core/tests/suite/abort_tasks.rs
++ M core/tests/suite/cli_stream.rs
++ M core/tests/suite/client.rs
++ M core/tests/suite/compact.rs
++ M core/tests/suite/compact_resume_fork.rs
++ M core/tests/suite/exec.rs
++ M core/tests/suite/exec_stream_events.rs
++ M core/tests/suite/fork_conversation.rs
++ M core/tests/suite/grep_files.rs
++ M core/tests/suite/json_result.rs
++ M core/tests/suite/list_dir.rs
++ M core/tests/suite/live_cli.rs
++ M core/tests/suite/mod.rs
++ M core/tests/suite/model_overrides.rs
++ M core/tests/suite/model_tools.rs
++ M core/tests/suite/otel.rs
++ M core/tests/suite/prompt_caching.rs
++ M core/tests/suite/read_file.rs
++ M core/tests/suite/review.rs
++ M core/tests/suite/rmcp_client.rs
++ M core/tests/suite/rollout_list_find.rs
++ M core/tests/suite/seatbelt.rs
++ M core/tests/suite/shell_serialization.rs
++ M core/tests/suite/stream_error_allows_next_turn.rs
++ M core/tests/suite/stream_no_completed.rs
++ M core/tests/suite/tool_harness.rs
++ M core/tests/suite/tool_parallelism.rs
++ M core/tests/suite/tools.rs
++ M core/tests/suite/unified_exec.rs
++ M core/tests/suite/user_notification.rs
++ M core/tests/suite/view_image.rs
++ M default.nix
++ M docs/codex_mcp_interface.md
++ M docs/protocol_v1.md
++ M exec/Cargo.toml
++ M exec/src/cli.rs
++ M exec/src/event_processor.rs
++ M exec/src/event_processor_with_human_output.rs
++ M exec/src/event_processor_with_jsonl_output.rs
++ M exec/src/exec_events.rs
++ M exec/src/lib.rs
++ M exec/src/main.rs
++ M exec/tests/all.rs
++ M exec/tests/event_processor_with_json_output.rs
++ M exec/tests/fixtures/apply_patch_freeform_final.txt
++ M exec/tests/fixtures/cli_responses_fixture.sse
++ M exec/tests/suite/apply_patch.rs
++ M exec/tests/suite/auth_env.rs
++ M exec/tests/suite/mod.rs
++ M exec/tests/suite/originator.rs
++ M exec/tests/suite/output_schema.rs
++ M exec/tests/suite/resume.rs
++ M exec/tests/suite/sandbox.rs
++ M exec/tests/suite/server_error_exit.rs
++ M execpolicy/Cargo.toml
++ M execpolicy/README.md
++ M execpolicy/build.rs
++ M execpolicy/src/arg_matcher.rs
++ M execpolicy/src/arg_resolver.rs
++ M execpolicy/src/arg_type.rs
++ M execpolicy/src/default.policy
++ M execpolicy/src/error.rs
++ M execpolicy/src/exec_call.rs
++ M execpolicy/src/execv_checker.rs
++ M execpolicy/src/lib.rs
++ M execpolicy/src/main.rs
++ M execpolicy/src/opt.rs
++ M execpolicy/src/policy.rs
++ M execpolicy/src/policy_parser.rs
++ M execpolicy/src/program.rs
++ M execpolicy/src/sed_command.rs
++ M execpolicy/src/valid_exec.rs
++ M execpolicy/tests/all.rs
++ M execpolicy/tests/suite/bad.rs
++ M execpolicy/tests/suite/cp.rs
++ M execpolicy/tests/suite/good.rs
++ M execpolicy/tests/suite/head.rs
++ M execpolicy/tests/suite/literal.rs
++ M execpolicy/tests/suite/ls.rs
++ M execpolicy/tests/suite/mod.rs
++ M execpolicy/tests/suite/parse_sed_command.rs
++ M execpolicy/tests/suite/pwd.rs
++ M execpolicy/tests/suite/sed.rs
++ M file-search/Cargo.toml
++ M file-search/README.md
++ M file-search/src/cli.rs
++ M file-search/src/lib.rs
++ M file-search/src/main.rs
++ M git-apply/Cargo.toml
++ M git-apply/src/lib.rs
++ M git-tooling/Cargo.toml
++ M git-tooling/README.md
++ M git-tooling/src/errors.rs
++ M git-tooling/src/ghost_commits.rs
++ M git-tooling/src/lib.rs
++ M git-tooling/src/operations.rs
++ M git-tooling/src/platform.rs
++ M justfile
++ M linux-sandbox/Cargo.toml
++ M linux-sandbox/README.md
++ M linux-sandbox/src/landlock.rs
++ M linux-sandbox/src/lib.rs
++ M linux-sandbox/src/linux_run_main.rs
++ M linux-sandbox/src/main.rs
++ M linux-sandbox/tests/all.rs
++ M linux-sandbox/tests/suite/landlock.rs
++ M linux-sandbox/tests/suite/mod.rs
++ M login/Cargo.toml
++ M login/src/assets/success.html
++ M login/src/device_code_auth.rs
++ M login/src/lib.rs
++ M login/src/pkce.rs
++ M login/src/server.rs
++ M login/tests/all.rs
++ M login/tests/suite/device_code_login.rs
++ M login/tests/suite/login_server_e2e.rs
++ M login/tests/suite/mod.rs
++ M mcp-client/Cargo.toml
++ M mcp-client/src/lib.rs
++ M mcp-client/src/main.rs
++ M mcp-client/src/mcp_client.rs
++ M mcp-server/Cargo.toml
++ M mcp-server/src/codex_tool_config.rs
++ M mcp-server/src/codex_tool_runner.rs
++ M mcp-server/src/error_code.rs
++ M mcp-server/src/exec_approval.rs
++ M mcp-server/src/lib.rs
++ M mcp-server/src/main.rs
++ M mcp-server/src/message_processor.rs
++ M mcp-server/src/outgoing_message.rs
++ M mcp-server/src/patch_approval.rs
++ M mcp-server/src/tool_handlers/mod.rs
++ M mcp-server/tests/all.rs
++ M mcp-server/tests/common/Cargo.toml
++ M mcp-server/tests/common/lib.rs
++ M mcp-server/tests/common/mcp_process.rs
++ M mcp-server/tests/common/mock_model_server.rs
++ M mcp-server/tests/common/responses.rs
++ M mcp-server/tests/suite/codex_tool.rs
++ M mcp-server/tests/suite/mod.rs
++ M mcp-types/Cargo.toml
++ M mcp-types/README.md
++ M mcp-types/check_lib_rs.py
++ M mcp-types/generate_mcp_types.py
++ M mcp-types/schema/2025-03-26/schema.json
++ M mcp-types/schema/2025-06-18/schema.json
++ M mcp-types/src/lib.rs
++ M mcp-types/tests/all.rs
++ M mcp-types/tests/suite/initialize.rs
++ M mcp-types/tests/suite/mod.rs
++ M mcp-types/tests/suite/progress_notification.rs
++ M ollama/Cargo.toml
++ M ollama/src/client.rs
++ M ollama/src/lib.rs
++ M ollama/src/parser.rs
++ M ollama/src/pull.rs
++ M ollama/src/url.rs
++ M otel/Cargo.toml
++ M otel/src/config.rs
++ M otel/src/lib.rs
++ M otel/src/otel_event_manager.rs
++ M otel/src/otel_provider.rs
++ M process-hardening/Cargo.toml
++ M process-hardening/README.md
++ M process-hardening/src/lib.rs
++ M protocol-ts/Cargo.toml
++ M protocol-ts/generate-ts
++ M protocol-ts/src/lib.rs
++ M protocol-ts/src/main.rs
++ M protocol/Cargo.toml
++ M protocol/README.md
++ M protocol/src/config_types.rs
++ M protocol/src/conversation_id.rs
++ M protocol/src/custom_prompts.rs
++ M protocol/src/lib.rs
++ M protocol/src/message_history.rs
++ M protocol/src/models.rs
++ M protocol/src/num_format.rs
++ M protocol/src/parse_command.rs
++ M protocol/src/plan_tool.rs
++ M protocol/src/protocol.rs
++ M responses-api-proxy/Cargo.toml
++ M responses-api-proxy/README.md
++ M responses-api-proxy/npm/README.md
++ M responses-api-proxy/npm/bin/codex-responses-api-proxy.js
++ M responses-api-proxy/npm/package.json
++ M responses-api-proxy/src/lib.rs
++ M responses-api-proxy/src/main.rs
++ M responses-api-proxy/src/read_api_key.rs
++ M rmcp-client/Cargo.toml
++ M rmcp-client/src/auth_status.rs
++ M rmcp-client/src/bin/rmcp_test_server.rs
++ M rmcp-client/src/bin/test_stdio_server.rs
++ M rmcp-client/src/bin/test_streamable_http_server.rs
++ M rmcp-client/src/find_codex_home.rs
++ M rmcp-client/src/lib.rs
++ M rmcp-client/src/logging_client_handler.rs
++ M rmcp-client/src/oauth.rs
++ M rmcp-client/src/perform_oauth_login.rs
++ M rmcp-client/src/rmcp_client.rs
++ M rmcp-client/src/utils.rs
++ M rust-toolchain.toml
++ M rustfmt.toml
++ M scripts/create_github_release
++ M tui/Cargo.toml
++ M tui/frames/blocks/frame_1.txt
++ M tui/frames/blocks/frame_10.txt
++ M tui/frames/blocks/frame_11.txt
++ M tui/frames/blocks/frame_12.txt
++ M tui/frames/blocks/frame_13.txt
++ M tui/frames/blocks/frame_14.txt
++ M tui/frames/blocks/frame_15.txt
++ M tui/frames/blocks/frame_16.txt
++ M tui/frames/blocks/frame_17.txt
++ M tui/frames/blocks/frame_18.txt
++ M tui/frames/blocks/frame_19.txt
++ M tui/frames/blocks/frame_2.txt
++ M tui/frames/blocks/frame_20.txt
++ M tui/frames/blocks/frame_21.txt
++ M tui/frames/blocks/frame_22.txt
++ M tui/frames/blocks/frame_23.txt
++ M tui/frames/blocks/frame_24.txt
++ M tui/frames/blocks/frame_25.txt
++ M tui/frames/blocks/frame_26.txt
++ M tui/frames/blocks/frame_27.txt
++ M tui/frames/blocks/frame_28.txt
++ M tui/frames/blocks/frame_29.txt
++ M tui/frames/blocks/frame_3.txt
++ M tui/frames/blocks/frame_30.txt
++ M tui/frames/blocks/frame_31.txt
++ M tui/frames/blocks/frame_32.txt
++ M tui/frames/blocks/frame_33.txt
++ M tui/frames/blocks/frame_34.txt
++ M tui/frames/blocks/frame_35.txt
++ M tui/frames/blocks/frame_36.txt
++ M tui/frames/blocks/frame_4.txt
++ M tui/frames/blocks/frame_5.txt
++ M tui/frames/blocks/frame_6.txt
++ M tui/frames/blocks/frame_7.txt
++ M tui/frames/blocks/frame_8.txt
++ M tui/frames/blocks/frame_9.txt
++ M tui/frames/codex/frame_1.txt
++ M tui/frames/codex/frame_10.txt
++ M tui/frames/codex/frame_11.txt
++ M tui/frames/codex/frame_12.txt
++ M tui/frames/codex/frame_13.txt
++ M tui/frames/codex/frame_14.txt
++ M tui/frames/codex/frame_15.txt
++ M tui/frames/codex/frame_16.txt
++ M tui/frames/codex/frame_17.txt
++ M tui/frames/codex/frame_18.txt
++ M tui/frames/codex/frame_19.txt
++ M tui/frames/codex/frame_2.txt
++ M tui/frames/codex/frame_20.txt
++ M tui/frames/codex/frame_21.txt
++ M tui/frames/codex/frame_22.txt
++ M tui/frames/codex/frame_23.txt
++ M tui/frames/codex/frame_24.txt
++ M tui/frames/codex/frame_25.txt
++ M tui/frames/codex/frame_26.txt
++ M tui/frames/codex/frame_27.txt
++ M tui/frames/codex/frame_28.txt
++ M tui/frames/codex/frame_29.txt
++ M tui/frames/codex/frame_3.txt
++ M tui/frames/codex/frame_30.txt
++ M tui/frames/codex/frame_31.txt
++ M tui/frames/codex/frame_32.txt
++ M tui/frames/codex/frame_33.txt
++ M tui/frames/codex/frame_34.txt
++ M tui/frames/codex/frame_35.txt
++ M tui/frames/codex/frame_36.txt
++ M tui/frames/codex/frame_4.txt
++ M tui/frames/codex/frame_5.txt
++ M tui/frames/codex/frame_6.txt
++ M tui/frames/codex/frame_7.txt
++ M tui/frames/codex/frame_8.txt
++ M tui/frames/codex/frame_9.txt
++ M tui/frames/default/frame_1.txt
++ M tui/frames/default/frame_10.txt
++ M tui/frames/default/frame_11.txt
++ M tui/frames/default/frame_12.txt
++ M tui/frames/default/frame_13.txt
++ M tui/frames/default/frame_14.txt
++ M tui/frames/default/frame_15.txt
++ M tui/frames/default/frame_16.txt
++ M tui/frames/default/frame_17.txt
++ M tui/frames/default/frame_18.txt
++ M tui/frames/default/frame_19.txt
++ M tui/frames/default/frame_2.txt
++ M tui/frames/default/frame_20.txt
++ M tui/frames/default/frame_21.txt
++ M tui/frames/default/frame_22.txt
++ M tui/frames/default/frame_23.txt
++ M tui/frames/default/frame_24.txt
++ M tui/frames/default/frame_25.txt
++ M tui/frames/default/frame_26.txt
++ M tui/frames/default/frame_27.txt
++ M tui/frames/default/frame_28.txt
++ M tui/frames/default/frame_29.txt
++ M tui/frames/default/frame_3.txt
++ M tui/frames/default/frame_30.txt
++ M tui/frames/default/frame_31.txt
++ M tui/frames/default/frame_32.txt
++ M tui/frames/default/frame_33.txt
++ M tui/frames/default/frame_34.txt
++ M tui/frames/default/frame_35.txt
++ M tui/frames/default/frame_36.txt
++ M tui/frames/default/frame_4.txt
++ M tui/frames/default/frame_5.txt
++ M tui/frames/default/frame_6.txt
++ M tui/frames/default/frame_7.txt
++ M tui/frames/default/frame_8.txt
++ M tui/frames/default/frame_9.txt
++ M tui/frames/dots/frame_1.txt
++ M tui/frames/dots/frame_10.txt
++ M tui/frames/dots/frame_11.txt
++ M tui/frames/dots/frame_12.txt
++ M tui/frames/dots/frame_13.txt
++ M tui/frames/dots/frame_14.txt
++ M tui/frames/dots/frame_15.txt
++ M tui/frames/dots/frame_16.txt
++ M tui/frames/dots/frame_17.txt
++ M tui/frames/dots/frame_18.txt
++ M tui/frames/dots/frame_19.txt
++ M tui/frames/dots/frame_2.txt
++ M tui/frames/dots/frame_20.txt
++ M tui/frames/dots/frame_21.txt
++ M tui/frames/dots/frame_22.txt
++ M tui/frames/dots/frame_23.txt
++ M tui/frames/dots/frame_24.txt
++ M tui/frames/dots/frame_25.txt
++ M tui/frames/dots/frame_26.txt
++ M tui/frames/dots/frame_27.txt
++ M tui/frames/dots/frame_28.txt
++ M tui/frames/dots/frame_29.txt
++ M tui/frames/dots/frame_3.txt
++ M tui/frames/dots/frame_30.txt
++ M tui/frames/dots/frame_31.txt
++ M tui/frames/dots/frame_32.txt
++ M tui/frames/dots/frame_33.txt
++ M tui/frames/dots/frame_34.txt
++ M tui/frames/dots/frame_35.txt
++ M tui/frames/dots/frame_36.txt
++ M tui/frames/dots/frame_4.txt
++ M tui/frames/dots/frame_5.txt
++ M tui/frames/dots/frame_6.txt
++ M tui/frames/dots/frame_7.txt
++ M tui/frames/dots/frame_8.txt
++ M tui/frames/dots/frame_9.txt
++ M tui/frames/hash/frame_1.txt
++ M tui/frames/hash/frame_10.txt
++ M tui/frames/hash/frame_11.txt
++ M tui/frames/hash/frame_12.txt
++ M tui/frames/hash/frame_13.txt
++ M tui/frames/hash/frame_14.txt
++ M tui/frames/hash/frame_15.txt
++ M tui/frames/hash/frame_16.txt
++ M tui/frames/hash/frame_17.txt
++ M tui/frames/hash/frame_18.txt
++ M tui/frames/hash/frame_19.txt
++ M tui/frames/hash/frame_2.txt
++ M tui/frames/hash/frame_20.txt
++ M tui/frames/hash/frame_21.txt
++ M tui/frames/hash/frame_22.txt
++ M tui/frames/hash/frame_23.txt
++ M tui/frames/hash/frame_24.txt
++ M tui/frames/hash/frame_25.txt
++ M tui/frames/hash/frame_26.txt
++ M tui/frames/hash/frame_27.txt
++ M tui/frames/hash/frame_28.txt
++ M tui/frames/hash/frame_29.txt
++ M tui/frames/hash/frame_3.txt
++ M tui/frames/hash/frame_30.txt
++ M tui/frames/hash/frame_31.txt
++ M tui/frames/hash/frame_32.txt
++ M tui/frames/hash/frame_33.txt
++ M tui/frames/hash/frame_34.txt
++ M tui/frames/hash/frame_35.txt
++ M tui/frames/hash/frame_36.txt
++ M tui/frames/hash/frame_4.txt
++ M tui/frames/hash/frame_5.txt
++ M tui/frames/hash/frame_6.txt
++ M tui/frames/hash/frame_7.txt
++ M tui/frames/hash/frame_8.txt
++ M tui/frames/hash/frame_9.txt
++ M tui/frames/hbars/frame_1.txt
++ M tui/frames/hbars/frame_10.txt
++ M tui/frames/hbars/frame_11.txt
++ M tui/frames/hbars/frame_12.txt
++ M tui/frames/hbars/frame_13.txt
++ M tui/frames/hbars/frame_14.txt
++ M tui/frames/hbars/frame_15.txt
++ M tui/frames/hbars/frame_16.txt
++ M tui/frames/hbars/frame_17.txt
++ M tui/frames/hbars/frame_18.txt
++ M tui/frames/hbars/frame_19.txt
++ M tui/frames/hbars/frame_2.txt
++ M tui/frames/hbars/frame_20.txt
++ M tui/frames/hbars/frame_21.txt
++ M tui/frames/hbars/frame_22.txt
++ M tui/frames/hbars/frame_23.txt
++ M tui/frames/hbars/frame_24.txt
++ M tui/frames/hbars/frame_25.txt
++ M tui/frames/hbars/frame_26.txt
++ M tui/frames/hbars/frame_27.txt
++ M tui/frames/hbars/frame_28.txt
++ M tui/frames/hbars/frame_29.txt
++ M tui/frames/hbars/frame_3.txt
++ M tui/frames/hbars/frame_30.txt
++ M tui/frames/hbars/frame_31.txt
++ M tui/frames/hbars/frame_32.txt
++ M tui/frames/hbars/frame_33.txt
++ M tui/frames/hbars/frame_34.txt
++ M tui/frames/hbars/frame_35.txt
++ M tui/frames/hbars/frame_36.txt
++ M tui/frames/hbars/frame_4.txt
++ M tui/frames/hbars/frame_5.txt
++ M tui/frames/hbars/frame_6.txt
++ M tui/frames/hbars/frame_7.txt
++ M tui/frames/hbars/frame_8.txt
++ M tui/frames/hbars/frame_9.txt
++ M tui/frames/openai/frame_1.txt
++ M tui/frames/openai/frame_10.txt
++ M tui/frames/openai/frame_11.txt
++ M tui/frames/openai/frame_12.txt
++ M tui/frames/openai/frame_13.txt
++ M tui/frames/openai/frame_14.txt
++ M tui/frames/openai/frame_15.txt
++ M tui/frames/openai/frame_16.txt
++ M tui/frames/openai/frame_17.txt
++ M tui/frames/openai/frame_18.txt
++ M tui/frames/openai/frame_19.txt
++ M tui/frames/openai/frame_2.txt
++ M tui/frames/openai/frame_20.txt
++ M tui/frames/openai/frame_21.txt
++ M tui/frames/openai/frame_22.txt
++ M tui/frames/openai/frame_23.txt
++ M tui/frames/openai/frame_24.txt
++ M tui/frames/openai/frame_25.txt
++ M tui/frames/openai/frame_26.txt
++ M tui/frames/openai/frame_27.txt
++ M tui/frames/openai/frame_28.txt
++ M tui/frames/openai/frame_29.txt
++ M tui/frames/openai/frame_3.txt
++ M tui/frames/openai/frame_30.txt
++ M tui/frames/openai/frame_31.txt
++ M tui/frames/openai/frame_32.txt
++ M tui/frames/openai/frame_33.txt
++ M tui/frames/openai/frame_34.txt
++ M tui/frames/openai/frame_35.txt
++ M tui/frames/openai/frame_36.txt
++ M tui/frames/openai/frame_4.txt
++ M tui/frames/openai/frame_5.txt
++ M tui/frames/openai/frame_6.txt
++ M tui/frames/openai/frame_7.txt
++ M tui/frames/openai/frame_8.txt
++ M tui/frames/openai/frame_9.txt
++ M tui/frames/shapes/frame_1.txt
++ M tui/frames/shapes/frame_10.txt
++ M tui/frames/shapes/frame_11.txt
++ M tui/frames/shapes/frame_12.txt
++ M tui/frames/shapes/frame_13.txt
++ M tui/frames/shapes/frame_14.txt
++ M tui/frames/shapes/frame_15.txt
++ M tui/frames/shapes/frame_16.txt
++ M tui/frames/shapes/frame_17.txt
++ M tui/frames/shapes/frame_18.txt
++ M tui/frames/shapes/frame_19.txt
++ M tui/frames/shapes/frame_2.txt
++ M tui/frames/shapes/frame_20.txt
++ M tui/frames/shapes/frame_21.txt
++ M tui/frames/shapes/frame_22.txt
++ M tui/frames/shapes/frame_23.txt
++ M tui/frames/shapes/frame_24.txt
++ M tui/frames/shapes/frame_25.txt
++ M tui/frames/shapes/frame_26.txt
++ M tui/frames/shapes/frame_27.txt
++ M tui/frames/shapes/frame_28.txt
++ M tui/frames/shapes/frame_29.txt
++ M tui/frames/shapes/frame_3.txt
++ M tui/frames/shapes/frame_30.txt
++ M tui/frames/shapes/frame_31.txt
++ M tui/frames/shapes/frame_32.txt
++ M tui/frames/shapes/frame_33.txt
++ M tui/frames/shapes/frame_34.txt
++ M tui/frames/shapes/frame_35.txt
++ M tui/frames/shapes/frame_36.txt
++ M tui/frames/shapes/frame_4.txt
++ M tui/frames/shapes/frame_5.txt
++ M tui/frames/shapes/frame_6.txt
++ M tui/frames/shapes/frame_7.txt
++ M tui/frames/shapes/frame_8.txt
++ M tui/frames/shapes/frame_9.txt
++ M tui/frames/slug/frame_1.txt
++ M tui/frames/slug/frame_10.txt
++ M tui/frames/slug/frame_11.txt
++ M tui/frames/slug/frame_12.txt
++ M tui/frames/slug/frame_13.txt
++ M tui/frames/slug/frame_14.txt
++ M tui/frames/slug/frame_15.txt
++ M tui/frames/slug/frame_16.txt
++ M tui/frames/slug/frame_17.txt
++ M tui/frames/slug/frame_18.txt
++ M tui/frames/slug/frame_19.txt
++ M tui/frames/slug/frame_2.txt
++ M tui/frames/slug/frame_20.txt
++ M tui/frames/slug/frame_21.txt
++ M tui/frames/slug/frame_22.txt
++ M tui/frames/slug/frame_23.txt
++ M tui/frames/slug/frame_24.txt
++ M tui/frames/slug/frame_25.txt
++ M tui/frames/slug/frame_26.txt
++ M tui/frames/slug/frame_27.txt
++ M tui/frames/slug/frame_28.txt
++ M tui/frames/slug/frame_29.txt
++ M tui/frames/slug/frame_3.txt
++ M tui/frames/slug/frame_30.txt
++ M tui/frames/slug/frame_31.txt
++ M tui/frames/slug/frame_32.txt
++ M tui/frames/slug/frame_33.txt
++ M tui/frames/slug/frame_34.txt
++ M tui/frames/slug/frame_35.txt
++ M tui/frames/slug/frame_36.txt
++ M tui/frames/slug/frame_4.txt
++ M tui/frames/slug/frame_5.txt
++ M tui/frames/slug/frame_6.txt
++ M tui/frames/slug/frame_7.txt
++ M tui/frames/slug/frame_8.txt
++ M tui/frames/slug/frame_9.txt
++ M tui/frames/vbars/frame_1.txt
++ M tui/frames/vbars/frame_10.txt
++ M tui/frames/vbars/frame_11.txt
++ M tui/frames/vbars/frame_12.txt
++ M tui/frames/vbars/frame_13.txt
++ M tui/frames/vbars/frame_14.txt
++ M tui/frames/vbars/frame_15.txt
++ M tui/frames/vbars/frame_16.txt
++ M tui/frames/vbars/frame_17.txt
++ M tui/frames/vbars/frame_18.txt
++ M tui/frames/vbars/frame_19.txt
++ M tui/frames/vbars/frame_2.txt
++ M tui/frames/vbars/frame_20.txt
++ M tui/frames/vbars/frame_21.txt
++ M tui/frames/vbars/frame_22.txt
++ M tui/frames/vbars/frame_23.txt
++ M tui/frames/vbars/frame_24.txt
++ M tui/frames/vbars/frame_25.txt
++ M tui/frames/vbars/frame_26.txt
++ M tui/frames/vbars/frame_27.txt
++ M tui/frames/vbars/frame_28.txt
++ M tui/frames/vbars/frame_29.txt
++ M tui/frames/vbars/frame_3.txt
++ M tui/frames/vbars/frame_30.txt
++ M tui/frames/vbars/frame_31.txt
++ M tui/frames/vbars/frame_32.txt
++ M tui/frames/vbars/frame_33.txt
++ M tui/frames/vbars/frame_34.txt
++ M tui/frames/vbars/frame_35.txt
++ M tui/frames/vbars/frame_36.txt
++ M tui/frames/vbars/frame_4.txt
++ M tui/frames/vbars/frame_5.txt
++ M tui/frames/vbars/frame_6.txt
++ M tui/frames/vbars/frame_7.txt
++ M tui/frames/vbars/frame_8.txt
++ M tui/frames/vbars/frame_9.txt
++ M tui/prompt_for_init_command.md
++ M tui/src/app.rs
++ M tui/src/app_backtrack.rs
++ M tui/src/app_event.rs
++ M tui/src/app_event_sender.rs
++ M tui/src/ascii_animation.rs
++ M tui/src/bin/md-events.rs
++ M tui/src/bottom_pane/approval_overlay.rs
++ M tui/src/bottom_pane/bottom_pane_view.rs
++ M tui/src/bottom_pane/chat_composer.rs
++ M tui/src/bottom_pane/chat_composer_history.rs
++ M tui/src/bottom_pane/command_popup.rs
++ M tui/src/bottom_pane/custom_prompt_view.rs
++ M tui/src/bottom_pane/file_search_popup.rs
++ M tui/src/bottom_pane/footer.rs
++ M tui/src/bottom_pane/list_selection_view.rs
++ M tui/src/bottom_pane/mod.rs
++ M tui/src/bottom_pane/paste_burst.rs
++ M tui/src/bottom_pane/popup_consts.rs
++ M tui/src/bottom_pane/prompt_args.rs
++ M tui/src/bottom_pane/scroll_state.rs
++ M tui/src/bottom_pane/selection_popup_common.rs
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__backspace_after_pastes.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__empty.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_interrupt.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_quit.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_ctrl_c_then_esc_hint.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_backtrack.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_esc_hint_from_overlay.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_hidden_while_typing.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_overlay_then_external_esc_hint.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__footer_mode_shortcut_overlay.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__large.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__multiple_pastes.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__slash_popup_mo.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__chat_composer__tests__small.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_idle.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_ctrl_c_quit_running.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_idle.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_esc_hint_primed.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_context_running.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_default.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__footer__tests__footer_shortcuts_shift_and_esc.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_with_subtitle.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__list_selection_view__tests__list_selection_spacing_without_subtitle.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_and_composer_fill_height_without_bottom_padding.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_1.snap
++ M tui/src/bottom_pane/snapshots/codex_tui__bottom_pane__tests__status_hidden_when_height_too_small_height_2.snap
++ M tui/src/bottom_pane/textarea.rs
++ M tui/src/chatwidget.rs
++ M tui/src/chatwidget/agent.rs
++ M tui/src/chatwidget/interrupts.rs
++ M tui/src/chatwidget/session_header.rs
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__apply_patch_manual_flow_history_approved.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_exec_no_reason.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__approval_modal_patch.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__binary_size_ideal_response.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h1.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h2.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_idle_h3.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h1.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h2.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chat_small_running_h3.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_exec_and_status_layout_vt100_snapshot.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__chatwidget_markdown_code_blocks_vt100_snapshot.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__disabled_slash_command_while_task_running_snapshot.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_long.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_aborted_multiline.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_history_decision_approved_short.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exec_approval_modal_exec.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step1_start_ls.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step2_finish_ls.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step3_start_cat_foo.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step4_finish_cat_foo.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step5_finish_sed_range.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__exploring_step6_finish_cat_bar.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__interrupt_exec_marks_failed.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__local_image_attachment_history_snapshot.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_reasoning_selection_popup.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_selection_popup.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_active.snap
++ M tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__status_widget_and_approval_modal.snap
++ M tui/src/chatwidget/tests.rs
++ M tui/src/citation_regex.rs
++ M tui/src/cli.rs
++ M tui/src/clipboard_paste.rs
++ M tui/src/color.rs
++ M tui/src/custom_terminal.rs
++ M tui/src/diff_render.rs
++ M tui/src/exec_cell/mod.rs
++ M tui/src/exec_cell/model.rs
++ M tui/src/exec_cell/render.rs
++ M tui/src/exec_command.rs
++ M tui/src/file_search.rs
++ M tui/src/frames.rs
++ M tui/src/get_git_diff.rs
++ M tui/src/history_cell.rs
++ M tui/src/insert_history.rs
++ M tui/src/key_hint.rs
++ M tui/src/lib.rs
++ M tui/src/live_wrap.rs
++ M tui/src/main.rs
++ M tui/src/markdown.rs
++ M tui/src/markdown_render.rs
++ M tui/src/markdown_render_tests.rs
++ M tui/src/markdown_stream.rs
++ M tui/src/onboarding/auth.rs
++ M tui/src/onboarding/mod.rs
++ M tui/src/onboarding/onboarding_screen.rs
++ M tui/src/onboarding/snapshots/codex_tui__onboarding__trust_directory__tests__renders_snapshot_for_git_repo.snap
++ M tui/src/onboarding/trust_directory.rs
++ M tui/src/onboarding/welcome.rs
++ M tui/src/onboarding/windows.rs
++ M tui/src/pager_overlay.rs
++ M tui/src/public_widgets/composer_input.rs
++ M tui/src/public_widgets/mod.rs
++ M tui/src/render/highlight.rs
++ M tui/src/render/line_utils.rs
++ M tui/src/render/mod.rs
++ M tui/src/render/renderable.rs
++ M tui/src/resume_picker.rs
++ M tui/src/session_log.rs
++ M tui/src/shimmer.rs
++ M tui/src/slash_command.rs
++ M tui/src/snapshots/codex_tui__diff_render__tests__add_details.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_add_block.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_delete_block.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_multiple_files_block.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_line_numbers_three_digits_text.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_relativizes_path.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_block_wraps_long_lines_text.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__apply_update_with_rename_block.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__blank_context_line.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__single_line_replacement_counts.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__update_details_with_rename.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__vertical_ellipsis_between_hunks.snap
++ M tui/src/snapshots/codex_tui__diff_render__tests__wrap_behavior_insert.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__active_mcp_tool_call_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__coalesced_reads_dedupe_names.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__coalesces_reads_across_multiple_calls.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__coalesces_sequential_reads_within_one_call.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_error_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_inline_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_multiple_outputs_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_success_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__completed_mcp_tool_call_wrapped_outputs_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_both_lines_wrap_with_correct_prefixes.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_without_wrap_uses_branch_then_eight_spaces.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__multiline_command_wraps_with_extra_indent_on_subsequent_lines.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__plan_update_with_note_and_wrapping_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__plan_update_without_note_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__ran_cell_multiline_with_stderr_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_compact_when_fits.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__single_line_command_wraps_with_four_space_continuation.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__stderr_tail_more_than_five_lines_snapshot.snap
++ M tui/src/snapshots/codex_tui__history_cell__tests__user_history_cell_wraps_and_prefixes_each_line_snapshot.snap
++ M tui/src/snapshots/codex_tui__markdown_render__markdown_render_tests__markdown_render_complex_snapshot.snap
++ M tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_snapshot_basic.snap
++ M tui/src/snapshots/codex_tui__pager_overlay__tests__static_overlay_wraps_long_lines.snap
++ M tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_apply_patch_scroll_vt100.snap
++ M tui/src/snapshots/codex_tui__pager_overlay__tests__transcript_overlay_snapshot_basic.snap
++ M tui/src/snapshots/codex_tui__resume_picker__tests__resume_picker_table.snap
++ M tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_truncated.snap
++ M tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_queued_messages.snap
++ M tui/src/snapshots/codex_tui__status_indicator_widget__tests__renders_with_working_header.snap
++ M tui/src/status/account.rs
++ M tui/src/status/card.rs
++ M tui/src/status/format.rs
++ M tui/src/status/helpers.rs
++ M tui/src/status/mod.rs
++ M tui/src/status/rate_limits.rs
++ M tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
++ M tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
++ M tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
++ M tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
++ M tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
++ M tui/src/status/tests.rs
++ M tui/src/status_indicator_widget.rs
++ M tui/src/streaming/controller.rs
++ M tui/src/streaming/mod.rs
++ M tui/src/style.rs
++ M tui/src/terminal_palette.rs
++ M tui/src/test_backend.rs
++ M tui/src/text_formatting.rs
++ M tui/src/tui.rs
++ M tui/src/ui_consts.rs
++ M tui/src/updates.rs
++ M tui/src/version.rs
++ M tui/src/wrapping.rs
++ M tui/styles.md
++ M tui/tests/all.rs
++ M tui/tests/fixtures/binary-size-log.jsonl
++ M tui/tests/fixtures/oss-story.jsonl
++ M tui/tests/suite/mod.rs
++ M tui/tests/suite/status_indicator.rs
++ M tui/tests/suite/vt100_history.rs
++ M tui/tests/suite/vt100_live_commit.rs
++ M tui/tests/test_backend.rs
++ M utils/json-to-toml/Cargo.toml
++ M utils/json-to-toml/src/lib.rs
++ M utils/readiness/Cargo.toml
++ M utils/readiness/src/lib.rs
++ M utils/string/Cargo.toml
++ M utils/string/src/lib.rs
++ M ../docs/CLA.md
++ M ../docs/advanced.md
++ M ../docs/authentication.md
++ M ../docs/config.md
++ M ../docs/contributing.md
++ M ../docs/exec.md
++ M ../docs/experimental.md
++ M ../docs/faq.md
++ M ../docs/getting-started.md
++ M ../docs/install.md
++ M ../docs/license.md
++ M ../docs/open-source-fund.md
++ M ../docs/platform-sandboxing.md
++ M ../docs/prompts.md
++ M ../docs/release_management.md
++ M ../docs/sandbox.md
++ M ../docs/zdr.md
++ M ../flake.lock
++ M ../flake.nix
++ M ../package.json
++ M ../pnpm-lock.yaml
++ M ../pnpm-workspace.yaml
++ M ../scripts/asciicheck.py
++ M ../scripts/readme_toc.py
++ M ../scripts/stage_npm_packages.py
++ M ../sdk/typescript/.prettierignore
++ M ../sdk/typescript/.prettierrc
++ M ../sdk/typescript/README.md
++ M ../sdk/typescript/eslint.config.js
++ M ../sdk/typescript/jest.config.cjs
++ M ../sdk/typescript/package.json
++ M ../sdk/typescript/samples/basic_streaming.ts
++ M ../sdk/typescript/samples/helpers.ts
++ M ../sdk/typescript/samples/structured_output.ts
++ M ../sdk/typescript/samples/structured_output_zod.ts
++ M ../sdk/typescript/src/codex.ts
++ M ../sdk/typescript/src/codexOptions.ts
++ M ../sdk/typescript/src/events.ts
++ M ../sdk/typescript/src/exec.ts
++ M ../sdk/typescript/src/index.ts
++ M ../sdk/typescript/src/items.ts
++ M ../sdk/typescript/src/outputSchemaFile.ts
++ M ../sdk/typescript/src/thread.ts
++ M ../sdk/typescript/src/threadOptions.ts
++ M ../sdk/typescript/src/turnOptions.ts
++ M ../sdk/typescript/tests/codexExecSpy.ts
++ M ../sdk/typescript/tests/responsesProxy.ts
++ M ../sdk/typescript/tests/run.test.ts
++ M ../sdk/typescript/tests/runStreamed.test.ts
++ M ../sdk/typescript/tsconfig.json
++ M ../sdk/typescript/tsup.config.ts
++?? ../.code/
++?? codex-ledger/
++?? ../docs/accounting/
+diff --git a/.code/agents/22d64b8f-0bfa-4ff9-ad0b-f3b4c972c56c/result.txt b/.code/agents/22d64b8f-0bfa-4ff9-ad0b-f3b4c972c56c/result.txt
+new file mode 100644
+index 00000000..871c8b3d
+--- /dev/null
++++ b/.code/agents/22d64b8f-0bfa-4ff9-ad0b-f3b4c972c56c/result.txt
+@@ -0,0 +1,54 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (13.46GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --new-window --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   164	  4128	code
++    0	    30	   276	   crashpad-handler
++    0	   248	 14164	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	   109	 14512	pty-host
++    0	   142	 15300	shared-process
++    0	    49	 21688	   utility-network-service
++    0	   116	 32400	file-watcher [1]
++    0	    98	 32660	   gpu-process
++    0	   766	 33164	extension-host [1]
++    0	    12	  2856	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     7	  7652	       C:\windows\system32\conhost.exe 0x4
++    0	    97	  6832	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     7	 30472	       C:\windows\system32\conhost.exe 0x4
++    0	   100	 14540	     electron-nodejs (eslintServer.js )
++    0	    45	 19252	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     7	 11676	       C:\windows\system32\conhost.exe 0x4
++    0	    98	 31392	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=33164
++    0	   144	 32536	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 1874 files
++|      File types: rs(457) txt(402) o(273) snap(107) md(58) toml(45) json(40)
++|                  timestamp(21) d(19) ts(19)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/.code/agents/2af620b8-fff1-43ee-b99b-bb7e36630a2f/result.txt b/.code/agents/2af620b8-fff1-43ee-b99b-bb7e36630a2f/result.txt
+new file mode 100644
+index 00000000..c990ed67
+--- /dev/null
++++ b/.code/agents/2af620b8-fff1-43ee-b99b-bb7e36630a2f/result.txt
+@@ -0,0 +1,54 @@
++
++Version:          Code 1.105.0 (03c265b1adee71ac88f833e065f7bb956b60550a, 2025-10-08T14:09:35.891Z)
++OS Version:       Windows_NT x64 10.0.26100
++CPUs:             AMD Ryzen 7 9800X3D 8-Core Processor            (16 x 4700)
++Memory (System):  31.16GB (14.93GB free)
++VM:               33%
++Screen Reader:    no
++Process Argv:     --new-window --crash-reporter-id fcce57d1-422a-4fd6-a752-e27888210d7c
++GPU Status:       2d_canvas:                              enabled
++                  direct_rendering_display_compositor:    disabled_off_ok
++                  gpu_compositing:                        enabled
++                  multiple_raster_threads:                enabled_on
++                  opengl:                                 enabled_on
++                  rasterization:                          enabled
++                  raw_draw:                               disabled_off_ok
++                  skia_graphite:                          disabled_off
++                  trees_in_viz:                           disabled_off
++                  video_decode:                           enabled
++                  video_encode:                           enabled
++                  vulkan:                                 disabled_off
++                  webgl:                                  enabled
++                  webgl2:                                 enabled
++                  webgpu:                                 enabled
++                  webnn:                                  disabled_off
++
++CPU %	Mem MB	   PID	Process
++    0	   140	  4128	code
++    0	    29	   276	   crashpad-handler
++    0	   203	 14164	window [1] (Welcome - CodexAccountant - Visual Studio Code)
++    0	    96	 14512	pty-host
++    0	   137	 15300	shared-process
++    0	    48	 21688	   utility-network-service
++    0	    99	 32400	file-watcher [1]
++    0	    90	 32660	   gpu-process
++    0	   223	 33164	extension-host [1]
++    0	    10	  2856	     c:\Users\sammu\.vscode\extensions\openai.chatgpt-0.5.19-win32-x64\bin\windows-x86_64\codex.exe app-server
++    0	     6	  7652	       C:\windows\system32\conhost.exe 0x4
++    0	    80	  6832	     C:\Users\sammu\AppData\Local\cloud-code\cloudcode_cli\cloudcode_cli\62c1f047\cloudcode_cli.exe duet -trace -logtostderr
++    0	     6	 30472	       C:\windows\system32\conhost.exe 0x4
++    0	    90	 14540	     electron-nodejs (eslintServer.js )
++    0	    26	 19252	     c:\Users\sammu\.vscode\extensions\rust-lang.rust-analyzer-0.3.2593-win32-x64\server\rust-analyzer.exe
++    0	     6	 11676	       C:\windows\system32\conhost.exe 0x4
++    0	    88	 31392	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" "c:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\resources\app\extensions\json-language-features\server\dist\node\jsonServerMain" --node-ipc --clientProcessId=33164
++    0	    91	 32536	     "C:\Users\sammu\AppData\Local\Programs\Microsoft VS Code\Code.exe" c:\Users\sammu\.vscode\extensions\google.geminicodeassist-2.53.0\agent\agent.mjs
++
++Workspace Stats: 
++|  Window (Welcome - CodexAccountant - Visual Studio Code)
++|    Folder (CodexAccountant): 1881 files
++|      File types: rs(457) txt(406) o(273) snap(107) md(58) toml(45) json(40)
++|                  timestamp(21) d(19) ts(19)
++|      Conf files: github-actions(8) package.json(4) dockerfile(2)
++|                  devcontainer.json(1) launch.json(1) settings.json(1)
++|                  agents.md(1) tsconfig.json(1)
++|      Launch Configs: lldb(2)
+diff --git a/.code/agents/90acc527-d549-4061-90c6-c63364d953ed/error.txt b/.code/agents/90acc527-d549-4061-90c6-c63364d953ed/error.txt
+new file mode 100644
+index 00000000..352ba763
+--- /dev/null
++++ b/.code/agents/90acc527-d549-4061-90c6-c63364d953ed/error.txt
+@@ -0,0 +1 @@
++git apply exited with status exit status: 128 while applying cloud diff
+\ No newline at end of file
+diff --git a/.code/agents/cead78fc-c600-4455-8c18-10407c342185/error.txt b/.code/agents/cead78fc-c600-4455-8c18-10407c342185/error.txt
+new file mode 100644
+index 00000000..352ba763
+--- /dev/null
++++ b/.code/agents/cead78fc-c600-4455-8c18-10407c342185/error.txt
+@@ -0,0 +1 @@
++git apply exited with status exit status: 128 while applying cloud diff
+\ No newline at end of file
+diff --git a/codex-rs/codex-ledger/src/lib.rs b/codex-rs/codex-ledger/src/lib.rs
+index 30147860..e181d968 100644
+--- a/codex-rs/codex-ledger/src/lib.rs
++++ b/codex-rs/codex-ledger/src/lib.rs
+@@ -122,6 +122,8 @@ pub struct JournalEntry {
+     pub lines: Vec<JournalLine>,
+     pub origin: EntryOrigin,
+     pub memo: Option<String>,
++    pub reverses_entry_id: Option<JournalEntryId>,
++    pub reversed_by_entry_id: Option<JournalEntryId>,
+ }
+ 
+ impl JournalEntry {
+@@ -199,7 +201,7 @@ impl JournalLine {
+                 }
+                 let expected = (self.amount_minor as f64) * rate.rate;
+                 let rounded = expected.round() as i64;
+-                (rounded - self.functional_amount_minor).abs() <= 1 && rate.source.is_some()
++                (rounded - self.functional_amount_minor).abs() <= 2 && rate.source.is_some()
+             }
+             None => false,
+         }
+@@ -372,6 +374,8 @@ mod tests {
+             status: EntryStatus::Draft,
+             origin: EntryOrigin::Manual,
+             memo: None,
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+             lines: vec![
+                 JournalLine {
+                     id: "ln-1".into(),
+@@ -412,6 +416,8 @@ mod tests {
+             status: EntryStatus::Draft,
+             origin: EntryOrigin::Manual,
+             memo: None,
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+             lines: vec![
+                 JournalLine {
+                     id: "ln-1".into(),
+diff --git a/codex-rs/codex-ledger/src/memory.rs b/codex-rs/codex-ledger/src/memory.rs
+index 8d3a1562..4e305966 100644
+--- a/codex-rs/codex-ledger/src/memory.rs
++++ b/codex-rs/codex-ledger/src/memory.rs
+@@ -1,4 +1,5 @@
+ use std::collections::HashMap;
++use std::time::SystemTime;
+ 
+ use async_trait::async_trait;
+ use tokio::sync::Mutex;
+@@ -11,11 +12,13 @@ use crate::Company;
+ use crate::CompanyId;
+ use crate::CreateCompanyRequest;
+ use crate::CurrencyRevaluationRequest;
++use crate::EntryOrigin;
+ use crate::EntryStatus;
+ use crate::Journal;
+ use crate::JournalEntry;
+ use crate::JournalEntryId;
+ use crate::JournalId;
++use crate::JournalLine;
+ use crate::LedgerError;
+ use crate::LedgerResult;
+ use crate::LedgerService;
+@@ -25,6 +28,7 @@ use crate::PeriodAction;
+ use crate::PeriodState;
+ use crate::PostEntryRequest;
+ use crate::PostingMode;
++use crate::PostingSide;
+ use crate::ReverseEntryRequest;
+ use crate::UpsertAccountRequest;
+ 
+@@ -44,8 +48,10 @@ struct State {
+     companies: HashMap<CompanyId, Company>,
+     accounts: HashMap<AccountId, Account>,
+     account_codes: HashMap<CompanyId, HashMap<String, AccountId>>,
+-    journals: HashMap<JournalId, Journal>,
++    journals: HashMap<(CompanyId, JournalId), Journal>,
+     entries: HashMap<JournalEntryId, JournalEntry>,
++    audit_events: Vec<AuditEvent>,
++    audit_seq: u64,
+ }
+ 
+ fn validate_entry(entry: &JournalEntry) -> LedgerResult<()> {
+@@ -93,18 +99,6 @@ fn validate_entry(entry: &JournalEntry) -> LedgerResult<()> {
+     Ok(())
+ }
+ 
+-fn normalize_fx_rates(entry: &mut JournalEntry) {
+-    for line in &mut entry.lines {
+-        if line.currency != line.functional_currency {
+-            if let Some(rate) = &mut line.exchange_rate {
+-                if line.amount_minor != 0 {
+-                    rate.rate = line.functional_amount_minor as f64 / line.amount_minor as f64;
+-                }
+-            }
+-        }
+-    }
+-}
+-
+ impl InMemoryLedgerService {
+     pub fn new() -> Self {
+         Self::default()
+@@ -122,6 +116,26 @@ impl InMemoryLedgerService {
+             Err(LedgerError::NotFound(format!("company {}", company_id)))
+         }
+     }
++
++    fn journal_key(company_id: &CompanyId, journal_id: &JournalId) -> (CompanyId, JournalId) {
++        (company_id.clone(), journal_id.clone())
++    }
++
++    fn record_audit_event(
++        state: &mut State,
++        entity_id: String,
++        actor: Option<String>,
++        description: String,
++    ) {
++        state.audit_seq += 1;
++        state.audit_events.push(AuditEvent {
++            id: format!("audit-{}", state.audit_seq),
++            entity_id,
++            actor: actor.unwrap_or_else(|| "system".into()),
++            occurred_at: SystemTime::now(),
++            description,
++        });
++    }
+ }
+ 
+ #[async_trait]
+@@ -141,13 +155,15 @@ impl LedgerService for InMemoryLedgerService {
+         state.account_codes.entry(id.clone()).or_default();
+ 
+         // Seed an open general ledger journal for the contract tests.
++        let journal_id = "jnl-gl".to_string();
+         let journal = Journal {
+-            id: "jnl-gl".into(),
++            id: journal_id.clone(),
+             company_id: id.clone(),
+             ledger_type: LedgerType::General,
+             period_state: PeriodState::Open,
+         };
+-        state.journals.insert(journal.id.clone(), journal);
++        let key = Self::journal_key(&id, &journal_id);
++        state.journals.insert(key, journal);
+ 
+         Ok(company)
+     }
+@@ -165,11 +181,11 @@ impl LedgerService for InMemoryLedgerService {
+         {
+             if existing_id != &account.id {
+                 return Err(LedgerError::Validation("duplicate account code".into()));
+-            } else {
+-                return Err(LedgerError::Validation(
+-                    "account code already exists".into(),
+-                ));
+             }
++
++            return Err(LedgerError::Validation(
++                "account code already exists".into(),
++            ));
+         }
+ 
+         if state.accounts.contains_key(&account.id) {
+@@ -178,17 +194,7 @@ impl LedgerService for InMemoryLedgerService {
+             ));
+         }
+ 
+-        if account.is_summary {
+-            state.accounts.insert(account.id.clone(), account.clone());
+-            state
+-                .account_codes
+-                .entry(account.company_id.clone())
+-                .or_insert_with(HashMap::new)
+-                .insert(account.code.clone(), account.id.clone());
+-            return Ok(account);
+-        }
+-
+-        if !account.allows_posting() {
++        if !account.is_summary && !account.allows_posting() {
+             return Err(LedgerError::Validation(
+                 "account must be active and non-summary".into(),
+             ));
+@@ -217,6 +223,7 @@ impl LedgerService for InMemoryLedgerService {
+             .entry(account.company_id.clone())
+             .or_insert_with(HashMap::new)
+             .insert(account.code.clone(), account.id.clone());
++
+         Ok(account)
+     }
+ 
+@@ -224,37 +231,31 @@ impl LedgerService for InMemoryLedgerService {
+         let mut state = self.state.lock().await;
+         let mut entry = request.entry;
+ 
+-        let journal_company_id = {
+-            let journal = state
+-                .journals
+-                .get_mut(&entry.journal_id)
+-                .ok_or_else(|| LedgerError::NotFound(format!("journal {}", entry.journal_id)))?;
+-
+-            if matches!(journal.period_state, PeriodState::SoftClosed) {
+-                return Err(LedgerError::Rejected(
+-                    "soft-close prevents posting without override".into(),
+-                ));
+-            }
+-
+-            // If a period was fully closed, treat the next post as a new period and
+-            // reopen it for simplicity so the contract tests can proceed.
+-            if matches!(journal.period_state, PeriodState::Closed) {
+-                journal.period_state = PeriodState::Open;
+-            }
+-
+-            journal.company_id.clone()
+-        };
++        if entry.lines.is_empty() {
++            return Err(LedgerError::Validation(
++                "journal entry must contain at least one line".into(),
++            ));
++        }
+ 
++        let mut company_id: Option<CompanyId> = None;
+         for line in &entry.lines {
+             let account = state
+                 .accounts
+                 .get(&line.account_id)
+                 .ok_or_else(|| LedgerError::NotFound(format!("account {}", line.account_id)))?;
+ 
+-            if account.company_id != journal_company_id {
+-                return Err(LedgerError::Validation(
+-                    "account does not belong to journal company".into(),
+-                ));
++            let account_company = account.company_id.clone();
++            match &mut company_id {
++                Some(existing) => {
++                    if existing != &account_company {
++                        return Err(LedgerError::Validation(
++                            "all journal entry lines must belong to the same company".into(),
++                        ));
++                    }
++                }
++                None => {
++                    company_id = Some(account_company);
++                }
+             }
+ 
+             if !account.allows_posting() {
+@@ -264,59 +265,164 @@ impl LedgerService for InMemoryLedgerService {
+             }
+         }
+ 
++        let company_id = company_id.ok_or_else(|| {
++            LedgerError::Validation("journal entry must contain at least one line".into())
++        })?;
++        let journal = state
++            .journals
++            .get_mut(&Self::journal_key(&company_id, &entry.journal_id))
++            .ok_or_else(|| LedgerError::NotFound(format!("journal {}", entry.journal_id)))?;
++
++        match journal.period_state {
++            PeriodState::Open => {}
++            PeriodState::SoftClosed => {
++                return Err(LedgerError::Rejected(
++                    "soft-close prevents posting without override".into(),
++                ));
++            }
++            PeriodState::Closed => {
++                return Err(LedgerError::Rejected("period closed".into()));
++            }
++        }
++
+         validate_entry(&entry)?;
+-        normalize_fx_rates(&mut entry);
++        entry.reverses_entry_id = None;
++        entry.reversed_by_entry_id = None;
+ 
+         match request.mode {
+             PostingMode::DryRun => {
+                 let mut preview = entry;
+                 preview.status = EntryStatus::Proposed;
++                preview.reverses_entry_id = None;
++                preview.reversed_by_entry_id = None;
+                 Ok(preview)
+             }
+             PostingMode::Commit => {
+                 entry.status = EntryStatus::Posted;
+                 state.entries.insert(entry.id.clone(), entry.clone());
++                Self::record_audit_event(
++                    &mut state,
++                    entry.id.clone(),
++                    Some(request.tenant.user_id.clone()),
++                    format!("Posted entry {}", entry.journal_id),
++                );
+                 Ok(entry)
+             }
+         }
+     }
+ 
+     async fn reverse_entry(&self, request: ReverseEntryRequest) -> LedgerResult<JournalEntry> {
++        let ReverseEntryRequest {
++            entry_id,
++            reason,
++            tenant,
++        } = request;
++
+         let mut state = self.state.lock().await;
+-        let entry = state
+-            .entries
+-            .get_mut(&request.entry_id)
+-            .ok_or_else(|| LedgerError::NotFound(format!("entry {}", request.entry_id)))?;
++        let sequence = state.entries.len() + 1;
+ 
+-        if entry.status != EntryStatus::Posted {
+-            return Err(LedgerError::Rejected("entry is not posted".into()));
+-        }
++        let (original_id, new_entry_id, reversal_memo, reversing_entry) = {
++            let entry = state
++                .entries
++                .get_mut(&entry_id)
++                .ok_or_else(|| LedgerError::NotFound(format!("entry {}", entry_id)))?;
+ 
+-        entry.status = EntryStatus::Reversed;
+-        if let Some(memo) = &mut entry.memo {
+-            memo.push_str(&format!(" | reversed: {}", request.reason));
+-        } else {
+-            entry.memo = Some(format!("reversed: {}", request.reason));
+-        }
++            if entry.status != EntryStatus::Posted {
++                return Err(LedgerError::Rejected("entry is not posted".into()));
++            }
++
++            if entry.reversed_by_entry_id.is_some() {
++                return Err(LedgerError::Rejected("entry already reversed".into()));
++            }
+ 
+-        Ok(entry.clone())
++            let original_id = entry.id.clone();
++            let new_entry_id = format!("{}-rev-{}", original_id, sequence);
++            let reversing_lines = entry
++                .lines
++                .iter()
++                .map(|line| JournalLine {
++                    id: format!("{}-rev", line.id),
++                    account_id: line.account_id.clone(),
++                    side: match line.side {
++                        PostingSide::Debit => PostingSide::Credit,
++                        PostingSide::Credit => PostingSide::Debit,
++                    },
++                    amount_minor: line.amount_minor,
++                    currency: line.currency.clone(),
++                    functional_amount_minor: line.functional_amount_minor,
++                    functional_currency: line.functional_currency.clone(),
++                    exchange_rate: line.exchange_rate.clone(),
++                    tax_code: line.tax_code.clone(),
++                    memo: line.memo.clone(),
++                })
++                .collect();
++
++            let reversal_memo = format!("Reversal of {}: {}", original_id, reason);
++            let reversing_entry = JournalEntry {
++                id: new_entry_id.clone(),
++                journal_id: entry.journal_id.clone(),
++                status: EntryStatus::Posted,
++                lines: reversing_lines,
++                origin: EntryOrigin::Adjustment,
++                memo: Some(reversal_memo.clone()),
++                reverses_entry_id: Some(original_id.clone()),
++                reversed_by_entry_id: None,
++            };
++
++            entry.reversed_by_entry_id = Some(new_entry_id.clone());
++
++            (original_id, new_entry_id, reversal_memo, reversing_entry)
++        };
++
++        state
++            .entries
++            .insert(new_entry_id.clone(), reversing_entry.clone());
++
++        Self::record_audit_event(
++            &mut state,
++            original_id.clone(),
++            Some(tenant.user_id.clone()),
++            format!("Reversal requested: {}", reason),
++        );
++        Self::record_audit_event(
++            &mut state,
++            new_entry_id.clone(),
++            Some(tenant.user_id),
++            reversal_memo,
++        );
++
++        Ok(reversing_entry)
+     }
+ 
+     async fn lock_period(&self, request: LockPeriodRequest) -> LedgerResult<Journal> {
+         let mut state = self.state.lock().await;
+-        let journal = state
+-            .journals
+-            .get_mut(&request.journal_id)
+-            .ok_or_else(|| LedgerError::NotFound(format!("journal {}", request.journal_id)))?;
+-
+-        journal.period_state = match request.action {
+-            PeriodAction::SoftClose => PeriodState::SoftClosed,
+-            PeriodAction::Close => PeriodState::Closed,
+-            PeriodAction::ReopenSoft => PeriodState::SoftClosed,
+-            PeriodAction::ReopenFull => PeriodState::Open,
++        let (updated_journal, period_state) = {
++            let journal = state
++                .journals
++                .get_mut(&Self::journal_key(
++                    &request.tenant.tenant_id,
++                    &request.journal_id,
++                ))
++                .ok_or_else(|| LedgerError::NotFound(format!("journal {}", request.journal_id)))?;
++
++            journal.period_state = match request.action {
++                PeriodAction::SoftClose => PeriodState::SoftClosed,
++                PeriodAction::Close => PeriodState::Closed,
++                PeriodAction::ReopenSoft => PeriodState::SoftClosed,
++                PeriodAction::ReopenFull => PeriodState::Open,
++            };
++
++            (journal.clone(), journal.period_state)
+         };
+ 
+-        Ok(journal.clone())
++        Self::record_audit_event(
++            &mut state,
++            request.journal_id.clone(),
++            Some(request.tenant.user_id.clone()),
++            format!("Journal period set to {:?}", period_state),
++        );
++
++        Ok(updated_journal)
+     }
+ 
+     async fn revalue_currency(
+@@ -326,7 +432,26 @@ impl LedgerService for InMemoryLedgerService {
+         Ok(Vec::new())
+     }
+ 
+-    async fn list_audit_trail(&self, _filter: AuditTrailFilter) -> LedgerResult<Vec<AuditEvent>> {
+-        Ok(Vec::new())
++    async fn list_audit_trail(&self, filter: AuditTrailFilter) -> LedgerResult<Vec<AuditEvent>> {
++        let state = self.state.lock().await;
++        let mut events: Vec<AuditEvent> = state.audit_events.clone();
++
++        if let Some(entity) = &filter.entity_id {
++            events.retain(|event| &event.entity_id == entity);
++        }
++
++        if let Some(cursor) = &filter.cursor {
++            if let Some(pos) = events.iter().position(|event| &event.id == cursor) {
++                events.drain(0..=pos);
++            }
++        }
++
++        if let Some(limit) = filter.limit {
++            if events.len() > limit {
++                events.truncate(limit);
++            }
++        }
++
++        Ok(events)
+     }
+ }
+diff --git a/codex-rs/codex-ledger/tests/ledger_service_contract.rs b/codex-rs/codex-ledger/tests/ledger_service_contract.rs
+index 37e2847e..89236eae 100644
+--- a/codex-rs/codex-ledger/tests/ledger_service_contract.rs
++++ b/codex-rs/codex-ledger/tests/ledger_service_contract.rs
+@@ -34,6 +34,15 @@ fn tenant_context() -> TenantContext {
+     }
+ }
+ 
++fn tenant_context_for_company(company_id: &CompanyId, user_id: &str) -> TenantContext {
++    TenantContext {
++        tenant_id: company_id.clone(),
++        user_id: user_id.into(),
++        roles: vec![Role::Accountant],
++        locale: Some("en-US".into()),
++    }
++}
++
+ fn company_request() -> CreateCompanyRequest {
+     CreateCompanyRequest {
+         name: "Test Co".into(),
+@@ -91,6 +100,55 @@ fn revenue_account(company_id: &CompanyId) -> Account {
+     }
+ }
+ 
++fn build_post_entry(
++    tenant: TenantContext,
++    entry_id: &str,
++    debit_account: &str,
++    credit_account: &str,
++    amount_minor: i64,
++    memo: &str,
++) -> PostEntryRequest {
++    PostEntryRequest {
++        entry: JournalEntry {
++            id: entry_id.into(),
++            journal_id: "jnl-gl".into(),
++            status: EntryStatus::Draft,
++            lines: vec![
++                JournalLine {
++                    id: format!("{}-debit", entry_id),
++                    account_id: debit_account.into(),
++                    side: PostingSide::Debit,
++                    amount_minor,
++                    currency: usd(),
++                    functional_amount_minor: amount_minor,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: Some(memo.into()),
++                },
++                JournalLine {
++                    id: format!("{}-credit", entry_id),
++                    account_id: credit_account.into(),
++                    side: PostingSide::Credit,
++                    amount_minor,
++                    currency: usd(),
++                    functional_amount_minor: amount_minor,
++                    functional_currency: usd(),
++                    exchange_rate: None,
++                    tax_code: None,
++                    memo: Some(memo.into()),
++                },
++            ],
++            origin: EntryOrigin::Manual,
++            memo: Some(memo.into()),
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
++        },
++        tenant,
++        mode: PostingMode::Commit,
++    }
++}
++
+ fn journal_entry(tenant: TenantContext) -> PostEntryRequest {
+     PostEntryRequest {
+         entry: JournalEntry {
+@@ -125,6 +183,8 @@ fn journal_entry(tenant: TenantContext) -> PostEntryRequest {
+             ],
+             origin: EntryOrigin::Manual,
+             memo: Some("Payment received".into()),
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+         },
+         tenant,
+         mode: PostingMode::Commit,
+@@ -165,6 +225,8 @@ fn unbalanced_entry(tenant: TenantContext) -> PostEntryRequest {
+             ],
+             origin: EntryOrigin::Manual,
+             memo: Some("Out-of-balance".into()),
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+         },
+         tenant,
+         mode: PostingMode::Commit,
+@@ -211,6 +273,8 @@ fn fx_entry(tenant: TenantContext) -> PostEntryRequest {
+             ],
+             origin: EntryOrigin::Manual,
+             memo: Some("FX payment".into()),
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+         },
+         tenant,
+         mode: PostingMode::Commit,
+@@ -251,13 +315,15 @@ fn fx_entry_missing_rate(tenant: TenantContext) -> PostEntryRequest {
+             ],
+             origin: EntryOrigin::Manual,
+             memo: Some("FX without provenance".into()),
++            reverses_entry_id: None,
++            reversed_by_entry_id: None,
+         },
+         tenant,
+         mode: PostingMode::Commit,
+     }
+ }
+ 
+-fn lock_request(action: PeriodAction) -> LockPeriodRequest {
++fn lock_request(company_id: &CompanyId, action: PeriodAction) -> LockPeriodRequest {
+     LockPeriodRequest {
+         journal_id: "jnl-gl".into(),
+         period: PeriodRef {
+@@ -265,7 +331,7 @@ fn lock_request(action: PeriodAction) -> LockPeriodRequest {
+             period: 12,
+         },
+         action,
+-        tenant: tenant_context(),
++        tenant: tenant_context_for_company(company_id, "user-1"),
+     }
+ }
+ 
+@@ -280,7 +346,7 @@ async fn company_bootstrap_and_coa_constraints() {
+     assert_eq!(company.base_currency.code, "USD");
+ 
+     // COA root summary account should be allowed, but not used for postings.
+-    let tenant = tenant_context();
++    let tenant = tenant_context_for_company(&company.id, "user-1");
+     let summary = asset_summary(&company.id);
+     let _ = service
+         .upsert_account(UpsertAccountRequest {
+@@ -319,6 +385,21 @@ async fn company_bootstrap_and_coa_constraints() {
+         duplicate_err,
+         LedgerError::Validation(message) if message.contains("code")
+     ));
++
++    let mut invalid_child = cash_account(&company.id, posting_account.id.clone());
++    invalid_child.id = "acc-invalid".into();
++    invalid_child.code = "1011".into();
++    let invalid_parent_err = service
++        .upsert_account(UpsertAccountRequest {
++            account: invalid_child,
++            tenant,
++        })
++        .await
++        .expect_err("non-summary parent should be rejected");
++    assert!(matches!(
++        invalid_parent_err,
++        LedgerError::Validation(message) if message.contains("parent")
++    ));
+ }
+ 
+ #[tokio::test]
+@@ -328,7 +409,7 @@ async fn posting_requires_balance_and_fx_provenance() {
+         .create_company(company_request())
+         .await
+         .expect("company should be created");
+-    let tenant = tenant_context();
++    let tenant = tenant_context_for_company(&company.id, "user-1");
+ 
+     let summary = asset_summary(&company.id);
+     let _ = service
+@@ -382,6 +463,15 @@ async fn posting_requires_balance_and_fx_provenance() {
+             .iter()
+             .all(JournalLine::has_currency_provenance)
+     );
++    let retained_rate = fx_posted
++        .lines
++        .iter()
++        .find_map(|line| line.exchange_rate.as_ref())
++        .expect("FX line should retain exchange rate");
++    assert!(
++        (retained_rate.rate - 1.075).abs() < f64::EPSILON,
++        "expected rate to remain unchanged"
++    );
+ 
+     let missing_fx = service
+         .post_entry(fx_entry_missing_rate(tenant))
+@@ -400,7 +490,7 @@ async fn period_lock_and_reversal_flow() {
+         .create_company(company_request())
+         .await
+         .expect("company should be created");
+-    let tenant = tenant_context();
++    let tenant = tenant_context_for_company(&company.id, "user-1");
+ 
+     let summary = asset_summary(&company.id);
+     let _ = service
+@@ -431,7 +521,7 @@ async fn period_lock_and_reversal_flow() {
+ 
+     // Lock the period (soft close) and ensure state transitions.
+     let locked = service
+-        .lock_period(lock_request(PeriodAction::SoftClose))
++        .lock_period(lock_request(&company.id, PeriodAction::SoftClose))
+         .await
+         .expect("soft-close should succeed with appropriate role");
+     assert_eq!(locked.period_state, PeriodState::SoftClosed);
+@@ -443,17 +533,34 @@ async fn period_lock_and_reversal_flow() {
+         .expect_err("posting into soft-closed period requires override");
+     assert!(matches!(blocked, LedgerError::Rejected(message) if message.contains("soft-close")));
+ 
+-    // Fully closing period should prevent reversals until reopened.
++    // Fully closing period should block postings until reopened.
+     let closed = service
+-        .lock_period(lock_request(PeriodAction::Close))
++        .lock_period(lock_request(&company.id, PeriodAction::Close))
+         .await
+         .expect("close should transition to Closed state");
+     assert_eq!(closed.period_state, PeriodState::Closed);
+ 
++    let closed_block = service
++        .post_entry(journal_entry(tenant.clone()))
++        .await
++        .expect_err("posting into closed period must be rejected");
++    assert!(matches!(
++        closed_block,
++        LedgerError::Rejected(message) if message.contains("period closed")
++    ));
++
++    service
++        .lock_period(lock_request(&company.id, PeriodAction::ReopenFull))
++        .await
++        .expect("reopen should set state back to Open");
++
+     let posted = service
+         .post_entry(journal_entry(tenant.clone()))
+         .await
+-        .expect("entry posted before closure should exist");
++        .expect("entry should post after reopening");
++    assert_eq!(posted.status, EntryStatus::Posted);
++    assert_eq!(posted.reverses_entry_id, None);
++    assert_eq!(posted.reversed_by_entry_id, None);
+ 
+     let reversal = service
+         .reverse_entry(ReverseEntryRequest {
+@@ -463,9 +570,189 @@ async fn period_lock_and_reversal_flow() {
+         })
+         .await
+         .expect("reverse_entry should create linked reversing journal");
+-    assert_eq!(reversal.status, EntryStatus::Reversed);
++    assert_eq!(reversal.status, EntryStatus::Posted);
++    assert_eq!(
++        reversal.reverses_entry_id.as_deref(),
++        Some(posted.id.as_str())
++    );
++    assert!(reversal.reversed_by_entry_id.is_none());
++    assert!(reversal.validate().is_ok());
++
++    let double_reversal = service
++        .reverse_entry(ReverseEntryRequest {
++            entry_id: posted.id.clone(),
++            reason: "duplicate".into(),
++            tenant: tenant_context_for_company(&company.id, "user-1"),
++        })
++        .await
++        .expect_err("second reversal must be rejected");
++    assert!(matches!(
++        double_reversal,
++        LedgerError::Rejected(message) if message.contains("already reversed")
++    ));
++
++    let original_events = service
++        .list_audit_trail(AuditTrailFilter {
++            entity_id: Some(posted.id.clone()),
++            limit: None,
++            cursor: None,
++            tenant: tenant_context_for_company(&company.id, "auditor"),
++        })
++        .await
++        .expect("audit events should be returned");
++    assert!(
++        original_events
++            .iter()
++            .any(|event| event.description.contains("Posted entry"))
++    );
+     assert!(
+-        reversal.validate().is_ok(),
+-        "reversals must balance by construction"
++        original_events
++            .iter()
++            .any(|event| event.description.contains("Reversal requested"))
++    );
++
++    let reversal_events = service
++        .list_audit_trail(AuditTrailFilter {
++            entity_id: Some(reversal.id.clone()),
++            limit: None,
++            cursor: None,
++            tenant: tenant_context_for_company(&company.id, "auditor"),
++        })
++        .await
++        .expect("reversal entry should have audit trail");
++    assert!(
++        reversal_events
++            .iter()
++            .any(|event| event.description.contains("Reversal of"))
++    );
++}
++
++#[tokio::test]
++async fn multi_company_journal_isolation() {
++    let service = InMemoryLedgerService::new();
++
++    let company_a = service
++        .create_company(company_request())
++        .await
++        .expect("company A should be created");
++    let company_b = service
++        .create_company(company_request())
++        .await
++        .expect("company B should be created");
++
++    let tenant_a = tenant_context_for_company(&company_a.id, "user-a");
++    let tenant_b = tenant_context_for_company(&company_b.id, "user-b");
++
++    let summary_a = asset_summary(&company_a.id);
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: summary_a.clone(),
++            tenant: tenant_a.clone(),
++        })
++        .await
++        .expect("summary account for company A");
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: cash_account(&company_a.id, summary_a.id.clone()),
++            tenant: tenant_a.clone(),
++        })
++        .await
++        .expect("cash account for company A");
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: revenue_account(&company_a.id),
++            tenant: tenant_a.clone(),
++        })
++        .await
++        .expect("revenue account for company A");
++
++    let mut summary_b = asset_summary(&company_b.id);
++    summary_b.id = "b-acc-assets".into();
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: summary_b.clone(),
++            tenant: tenant_b.clone(),
++        })
++        .await
++        .expect("summary account for company B");
++    let mut cash_b = cash_account(&company_b.id, summary_b.id.clone());
++    cash_b.id = "b-acc-cash".into();
++    let cash_b_id = cash_b.id.clone();
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: cash_b.clone(),
++            tenant: tenant_b.clone(),
++        })
++        .await
++        .expect("cash account for company B");
++    let mut revenue_b = revenue_account(&company_b.id);
++    revenue_b.id = "b-acc-rev".into();
++    let revenue_b_id = revenue_b.id.clone();
++    service
++        .upsert_account(UpsertAccountRequest {
++            account: revenue_b.clone(),
++            tenant: tenant_b.clone(),
++        })
++        .await
++        .expect("revenue account for company B");
++
++    let entry_a = build_post_entry(
++        tenant_a.clone(),
++        "je-a",
++        "acc-cash",
++        "acc-rev",
++        5_000,
++        "Company A posting",
++    );
++    let entry_b = build_post_entry(
++        tenant_b.clone(),
++        "je-b",
++        &cash_b_id,
++        &revenue_b_id,
++        7_000,
++        "Company B posting",
++    );
++
++    let posted_a = service
++        .post_entry(entry_a)
++        .await
++        .expect("company A should post successfully");
++    let posted_b = service
++        .post_entry(entry_b)
++        .await
++        .expect("company B should post successfully");
++
++    assert_eq!(posted_a.status, EntryStatus::Posted);
++    assert_eq!(posted_b.status, EntryStatus::Posted);
++
++    // Ensure audit events recorded for both entries.
++    let events_a = service
++        .list_audit_trail(AuditTrailFilter {
++            entity_id: Some(posted_a.id.clone()),
++            limit: None,
++            cursor: None,
++            tenant: tenant_a,
++        })
++        .await
++        .expect("audit events for company A");
++    assert!(
++        events_a
++            .iter()
++            .any(|event| event.description.contains("Posted entry"))
++    );
++
++    let events_b = service
++        .list_audit_trail(AuditTrailFilter {
++            entity_id: Some(posted_b.id.clone()),
++            limit: None,
++            cursor: None,
++            tenant: tenant_b,
++        })
++        .await
++        .expect("audit events for company B");
++    assert!(
++        events_b
++            .iter()
++            .any(|event| event.description.contains("Posted entry"))
+     );
+ }

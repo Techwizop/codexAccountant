@@ -7,6 +7,8 @@ use codex_app_server_protocol::ClientInfo;
 use codex_app_server_protocol::ClientRequest;
 use codex_app_server_protocol::InitializeResponse;
 
+#[cfg(feature = "ledger")]
+use codex_accounting_api::LedgerFacade;
 use codex_app_server_protocol::JSONRPCError;
 use codex_app_server_protocol::JSONRPCErrorError;
 use codex_app_server_protocol::JSONRPCNotification;
@@ -17,6 +19,10 @@ use codex_core::ConversationManager;
 use codex_core::config::Config;
 use codex_core::default_client::USER_AGENT_SUFFIX;
 use codex_core::default_client::get_codex_user_agent;
+#[cfg(feature = "ledger")]
+use codex_ledger::InMemoryLedgerService;
+#[cfg(feature = "ledger")]
+use codex_ledger::LedgerService;
 use codex_protocol::protocol::SessionSource;
 use std::sync::Arc;
 
@@ -40,12 +46,22 @@ impl MessageProcessor {
             auth_manager.clone(),
             SessionSource::VSCode,
         ));
+        #[cfg(feature = "ledger")]
+        let ledger = match std::env::var("CODEX_LEDGER_IN_MEMORY") {
+            Ok(value) if matches!(value.as_str(), "1" | "true" | "TRUE" | "True") => {
+                let service: Arc<dyn LedgerService> = Arc::new(InMemoryLedgerService::new());
+                Some(LedgerFacade::new(service))
+            }
+            _ => None,
+        };
         let codex_message_processor = CodexMessageProcessor::new(
             auth_manager,
             conversation_manager,
             outgoing.clone(),
             codex_linux_sandbox_exe,
             config,
+            #[cfg(feature = "ledger")]
+            ledger,
         );
 
         Self {

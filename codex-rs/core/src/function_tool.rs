@@ -8,4 +8,8 @@ pub enum FunctionCallError {
     MissingLocalShellCallId,
     #[error("Fatal error: {0}")]
     Fatal(String),
+    #[error("Invalid arguments: {0}")]
+    InvalidArgs(String),
+    #[error("Serialization error: {0}")]
+    SerializationError(String),
 }

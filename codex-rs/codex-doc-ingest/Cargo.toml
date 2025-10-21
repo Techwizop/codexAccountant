@@ -1,0 +1,44 @@
+[package]
+edition = "2024"
+name = "codex-doc-ingest"
+version = { workspace = true }
+
+[lib]
+name = "codex_doc_ingest"
+path = "src/lib.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+axum = { workspace = true, default-features = false, features = [
+    "http1",
+    "json",
+    "macros",
+    "tokio",
+] }
+chrono = { workspace = true, features = ["serde"] }
+mime_guess = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt-multi-thread", "sync", "time"] }
+tracing = { workspace = true, features = ["log"] }
+uuid = { workspace = true, features = ["v4"] }
+
+[dev-dependencies]
+axum = { workspace = true, default-features = false, features = [
+    "http1",
+    "json",
+    "macros",
+    "tokio",
+] }
+pretty_assertions = { workspace = true }
+tokio = { workspace = true, features = [
+    "macros",
+    "rt-multi-thread",
+    "sync",
+    "time",
+] }
