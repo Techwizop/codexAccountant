@@ -1,5 +1,3 @@
-#![cfg(feature = "ledger")]
-
 pub mod document_agent;
 pub mod types;
 

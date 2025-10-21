@@ -1,21 +1,20 @@
-#![cfg(feature = "ledger")]
-
 use std::collections::HashMap;
 use std::sync::Arc;
 
 use codex_accounting_api::LedgerFacade;
 use codex_app_server_protocol::*;
-use codex_core::accounting::{DocumentAgent, JournalEntrySuggestion};
+use codex_core::accounting::DocumentAgent;
+use codex_core::accounting::JournalEntrySuggestion;
 
 pub struct AccountingHandlers {
-    ledger_facade: Arc<LedgerFacade>,
+    _ledger_facade: Arc<LedgerFacade>,
     document_agent: Arc<DocumentAgent>,
 }
 
 impl AccountingHandlers {
     pub fn new(ledger_facade: Arc<LedgerFacade>, document_agent: Arc<DocumentAgent>) -> Self {
         Self {
-            ledger_facade,
+            _ledger_facade: ledger_facade,
             document_agent,
         }
     }
@@ -23,7 +22,7 @@ impl AccountingHandlers {
     pub async fn list_companies(
         &self,
         params: LedgerListCompaniesParams,
-    ) -> Result<LedgerListCompaniesResponse, String> {
+    ) -> std::result::Result<LedgerListCompaniesResponse, String> {
         // TODO: Call actual ledger facade method when available
         // For now, return mock data
 
@@ -59,7 +58,7 @@ impl AccountingHandlers {
     pub async fn list_accounts(
         &self,
         params: LedgerListAccountsParams,
-    ) -> Result<LedgerListAccountsResponse, String> {
+    ) -> std::result::Result<LedgerListAccountsResponse, String> {
         // TODO: Call actual ledger facade method
         // For now, return mock chart of accounts
 
@@ -117,8 +116,8 @@ impl AccountingHandlers {
 
     pub async fn list_entries(
         &self,
-        params: LedgerListEntriesParams,
-    ) -> Result<LedgerListEntriesResponse, String> {
+        _params: LedgerListEntriesParams,
+    ) -> std::result::Result<LedgerListEntriesResponse, String> {
         // TODO: Call actual ledger facade method
         // For now, return empty list
 
@@ -131,7 +130,7 @@ impl AccountingHandlers {
     pub async fn get_company_context(
         &self,
         params: LedgerGetCompanyContextParams,
-    ) -> Result<LedgerGetCompanyContextResponse, String> {
+    ) -> std::result::Result<LedgerGetCompanyContextResponse, String> {
         // Get chart of accounts
         let accounts_response = self
             .list_accounts(LedgerListAccountsParams {
@@ -173,7 +172,7 @@ impl AccountingHandlers {
     pub async fn process_document(
         &self,
         params: LedgerProcessDocumentParams,
-    ) -> Result<LedgerProcessDocumentResponse, String> {
+    ) -> std::result::Result<LedgerProcessDocumentResponse, String> {
         // Call document agent from Phase 1
         let suggestion = self
             .document_agent

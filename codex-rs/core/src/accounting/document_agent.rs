@@ -1,6 +1,5 @@
 use super::types::*;
 use codex_ledger::Account;
-use std::sync::Arc;
 
 // These will need proper imports when integrating with actual services:
 // use codex_ocr::OcrService;
@@ -11,6 +10,12 @@ pub struct DocumentAgent {
     // ocr_service: Arc<dyn OcrService>,
     // ledger_facade: Arc<LedgerFacade>,
     // chatgpt_client: Arc<ChatGPTClient>,
+}
+
+impl Default for DocumentAgent {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl DocumentAgent {
@@ -27,7 +32,7 @@ impl DocumentAgent {
 
     pub async fn process_document(
         &self,
-        upload_id: &str,
+        _upload_id: &str,
         company_id: &str,
     ) -> Result<JournalEntrySuggestion, Box<dyn std::error::Error>> {
         // Step 1: Get OCR text
@@ -66,10 +71,10 @@ impl DocumentAgent {
         ocr_text: &str,
         _company_id: &str,
     ) -> Result<InvoiceData, Box<dyn std::error::Error>> {
-        let system_prompt = "You are an expert accountant specializing in invoice processing. \
+        let _system_prompt = "You are an expert accountant specializing in invoice processing. \
             Extract structured data from invoice text with high accuracy.";
 
-        let user_prompt = format!(
+        let _user_prompt = format!(
             "Extract the following information from this invoice OCR text:\n\
             - Vendor name (the company providing goods/services)\n\
             - Invoice number (if present)\n\
@@ -79,7 +84,7 @@ impl DocumentAgent {
             - Tax amount\n\
             - Total amount\n\
             - Your confidence level (0.0 to 1.0)\n\n\
-            OCR Text:\n{}\n\n\
+            OCR Text:\n{ocr_text}\n\n\
             Return ONLY valid JSON matching this exact schema:\n\
             {{\n\
               \"vendor\": \"string\",\n\
@@ -97,8 +102,7 @@ impl DocumentAgent {
               \"tax_amount\": number,\n\
               \"total\": number,\n\
               \"confidence\": number (0.0-1.0)\n\
-            }}",
-            ocr_text
+            }}"
         );
 
         // Call ChatGPT (you'll need to find actual client method):
@@ -132,11 +136,11 @@ impl DocumentAgent {
             .collect::<Vec<_>>()
             .join("\n");
 
-        let system_prompt = "You are an expert accountant. Suggest journal entries following \
+        let _system_prompt = "You are an expert accountant. Suggest journal entries following \
             double-entry bookkeeping rules. Debits must always equal credits. \
             Amounts should be in minor currency units (cents).";
 
-        let user_prompt = format!(
+        let _user_prompt = format!(
             "Invoice details:\n\
             Vendor: {}\n\
             Date: {}\n\

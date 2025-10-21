@@ -293,7 +293,7 @@ fn test_account_type_enum_serialization() {
     ];
 
     for (account_type, expected_str) in types {
-        let json = serde_json::to_value(&account_type).unwrap();
+        let json = serde_json::to_value(account_type).unwrap();
         assert_eq!(json.as_str().unwrap(), expected_str);
     }
 }
@@ -306,7 +306,7 @@ fn test_client_request_enum_deserialization() {
         "id": 1,
         "params": {}
     });
-    let request: Result<ClientRequest, _> = serde_json::from_value(json);
+    let request: std::result::Result<ClientRequest, _> = serde_json::from_value(json);
     assert!(request.is_ok());
 
     // Test LedgerListAccounts
@@ -317,7 +317,7 @@ fn test_client_request_enum_deserialization() {
             "company_id": "comp-001"
         }
     });
-    let request: Result<ClientRequest, _> = serde_json::from_value(json);
+    let request: std::result::Result<ClientRequest, _> = serde_json::from_value(json);
     assert!(request.is_ok());
 
     // Test LedgerProcessDocument
@@ -329,7 +329,7 @@ fn test_client_request_enum_deserialization() {
             "company_id": "comp-001"
         }
     });
-    let request: Result<ClientRequest, _> = serde_json::from_value(json);
+    let request: std::result::Result<ClientRequest, _> = serde_json::from_value(json);
     assert!(request.is_ok());
 }
 
@@ -355,7 +355,7 @@ fn test_document_processing_workflow() {
     let upload_id = "upload-123";
 
     // Step 2: Process document
-    let process_request = create_request(
+    let _process_request = create_request(
         1,
         "ledgerProcessDocument",
         json!({
@@ -427,7 +427,7 @@ fn test_document_processing_workflow() {
 #[test]
 fn test_ai_context_aggregation() {
     // Get company context
-    let context_request = create_request(
+    let _context_request = create_request(
         1,
         "ledgerGetCompanyContext",
         json!({

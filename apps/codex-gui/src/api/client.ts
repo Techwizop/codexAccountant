@@ -40,14 +40,26 @@ export class JsonRpcClient {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify(request, (_key, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+      ),
     })
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`)
     }
 
-    const json: JsonRpcResponse<TResponse> = await response.json()
+    const text = await response.text()
+    const json: JsonRpcResponse<TResponse> = JSON.parse(text, (_key, value) => {
+      // Convert numeric strings that end with 'n' or are too large for Number back to bigint
+      if (typeof value === 'string' && /^-?\d+$/.test(value)) {
+        const num = Number(value)
+        if (!Number.isSafeInteger(num)) {
+          return BigInt(value)
+        }
+      }
+      return value
+    })
 
     if (json.error) {
       throw new JsonRpcError(json.error.message, json.error.code, json.error.data)

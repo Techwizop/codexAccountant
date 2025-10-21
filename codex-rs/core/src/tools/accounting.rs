@@ -1,18 +1,19 @@
-#![cfg(feature = "ledger")]
-
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
-use crate::client_common::tools::{ResponsesApiTool, ToolSpec};
+use crate::client_common::tools::ResponsesApiTool;
+use crate::client_common::tools::ToolSpec;
 use crate::function_tool::FunctionCallError;
-use crate::tools::context::{ToolInvocation, ToolOutput, ToolPayload};
-use crate::tools::registry::{ToolHandler, ToolKind};
+use crate::tools::context::ToolInvocation;
+use crate::tools::context::ToolOutput;
+use crate::tools::context::ToolPayload;
+use crate::tools::registry::ToolHandler;
+use crate::tools::registry::ToolKind;
 use crate::tools::spec::JsonSchema;
 
 use codex_accounting_api::LedgerFacade;
-use codex_ledger::TenantContext;
 
 // ============================================================================
 // Tool 1: CreateCompanyTool
@@ -26,12 +27,12 @@ struct CreateCompanyArgs {
 }
 
 pub struct CreateCompanyTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl CreateCompanyTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -84,16 +85,16 @@ impl ToolHandler for CreateCompanyTool {
 #[derive(Debug, Deserialize)]
 struct ListCompaniesArgs {
     #[serde(default)]
-    search: Option<String>,
+    _search: Option<String>,
 }
 
 pub struct ListCompaniesTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl ListCompaniesTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -132,7 +133,7 @@ impl ToolHandler for ListCompaniesTool {
 
 #[derive(Debug, Deserialize)]
 struct UpsertAccountArgs {
-    company_id: String,
+    _company_id: String,
     code: String,
     name: String,
     account_type: String, // Asset, Liability, Equity, Revenue, Expense
@@ -141,12 +142,12 @@ struct UpsertAccountArgs {
 }
 
 pub struct UpsertAccountTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl UpsertAccountTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -201,18 +202,18 @@ impl ToolHandler for UpsertAccountTool {
 
 #[derive(Debug, Deserialize)]
 struct ListAccountsArgs {
-    company_id: String,
+    _company_id: String,
     #[serde(default)]
-    account_type: Option<String>,
+    _account_type: Option<String>,
 }
 
 pub struct ListAccountsTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl ListAccountsTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -251,28 +252,28 @@ impl ToolHandler for ListAccountsTool {
 
 #[derive(Debug, Deserialize)]
 struct PostEntryArgs {
-    company_id: String,
+    _company_id: String,
     date: String, // YYYY-MM-DD
-    memo: String,
+    _memo: String,
     lines: Vec<EntryLineArgs>,
 }
 
 #[derive(Debug, Deserialize)]
 struct EntryLineArgs {
-    account_code: String,
+    _account_code: String,
     debit_minor: i64,
     credit_minor: i64,
     #[serde(default)]
-    memo: Option<String>,
+    _memo: Option<String>,
 }
 
 pub struct PostJournalEntryTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl PostJournalEntryTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -346,17 +347,17 @@ impl ToolHandler for PostJournalEntryTool {
 
 #[derive(Debug, Deserialize)]
 struct ListEntriesArgs {
-    company_id: String,
+    _company_id: String,
     #[serde(default)]
-    start_date: Option<String>,
+    _start_date: Option<String>,
     #[serde(default)]
-    end_date: Option<String>,
+    _end_date: Option<String>,
     #[serde(default)]
-    account_code: Option<String>,
+    _account_code: Option<String>,
     #[serde(default = "default_limit")]
-    limit: usize,
+    _limit: usize,
     #[serde(default)]
-    offset: usize,
+    _offset: usize,
 }
 
 fn default_limit() -> usize {
@@ -364,12 +365,12 @@ fn default_limit() -> usize {
 }
 
 pub struct ListEntriesTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl ListEntriesTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -409,9 +410,9 @@ impl ToolHandler for ListEntriesTool {
 
 #[derive(Debug, Deserialize)]
 struct GetCompanyContextArgs {
-    company_id: String,
+    _company_id: String,
     #[serde(default = "default_context_limit")]
-    limit: usize,
+    _limit: usize,
 }
 
 fn default_context_limit() -> usize {
@@ -419,12 +420,12 @@ fn default_context_limit() -> usize {
 }
 
 pub struct GetCompanyContextTool {
-    facade: Arc<LedgerFacade>,
+    _facade: Arc<LedgerFacade>,
 }
 
 impl GetCompanyContextTool {
     pub fn new(facade: Arc<LedgerFacade>) -> Self {
-        Self { facade }
+        Self { _facade: facade }
     }
 }
 
@@ -795,7 +796,7 @@ mod tests {
     use super::*;
     use codex_ledger::InMemoryLedgerService;
 
-    fn mock_facade() -> Arc<LedgerFacade> {
+    fn _mock_facade() -> Arc<LedgerFacade> {
         let service = Arc::new(InMemoryLedgerService::new());
         Arc::new(LedgerFacade::new(service))
     }
