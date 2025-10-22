@@ -66,24 +66,29 @@ export function EntriesPage({ companyId }: EntriesPageProps) {
     )
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | undefined | null) => {
+    if (!status) return 'bg-gray-100 text-gray-800'
+
     const colors: Record<string, string> = {
       draft: 'bg-gray-100 text-gray-800',
       proposed: 'bg-yellow-100 text-yellow-800',
       posted: 'bg-green-100 text-green-800',
       reversed: 'bg-red-100 text-red-800',
     }
-    return colors[status] || 'bg-gray-100 text-gray-800'
+    return colors[status.toLowerCase()] || 'bg-gray-100 text-gray-800'
   }
 
-  const getOriginColor = (origin: string) => {
+  const getOriginColor = (origin: string | undefined | null) => {
+    if (!origin) return 'bg-gray-100 text-gray-800'
+
     const colors: Record<string, string> = {
       manual: 'bg-blue-100 text-blue-800',
       ingestion: 'bg-purple-100 text-purple-800',
       aiSuggested: 'bg-indigo-100 text-indigo-800',
+      aisuggested: 'bg-indigo-100 text-indigo-800', // Handle case variations
       adjustment: 'bg-orange-100 text-orange-800',
     }
-    return colors[origin] || 'bg-gray-100 text-gray-800'
+    return colors[origin.toLowerCase()] || 'bg-gray-100 text-gray-800'
   }
 
   return (

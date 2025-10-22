@@ -42,7 +42,9 @@ export function formatDateTime(dateStr: string): string {
 /**
  * Format account type for display
  */
-export function formatAccountType(type: string): string {
+export function formatAccountType(type: string | undefined | null): string {
+  if (!type) return 'Unknown'
+
   return type
     .split(/(?=[A-Z])/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -52,7 +54,9 @@ export function formatAccountType(type: string): string {
 /**
  * Get color class for account type
  */
-export function getAccountTypeColor(type: string): string {
+export function getAccountTypeColor(type: string | undefined | null): string {
+  if (!type) return 'text-gray-600 bg-gray-50'
+
   const colors: Record<string, string> = {
     asset: 'text-green-600 bg-green-50',
     liability: 'text-red-600 bg-red-50',
@@ -61,7 +65,7 @@ export function getAccountTypeColor(type: string): string {
     expense: 'text-orange-600 bg-orange-50',
     offBalance: 'text-gray-600 bg-gray-50',
   }
-  return colors[type] || 'text-gray-600 bg-gray-50'
+  return colors[type.toLowerCase()] || 'text-gray-600 bg-gray-50'
 }
 
 /**

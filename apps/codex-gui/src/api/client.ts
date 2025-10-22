@@ -1,4 +1,5 @@
 import type { JsonRpcRequest, JsonRpcResponse } from '../types/protocol'
+import type { InitializeParams, InitializeResponse } from '../../bindings'
 
 export class JsonRpcError extends Error {
   constructor(
@@ -16,8 +17,28 @@ export class JsonRpcError extends Error {
  */
 export class JsonRpcClient {
   private requestId = 0
+  private isInitialized = false
 
   constructor(private baseUrl: string = '/api') {}
+
+  /**
+   * Initialize the connection with the app server
+   */
+  async initialize(clientInfo: InitializeParams['clientInfo']): Promise<InitializeResponse> {
+    const response = await this.call<InitializeParams, InitializeResponse>(
+      'initialize',
+      { clientInfo }
+    )
+    this.isInitialized = true
+    return response
+  }
+
+  /**
+   * Check if the client is initialized
+   */
+  getIsInitialized(): boolean {
+    return this.isInitialized
+  }
 
   /**
    * Make a JSON-RPC call to the server
@@ -73,5 +94,11 @@ export class JsonRpcClient {
   }
 }
 
+// Get base URL from environment or use default
+const getBaseUrl = () => {
+  // Use VITE_API_BASE_URL if set, otherwise default to /api
+  return import.meta.env.VITE_API_BASE_URL || '/api';
+};
+
 // Singleton instance for the app
-export const apiClient = new JsonRpcClient()
+export const apiClient = new JsonRpcClient(getBaseUrl())
